@@ -1,13 +1,10 @@
 ---
-# title: "Posts"
 listing:
   contents: posts
   date-format: "DD MMM YYYY"
   sort: "date desc"
   type: default
   categories: true
-  # sort-ui: false
-  # filter-ui: false
   fields: 
     - title
     - description
@@ -15,8 +12,24 @@ listing:
     - date
     - reading-time
     - categories
-# page-layout: full
 title-block-banner: true
 ---
 
 
+<!-- --- -->
+<!-- title: "Posts" -->
+<!-- listing: -->
+<!--   contents: blog -->
+<!--   categories: true -->
+<!--   date-format: "YYYY-MM-DD" -->
+<!--   feed: true -->
+<!--   filter-ui: false -->
+<!--   image-align: "left" -->
+<!--   sort: "date desc" -->
+<!--   sort-ui: false -->
+<!--   type: default -->
+<!--   template: custom.ejs -->
+<!-- format:  -->
+<!--   html: -->
+<!--     page-layout: article -->
+<!-- --- -->

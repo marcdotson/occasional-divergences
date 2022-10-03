@@ -7,6 +7,16 @@ categories:
   - stan
 ---
 
+<!-- --- -->
+<!-- title: "Three packages that port the tidyverse to Python" -->
+<!-- jupyter: python3 -->
+<!-- date: "2022-05-09" -->
+<!-- categories: ["reference"] -->
+<!-- description: Working in Python but miss tidyverse syntax? These packages can help. -->
+<!-- image: thumbnail.jpg -->
+<!-- image-alt: "Johannes Vermeer, The Allegory of Painting, a woman holding an instrument at a window and a man turned away from us painting her" -->
+<!-- --- -->
+
 Bayesian inference provides an intuitive and self-consistent approach to statistical modeling. In short, you have beliefs about unobserved values (e.g., the impact of price on customer satisfaction) and you use data to update those beliefs. The barrier to using Bayesian inference in practice has never been this intuition -- it's been the required computation. There has been a great deal of progress on this front, with [Stan](https://mc-stan.org) arguably providing the best modern solution.
 
 Stan is a probabilistic programming language that provides a general-purpose sampler using Hamiltonian Monte Carlo. In other words, Stan automates the required computation (for many models), allowing you to conduct Bayesian inference by focusing solely on model building. This is especially powerful when it comes to utilizing the mainstay of Bayesian inference: hierarchical models.

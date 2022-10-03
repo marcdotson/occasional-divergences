@@ -6,7 +6,7 @@ website:
   navbar:
     # background: 
     right:
-      - "Two brothers with a mostly Bayesian focus"
+      - text: "Two brothers with a mostly Bayesian focus"
       - about.qmd
       - icon: github
         href: https://github.com/
@@ -19,4 +19,52 @@ format:
       dark: darkly
     css: styles.css
     highlight-style: idle-fingers
+
+# project:
+#   type: website
+#   resources:
+#     - "_redirects.txt"
+# 
+# website:
+#   title: "%>% dreams"
+#   site-url: "https://ivelasq.rbind.io"
+#   description: "Isabella Velásquez Personal Website"
+#   favicon: favicon.jpg
+#   twitter-card: true
+#   opengraph: true
+#   navbar:
+#     title: "Isabella Velásquez"
+#     background: "#000000"
+#     foreground: "#FFFFFF"
+#     pinned: true
+#     left:
+#       - text: "pipe dreams"
+#     right:
+#       - text: "About"
+#         file: about.qmd
+#       - text: "Blog"
+#         file: index.qmd
+#       - file: til.qmd
+#       - file: talk.qmd
+#       - file: project.qmd
+#   page-footer:
+#     left:
+#       - href: https://www.quarto.org
+#         text: Built with Quarto
+#     right: 
+#       - href: license.qmd
+#         text: License
+#       - icon: twitter
+#         href: https://twitter.com/ivelasq3
+#       - icon: github
+#         href: https://github.com/ivelasq
+#       - icon: linkedin
+#         href: https://www.linkedin.com/in/ivelasq/
+#       - icon: rss
+#         href: index.xml
+# format:
+#   html:
+#     theme: [litera, styles.scss]
+#     include-in-header: plausible.html
+#     highlight-style: nord
 
