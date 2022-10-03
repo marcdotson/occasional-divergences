@@ -2,9 +2,11 @@ project:
   type: website
 
 website:
-  title: "test-blog"
+  title: "Occassional Divergences"
   navbar:
+    # background: 
     right:
+      - "Two brothers with a mostly Bayesian focus"
       - about.qmd
       - icon: github
         href: https://github.com/
@@ -12,8 +14,9 @@ website:
         href: https://twitter.com
 format:
   html:
-    theme: cosmo
+    theme: 
+      light: journal
+      dark: darkly
     css: styles.css
-
-
+    highlight-style: idle-fingers
 

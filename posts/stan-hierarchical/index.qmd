@@ -3,7 +3,8 @@ title: "Hierarchical models in Stan"
 author: "Marc Dotson"
 date: "2019-12-31"
 slug: stan-hierarchical
-categories: [stan]
+categories:
+  - stan
 ---
 
 Bayesian inference provides an intuitive and self-consistent approach to statistical modeling. In short, you have beliefs about unobserved values (e.g., the impact of price on customer satisfaction) and you use data to update those beliefs. The barrier to using Bayesian inference in practice has never been this intuition -- it's been the required computation. There has been a great deal of progress on this front, with [Stan](https://mc-stan.org) arguably providing the best modern solution.
