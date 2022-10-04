@@ -2,20 +2,14 @@
 title: "Hierarchical models in Stan"
 author: "Marc Dotson"
 date: "2019-12-31"
-slug: stan-hierarchical
+# description: |
+#   The goal of this post is to provide a gentle introduction to building hierarchical models in Stan. We will be interfacing with Stan through R and will be adopting a tidy approach whenever appropriate.
 categories:
+  - r
   - stan
+  - hierarchical models
+image: Figures/hierarchical_mcmc_trace-01.png
 ---
-
-<!-- --- -->
-<!-- title: "Three packages that port the tidyverse to Python" -->
-<!-- jupyter: python3 -->
-<!-- date: "2022-05-09" -->
-<!-- categories: ["reference"] -->
-<!-- description: Working in Python but miss tidyverse syntax? These packages can help. -->
-<!-- image: thumbnail.jpg -->
-<!-- image-alt: "Johannes Vermeer, The Allegory of Painting, a woman holding an instrument at a window and a man turned away from us painting her" -->
-<!-- --- -->
 
 Bayesian inference provides an intuitive and self-consistent approach to statistical modeling. In short, you have beliefs about unobserved values (e.g., the impact of price on customer satisfaction) and you use data to update those beliefs. The barrier to using Bayesian inference in practice has never been this intuition -- it's been the required computation. There has been a great deal of progress on this front, with [Stan](https://mc-stan.org) arguably providing the best modern solution.
 
@@ -704,10 +698,4 @@ Hierarchical models provide partial information pooling, a middle-ground between
 ### Marc Dotson
 
 Marc is an assistant professor of marketing at the BYU Marriott School of Business. He graduated with an MSc from The London School of Economics and Political Science in 2009 and a PhD from The Ohio State University in 2016. His research interests include Bayesian inference, predictive modeling, consumer preference heterogeneity, and unstructured data. Marc teaches marketing analytics. You can find him on [Twitter](https://twitter.com/marcdotson) and [GitHub](https://github.com/marcdotson).
-
-
-
-
-
-
 
