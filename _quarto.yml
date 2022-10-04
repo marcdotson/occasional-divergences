@@ -2,69 +2,50 @@ project:
   type: website
 
 website:
-  title: "Occassional Divergences"
+  title: "Occasional Divergences"
+  site-url: "https://www.occasionaldivergences.com"
+  description: "Two brothers with a mostly Bayesian focus."
+  # favicon: favicon.jpg
+  twitter-card: true
+  open-graph: true
   navbar:
-    # background: 
+    # background: "#ac4142"
+    # foreground: "#FFFFFF"
+    pinned: true
+    left:
+      - text: "Two brothers with a mostly Bayesian focus."
     right:
-      - text: "Two brothers with a mostly Bayesian focus"
-      - about.qmd
+      - text: Home
+        file: index.qmd
+      - text: About
+        file: about.qmd
       - icon: github
-        href: https://github.com/
+        menu:
+          - text: Marc's GitHub
+            url: https://github.com/marcdotson
+          - text: Jeff's GitHub
+            url: https://github.com/jeff-dotson
       - icon: twitter
-        href: https://twitter.com
+        menu:
+          - text: Marc's Twitter
+            url: https://twitter.com/marcdotson
+          - text: Jeff's Twitter
+            url: https://twitter.com/jdotson77
+  page-footer:
+    left:
+      - href: https://www.quarto.org
+        text: Built with Quarto
+    right:
+      - text: License
+        file: license.qmd
 format:
   html:
     theme: 
-      light: journal
+      light: flatly
       dark: darkly
+      # light: [flatly, styles-light.scss]
+      # dark: [darkly, styles-dark.scss]
     css: styles.css
+    # include-in-header: plausible.html
     highlight-style: idle-fingers
-
-# project:
-#   type: website
-#   resources:
-#     - "_redirects.txt"
-# 
-# website:
-#   title: "%>% dreams"
-#   site-url: "https://ivelasq.rbind.io"
-#   description: "Isabella Velásquez Personal Website"
-#   favicon: favicon.jpg
-#   twitter-card: true
-#   opengraph: true
-#   navbar:
-#     title: "Isabella Velásquez"
-#     background: "#000000"
-#     foreground: "#FFFFFF"
-#     pinned: true
-#     left:
-#       - text: "pipe dreams"
-#     right:
-#       - text: "About"
-#         file: about.qmd
-#       - text: "Blog"
-#         file: index.qmd
-#       - file: til.qmd
-#       - file: talk.qmd
-#       - file: project.qmd
-#   page-footer:
-#     left:
-#       - href: https://www.quarto.org
-#         text: Built with Quarto
-#     right: 
-#       - href: license.qmd
-#         text: License
-#       - icon: twitter
-#         href: https://twitter.com/ivelasq3
-#       - icon: github
-#         href: https://github.com/ivelasq
-#       - icon: linkedin
-#         href: https://www.linkedin.com/in/ivelasq/
-#       - icon: rss
-#         href: index.xml
-# format:
-#   html:
-#     theme: [litera, styles.scss]
-#     include-in-header: plausible.html
-#     highlight-style: nord
 
