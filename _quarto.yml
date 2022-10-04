@@ -21,22 +21,22 @@ website:
         file: about.qmd
       - icon: github
         menu:
-          - text: Marc's GitHub
+          - text: "Marc's GitHub"
             url: https://github.com/marcdotson
-          - text: Jeff's GitHub
+          - text: "Jeff's GitHub"
             url: https://github.com/jeff-dotson
       - icon: twitter
         menu:
-          - text: Marc's Twitter
+          - text: "Marc's Twitter"
             url: https://twitter.com/marcdotson
-          - text: Jeff's Twitter
+          - text: "Jeff's Twitter"
             url: https://twitter.com/jdotson77
   page-footer:
     left:
       - href: https://www.quarto.org
         text: Built with Quarto
     right:
-      - text: License
+      - text: "&copy; License"
         file: license.qmd
 format:
   html:
