@@ -1,35 +1,18 @@
 ---
 listing:
   contents: posts
+  categories: true
   date-format: "DD MMM YYYY"
   sort: "date desc"
   type: default
-  categories: true
-  fields: 
+  image-height: 2in
+  fields:
     - title
     - description
-    - image
     - date
+    - image
     - reading-time
     - categories
 title-block-banner: true
 ---
 
-
-<!-- --- -->
-<!-- title: "Posts" -->
-<!-- listing: -->
-<!--   contents: blog -->
-<!--   categories: true -->
-<!--   date-format: "YYYY-MM-DD" -->
-<!--   feed: true -->
-<!--   filter-ui: false -->
-<!--   image-align: "left" -->
-<!--   sort: "date desc" -->
-<!--   sort-ui: false -->
-<!--   type: default -->
-<!--   template: custom.ejs -->
-<!-- format:  -->
-<!--   html: -->
-<!--     page-layout: article -->
-<!-- --- -->
