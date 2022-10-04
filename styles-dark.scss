@@ -1,0 +1,24 @@
+/*-- scss:defaults --*/
+// Custom color
+$dark-crimson: #6e292c !default;
+$cyan:    #3498db !default;
+
+$primary:  $dark-crimson !default;
+$info:     $cyan !default;
+
+// Links
+$link-color: $info !default;
+$link-decoration: none;
+$link-hover-decoration: underline;
+
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+$h1-font-size:                3rem !default;
+
+/*-- scss:rules --*/
+.navbar-title {
+  color: #FFFFFF;
+  font-size: $h1-font-size * 0.6;
+  font-family: "Righteous";
+}
+

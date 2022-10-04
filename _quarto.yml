@@ -5,19 +5,19 @@ website:
   title: "Occasional Divergences"
   site-url: "https://www.occasionaldivergences.com"
   description: "Two brothers with a mostly Bayesian focus."
-  # favicon: favicon.jpg
+  favicon: favicon.png
   twitter-card: true
   open-graph: true
   navbar:
-    # background: "#ac4142"
-    # foreground: "#FFFFFF"
+    foreground: "#fff"
     pinned: true
     left:
       - text: "Two brothers with a mostly Bayesian focus."
+        file: about.qmd
     right:
-      - text: Home
+      - text: "Home"
         file: index.qmd
-      - text: About
+      - text: "About"
         file: about.qmd
       - icon: github
         menu:
@@ -41,11 +41,7 @@ website:
 format:
   html:
     theme: 
-      light: flatly
-      dark: darkly
-      # light: [flatly, styles-light.scss]
-      # dark: [darkly, styles-dark.scss]
-    css: styles.css
-    # include-in-header: plausible.html
-    highlight-style: idle-fingers
+      light: [flatly, styles-light.scss]
+      dark: [darkly, styles-dark.scss]
+    highlight-style: breeze
 
