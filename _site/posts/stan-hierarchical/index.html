@@ -8,7 +8,7 @@
 
 <meta name="author" content="Marc Dotson">
 <meta name="dcterms.date" content="2019-12-31">
-<meta name="description" content="The goal of this post is to provide a gentle introduction to building hierarchical models in Stan. We will be interfacing with Stan through R and will be adopting a tidy approach whenever appropriate.">
+<meta name="description" content="A gentle introduction to building hierarchical models in Stan via R and using a tidy approach whenever appropriate. This is not an introduction to Bayesian inference or Stan.">
 
 <title>Occasional Divergences - Hierarchical models in Stan</title>
 <style>
@@ -129,20 +129,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <meta property="og:title" content="Occasional Divergences - Hierarchical models in Stan">
-<meta property="og:description" content="Bayesian inference provides an intuitive and self-consistent approach to statistical modeling. In short, you have beliefs about unobserved values (e.g.">
-<meta property="og:image" content="https://www.occasionaldivergences.com/posts/stan-hierarchical/Figures/hierarchical_mcmc_trace-01.png">
+<meta property="og:description" content="A gentle introduction to building hierarchical models in Stan via R and using a tidy approach whenever appropriate. This is not an introduction to Bayesian inference or Stan.">
+<meta property="og:image" content="https://www.occasionaldivergences.com/posts/stan-hierarchical/Figures/flat_marginals.png">
 <meta property="og:site-name" content="Occasional Divergences">
-<meta property="og:image:height" content="1500">
+<meta property="og:image:height" content="900">
 <meta property="og:image:width" content="2100">
 <meta name="twitter:title" content="Occasional Divergences - Hierarchical models in Stan">
-<meta name="twitter:description" content="Bayesian inference provides an intuitive and self-consistent approach to statistical modeling. In short, you have beliefs about unobserved values (e.g.">
-<meta name="twitter:image" content="https://www.occasionaldivergences.com/posts/stan-hierarchical/Figures/hierarchical_mcmc_trace-01.png">
-<meta name="twitter:image-height" content="1500">
+<meta name="twitter:description" content="A gentle introduction to building hierarchical models in Stan via R and using a tidy approach whenever appropriate. This is not an introduction to Bayesian inference or Stan.">
+<meta name="twitter:image" content="https://www.occasionaldivergences.com/posts/stan-hierarchical/Figures/flat_marginals.png">
+<meta name="twitter:image-height" content="900">
 <meta name="twitter:image-width" content="2100">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -217,12 +217,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <h1 class="title">Hierarchical models in Stan</h1>
                   <div>
         <div class="description">
-          <p>The goal of this post is to provide a gentle introduction to building hierarchical models in Stan. We will be interfacing with Stan through R and will be adopting a tidy approach whenever appropriate.</p>
+          <p>A gentle introduction to building hierarchical models in Stan via R and using a tidy approach whenever appropriate. This is not an introduction to Bayesian inference or Stan.</p>
         </div>
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">r</div>
                 <div class="quarto-category">stan</div>
+                <div class="quarto-category">hierarchical models</div>
               </div>
                   </div>
   </div>
@@ -250,7 +251,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">In this post</h2>
+   
+  <ul>
+  <li><a href="#simple-flat-regression" id="toc-simple-flat-regression" class="nav-link active" data-scroll-target="#simple-flat-regression">Simple flat regression</a></li>
+  <li><a href="#simple-hierarchical-regression" id="toc-simple-hierarchical-regression" class="nav-link" data-scroll-target="#simple-hierarchical-regression">Simple hierarchical regression</a></li>
+  <li><a href="#multiple-hierarchical-regression" id="toc-multiple-hierarchical-regression" class="nav-link" data-scroll-target="#multiple-hierarchical-regression">Multiple hierarchical regression</a></li>
+  <li><a href="#final-thoughts" id="toc-final-thoughts" class="nav-link" data-scroll-target="#final-thoughts">Final thoughts</a>
+  <ul class="collapse">
+  <li><a href="#marc-dotson" id="toc-marc-dotson" class="nav-link" data-scroll-target="#marc-dotson">Marc Dotson</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 

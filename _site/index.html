@@ -72,9 +72,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-title','listing-description','listing-date','listing-image','listing-reading-time','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-description','listing-date','listing-image','listing-reading-time','listing-categories','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -169,14 +169,14 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
     <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="choice models">choice models <span class="quarto-category-count">(1)</span></div><div class="category" data-category="hierarchical models">hierarchical models <span class="quarto-category-count">(3)</span></div><div class="category" data-category="r">r <span class="quarto-category-count">(3)</span></div><div class="category" data-category="stan">stan <span class="quarto-category-count">(3)</span></div></div></div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
 
@@ -184,21 +184,21 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="r,stan,hierarchical models,choice models" data-listing-date-sort="1599026400000" data-listing-file-modified-sort="1664927582214" data-listing-reading-time-sort="25.105">
-<div class="thumbnail">
-<p><a href="./posts/choice-models/index.html"> <img src="./posts/choice-models/Figures/mcmc_trace-gamma.png" class="thumnail-image" style="height: 2in;"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/choice-models/index.html">
-<h3 class="no-anchor listing-title">
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="r,stan,hierarchical models,choice models" data-listing-date-sort="1599026400000" data-listing-file-modified-sort="1664940535733" data-listing-reading-time-sort="25.105">
+<a href="./posts/choice-models/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/choice-models/Figures/mcmc_trace-gamma.png" class="thumbnail-image card-img" style="height: 250px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Comparing choice model parameterizations
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="listing-reading-time card-text text-muted">
+25 min
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('r'); return false;">
 r
@@ -213,36 +213,34 @@ hierarchical models
 choice models
 </div>
 </div>
-<a href="./posts/choice-models/index.html">
-<div class="listing-description">
-Choice models are common in marketing and other applications where researchers are interested in understanding both the drivers and trade-offs of choice. Since choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our default specification.
+<div class="card-text listing-description">
+Since choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our…
 </div>
-</a>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Marc Dotson
 </div>
-<div class="metadata">
-<a href="./posts/choice-models/index.html">
 <div class="listing-date">
 02 Sep 2020
 </div>
-<div class="listing-reading-time">
-25 min
+</div>
+</div>
 </div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="r,stan,hierarchical models" data-listing-date-sort="1589868000000" data-listing-file-modified-sort="1664927445043" data-listing-reading-time-sort="19.655">
-<div class="thumbnail">
-<p><a href="./posts/non-centered/index.html"> <img src="./posts/non-centered/Figures/mcmc_trace-gamma.png" class="thumnail-image" style="height: 2in;"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/non-centered/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="1" data-categories="r,stan,hierarchical models" data-listing-date-sort="1589868000000" data-listing-file-modified-sort="1664941430119" data-listing-reading-time-sort="19.655">
+<a href="./posts/non-centered/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/non-centered/Figures/marginals-omega.png" class="thumbnail-image card-img" style="height: 250px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Hierarchical models in Stan with a non-centered parameterization
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="listing-reading-time card-text text-muted">
+19 min
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('r'); return false;">
 r
@@ -254,36 +252,34 @@ stan
 hierarchical models
 </div>
 </div>
-<a href="./posts/non-centered/index.html">
-<div class="listing-description">
-In a previous post, we provided a gentle introduction to hierarchical Bayesian models in Stan. We quickly ran into divergences (i.e., divergent transitions) when attempting to estimate our model. While hierarchical models inherently have posteriors with geometry that can be difficult to navigate, we were able to initially address this problem by more carefully navigating the posterior with a smaller step size.
+<div class="card-text listing-description">
+We build a hierarchical linear model with a multivariate population model. This added complexity will require us to re-express the model using what is known as a…
 </div>
-</a>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Marc Dotson
 </div>
-<div class="metadata">
-<a href="./posts/non-centered/index.html">
 <div class="listing-date">
 19 May 2020
 </div>
-<div class="listing-reading-time">
-19 min
+</div>
+</div>
 </div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="r,stan,hierarchical models" data-listing-date-sort="1577775600000" data-listing-file-modified-sort="1664927472448" data-listing-reading-time-sort="26.595">
-<div class="thumbnail">
-<p><a href="./posts/stan-hierarchical/index.html"> <img src="./posts/stan-hierarchical/Figures/hierarchical_mcmc_trace-01.png" class="thumnail-image" style="height: 2in;"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/stan-hierarchical/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="2" data-categories="r,stan,hierarchical models" data-listing-date-sort="1577775600000" data-listing-file-modified-sort="1664941350134" data-listing-reading-time-sort="26.595">
+<a href="./posts/stan-hierarchical/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/stan-hierarchical/Figures/flat_marginals.png" class="thumbnail-image card-img" style="height: 250px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Hierarchical models in Stan
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="listing-reading-time card-text text-muted">
+26 min
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('r'); return false;">
 r
@@ -295,22 +291,20 @@ stan
 hierarchical models
 </div>
 </div>
-<a href="./posts/stan-hierarchical/index.html">
-<div class="listing-description">
-Bayesian inference provides an intuitive and self-consistent approach to statistical modeling. In short, you have beliefs about unobserved values (e.g., the impact of price on customer satisfaction) and you use data to update those beliefs. The barrier to using Bayesian inference in practice has never been this intuition – it’s been the required computation. There has been a great deal of progress on this front, with Stan arguably providing the best modern solution.
+<div class="card-text listing-description">
+A gentle introduction to building hierarchical models in Stan via R and using a tidy approach whenever appropriate. This is not an introduction to Bayesian inference or…
 </div>
-</a>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Marc Dotson
 </div>
-<div class="metadata">
-<a href="./posts/stan-hierarchical/index.html">
 <div class="listing-date">
 31 Dec 2019
 </div>
-<div class="listing-reading-time">
-26 min
+</div>
+</div>
 </div>
 </a>
-</div>
 </div>
 </div>
 <div class="listing-no-matching d-none">

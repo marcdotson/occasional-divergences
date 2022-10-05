@@ -4,8 +4,8 @@ listing:
   categories: true
   date-format: "DD MMM YYYY"
   sort: "date desc"
-  type: default
-  image-height: 2in
+  type: grid
+  image-height: 250px
   fields:
     - title
     - description
@@ -13,6 +13,8 @@ listing:
     - image
     - reading-time
     - categories
+    - author
+page-layout: full
 title-block-banner: true
 ---
 

@@ -95,7 +95,7 @@
     "href": "index.html",
     "title": "Occasional Divergences",
     "section": "",
-    "text": "r\n\n\nstan\n\n\nhierarchical models\n\n\nchoice models\n\n\n\n\n\n\n\n\n\n\n\n02 Sep 2020\n\n\n25 min\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nr\n\n\nstan\n\n\nhierarchical models\n\n\n\n\n\n\n\n\n\n\n\n19 May 2020\n\n\n19 min\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nr\n\n\nstan\n\n\nhierarchical models\n\n\n\n\n\n\n\n\n\n\n\n31 Dec 2019\n\n\n26 min\n\n\n\n\n\n\nNo matching items"
+    "text": "25 min\n\n\n\nr\n\n\nstan\n\n\nhierarchical models\n\n\nchoice models\n\n\n\nSince choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our…\n\n\n\nMarc Dotson\n\n\n02 Sep 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n19 min\n\n\n\nr\n\n\nstan\n\n\nhierarchical models\n\n\n\nWe build a hierarchical linear model with a multivariate population model. This added complexity will require us to re-express the model using what is known as a…\n\n\n\nMarc Dotson\n\n\n19 May 2020\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n26 min\n\n\n\nr\n\n\nstan\n\n\nhierarchical models\n\n\n\nA gentle introduction to building hierarchical models in Stan via R and using a tidy approach whenever appropriate. This is not an introduction to Bayesian inference or…\n\n\n\nMarc Dotson\n\n\n31 Dec 2019\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",

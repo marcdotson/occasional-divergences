@@ -8,6 +8,7 @@
 
 <meta name="author" content="Marc Dotson">
 <meta name="dcterms.date" content="2020-09-02">
+<meta name="description" content="Since choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our default specification.">
 
 <title>Occasional Divergences - Comparing choice model parameterizations</title>
 <style>
@@ -128,20 +129,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <meta property="og:title" content="Occasional Divergences - Comparing choice model parameterizations">
-<meta property="og:description" content="Choice models are common in marketing and other applications where researchers are interested in understanding both the drivers and trade-offs of choice.">
+<meta property="og:description" content="Since choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our default specification.">
 <meta property="og:image" content="https://www.occasionaldivergences.com/posts/choice-models/Figures/mcmc_trace-gamma.png">
 <meta property="og:site-name" content="Occasional Divergences">
 <meta property="og:image:height" content="6000">
 <meta property="og:image:width" content="3600">
 <meta name="twitter:title" content="Occasional Divergences - Comparing choice model parameterizations">
-<meta name="twitter:description" content="Choice models are common in marketing and other applications where researchers are interested in understanding both the drivers and trade-offs of choice.">
+<meta name="twitter:description" content="Since choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our default specification.">
 <meta name="twitter:image" content="https://www.occasionaldivergences.com/posts/choice-models/Figures/mcmc_trace-gamma.png">
 <meta name="twitter:image-height" content="6000">
 <meta name="twitter:image-width" content="3600">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -214,7 +215,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Comparing choice model parameterizations</h1>
-                                <div class="quarto-categories">
+                  <div>
+        <div class="description">
+          <p>Since choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our default specification.</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
                 <div class="quarto-category">r</div>
                 <div class="quarto-category">stan</div>
                 <div class="quarto-category">hierarchical models</div>
@@ -246,7 +252,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">In this post</h2>
+   
+  <ul>
+  <li><a href="#centered-parameterization" id="toc-centered-parameterization" class="nav-link active" data-scroll-target="#centered-parameterization">Centered parameterization</a></li>
+  <li><a href="#non-centered-parameterization" id="toc-non-centered-parameterization" class="nav-link" data-scroll-target="#non-centered-parameterization">Non-centered parameterization</a></li>
+  <li><a href="#final-thoughts" id="toc-final-thoughts" class="nav-link" data-scroll-target="#final-thoughts">Final thoughts</a>
+  <ul class="collapse">
+  <li><a href="#marc-dotson" id="toc-marc-dotson" class="nav-link" data-scroll-target="#marc-dotson">Marc Dotson</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 

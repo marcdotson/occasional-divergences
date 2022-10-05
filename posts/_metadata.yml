@@ -6,3 +6,9 @@ freeze: true
 
 # Enable banner style title blocks
 title-block-banner: true
+
+# Table of contents
+toc: true
+toc-title: In this post
+toc-location: right
+

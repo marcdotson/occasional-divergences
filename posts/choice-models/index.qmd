@@ -2,12 +2,15 @@
 title: "Comparing choice model parameterizations"
 author: "Marc Dotson"
 date: "2020-09-02"
+description: |
+  Since choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our default specification.
 categories:
   - r
   - stan
   - hierarchical models
   - choice models
 image: Figures/mcmc_trace-gamma.png
+slug: choice-models
 ---
 
 Choice models are common in marketing and other applications where researchers are interested in understanding both the drivers and trade-offs of choice. Since choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our default specification.

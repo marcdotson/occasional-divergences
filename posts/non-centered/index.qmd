@@ -2,11 +2,14 @@
 title: "Hierarchical models in Stan with a non-centered parameterization"
 author: "Marc Dotson"
 date: "2020-05-19"
+description: |
+  We build a hierarchical linear model with a multivariate population model. This added complexity will require us to re-express the model using what is known as a non-centered parameterization.
 categories:
   - r
   - stan
   - hierarchical models
-image: Figures/mcmc_trace-gamma.png
+image: Figures/marginals-omega.png
+slug: non-centered
 ---
 
 In a [previous post](https://www.occasionaldivergences.com/post/stan-hierarchical/), we provided a gentle introduction to hierarchical Bayesian models in Stan. We quickly ran into divergences (i.e., divergent transitions) when attempting to estimate our model. While hierarchical models inherently have [posteriors with geometry that can be difficult to navigate](https://arxiv.org/abs/1312.0906), we were able to initially address this problem by more carefully navigating the posterior with a smaller step size.

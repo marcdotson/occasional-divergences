@@ -4,6 +4,7 @@ project:
 website:
   title: "Occasional Divergences"
   site-url: "https://www.occasionaldivergences.com"
+  repo-url: "https://github.com/marcdotson/occasional-divergences"
   description: "Two brothers with a mostly Bayesian focus."
   favicon: favicon.png
   twitter-card: true

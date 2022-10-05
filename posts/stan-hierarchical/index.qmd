@@ -2,13 +2,14 @@
 title: "Hierarchical models in Stan"
 author: "Marc Dotson"
 date: "2019-12-31"
-# description: |
-#   The goal of this post is to provide a gentle introduction to building hierarchical models in Stan. We will be interfacing with Stan through R and will be adopting a tidy approach whenever appropriate.
+description: |
+  A gentle introduction to building hierarchical models in Stan via R and using a tidy approach whenever appropriate. This is not an introduction to Bayesian inference or Stan.
 categories:
   - r
   - stan
   - hierarchical models
-image: Figures/hierarchical_mcmc_trace-01.png
+image: Figures/flat_marginals.png
+slug: stan-hierarchical
 ---
 
 Bayesian inference provides an intuitive and self-consistent approach to statistical modeling. In short, you have beliefs about unobserved values (e.g., the impact of price on customer satisfaction) and you use data to update those beliefs. The barrier to using Bayesian inference in practice has never been this intuition -- it's been the required computation. There has been a great deal of progress on this front, with [Stan](https://mc-stan.org) arguably providing the best modern solution.
