@@ -5,9 +5,10 @@ date: "2019-12-31"
 description: |
   A gentle introduction to building hierarchical models in Stan via R and using a tidy approach whenever appropriate. This is not an introduction to Bayesian inference or Stan.
 categories:
-  - r
-  - stan
   - hierarchical models
+  - bayesian inference
+  - stan
+  - r
 image: Figures/flat_marginals.png
 slug: stan-hierarchical
 ---

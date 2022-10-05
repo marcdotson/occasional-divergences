@@ -5,19 +5,20 @@ date: "2020-09-02"
 description: |
   Since choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our default specification.
 categories:
-  - r
-  - stan
-  - hierarchical models
   - choice models
+  - hierarchical models
+  - bayesian inference
+  - stan
+  - r
 image: Figures/mcmc_trace-gamma.png
 slug: choice-models
 ---
 
 Choice models are common in marketing and other applications where researchers are interested in understanding both the drivers and trade-offs of choice. Since choice is typically manifest as a non-binary discrete outcome and we care about modeling consumer heterogeneity, a hierarchical Bayesian multinomial logit model is our default specification.
 
-In marketing, choice models are often employed in conjunction with conjoint experiments, a survey-based approach to eliciting preferences where respondents choose from sets of hypothetical product alternatives. Because the conjoint experiment produces repeat observations at the respondent level, [the groups in the hierarchical model](https://www.occasionaldivergences.com/post/stan-hierarchical/) are the respondents themselves.
+In marketing, choice models are often employed in conjunction with conjoint experiments, a survey-based approach to eliciting preferences where respondents choose from sets of hypothetical product alternatives. Because the conjoint experiment produces repeat observations at the respondent level, [the groups in the hierarchical model](https://www.occasionaldivergences.com/posts/stan-hierarchical/) are the respondents themselves.
 
-In this post we will specify a choice model and seek to answer the following question: Does it matter if we use a centered or non-centered parameterization for a hierarchical multinomial logit model? We have previously explored using a [non-centered parameterization](https://www.occasionaldivergences.com/post/non-centered/) for hierarchical regression and even argued that a non-centered parameterization should be our default approach in most applications. However, choice models used in practice employ a centered parameterization almost exclusively.
+In this post we will specify a choice model and seek to answer the following question: Does it matter if we use a centered or non-centered parameterization for a hierarchical multinomial logit model? We have previously explored using a [non-centered parameterization](https://www.occasionaldivergences.com/posts/non-centered/) for hierarchical regression and even argued that a non-centered parameterization should be our default approach in most applications. However, choice models used in practice employ a centered parameterization almost exclusively.
 
 We will specify and compare performance of a centered parameterization and a non-centered parameterization of a hierarchical multinomial logit model estimated using Hamilton Monte Carlo (HMC) via [Stan](https://mc-stan.org). Stan automates the required computation for many models and HMC is particularly verbose regarding model diagnostics. I am indebted to early tutorials on this topic by [Elea Feit and Kevin Van Horn](https://github.com/ksvanhorn/ART-Forum-2017-Stan-Tutorial) and Jim Savage.
 
@@ -76,7 +77,7 @@ The `data` block also includes the hyperprior values. These define our hyperprio
 
 The `parameters` block includes the population-level hyperparameters `Gamma` or the coefficients associated with the population-level covariates `Z`, the population-level hyperparameters `Omega` and `tau` which are the accompanying correlation matrix and scale of the population-level model, and the observation-level parameters `Beta`. Again, because a conjoint experiment produces repeat observations at the respondent level, we get a set of these `Beta` parameters for each respondent. These parameters are often referred to as part-worth utilities or preference parameters in the conjoint literature as they describe the preferences each respondent has for each of the attributes that define the choice alternatives. Thus the hyperparameters are estimates of population preference heterogeneity.
 
-The `model` block includes the specification of hyperpriors, using the hyperprior values specified in the `data` block, and the hierarchy of models: the population model on the `Beta` parameters and the observation model or likelihood on the observed choices `Y`. We use the helper function `to_vector()` to easily use a `normal()` hyperprior on the `Gamma` matrix. By [decomposing the covariance matrix of the multivariate normal population model](https://www.occasionaldivergences.com/post/non-centered/) into a correlation matrix and a scale vector means we can use an LKJ hyperprior on the correlation matrix `Omega` and a normal hyperprior on the scale vector `tau`. We then reform the covariance matrix using `quad_form_diag()` as part of the multivariate population model. Note that `categorical_logit()` is the multinomial logit likelihood and that it must be used within nested for loops since it isn't vectorized. Also note that since `Beta` is a matrix where each row is a vector of respondent-specific parameters, the vector output of `multi_normal()` is transposed as part of the likelihood.
+The `model` block includes the specification of hyperpriors, using the hyperprior values specified in the `data` block, and the hierarchy of models: the population model on the `Beta` parameters and the observation model or likelihood on the observed choices `Y`. We use the helper function `to_vector()` to easily use a `normal()` hyperprior on the `Gamma` matrix. By [decomposing the covariance matrix of the multivariate normal population model](https://www.occasionaldivergences.com/posts/non-centered/) into a correlation matrix and a scale vector means we can use an LKJ hyperprior on the correlation matrix `Omega` and a normal hyperprior on the scale vector `tau`. We then reform the covariance matrix using `quad_form_diag()` as part of the multivariate population model. Note that `categorical_logit()` is the multinomial logit likelihood and that it must be used within nested for loops since it isn't vectorized. Also note that since `Beta` is a matrix where each row is a vector of respondent-specific parameters, the vector output of `multi_normal()` is transposed as part of the likelihood.
 
 Since Bayesian models are generative, we can translate this Stan script into `data` and `generated quantities` blocks and use Stan to generate data for us.
 
@@ -292,13 +293,13 @@ Running the chains for more iterations may help. See
 http://mc-stan.org/misc/warnings.html#tail-ess 
 ```
 
-Estimating the model gives us more than 300 divergent transitions. Recall that a divergent transition or divergence is a unique HMC diagnostic that identifies problems navigating the posterior distribution. These [difficulties with posterior geometry](https://arxiv.org/abs/1312.0906) are true regardless of the sampler, but HMC makes the issue more transparent. We continue to see divergences even if we set `adapt_delta = 0.99` as we've done with [hierarchical models previously](https://www.occasionaldivergences.com/post/stan-hierarchical/). There are also warnings suggesting we run the chains for longer. Even up to `iter = 10000`, five times the default 2000 draws, we see the same problems.
+Estimating the model gives us more than 300 divergent transitions. Recall that a divergent transition or divergence is a unique HMC diagnostic that identifies problems navigating the posterior distribution. These [difficulties with posterior geometry](https://arxiv.org/abs/1312.0906) are true regardless of the sampler, but HMC makes the issue more transparent. We continue to see divergences even if we set `adapt_delta = 0.99` as we've done with [hierarchical models previously](https://www.occasionaldivergences.com/posts/stan-hierarchical/). There are also warnings suggesting we run the chains for longer. Even up to `iter = 10000`, five times the default 2000 draws, we see the same problems.
 
 Regardless, the fact that we run into divergences when using simulated data with typical conjoint experiment dimensions says that in order to produce a posterior geometry that can be navigated, we need to reparameterize our model.
 
 ## Non-centered parameterization
 
-A non-centered parameterization re-expresses the population model and likelihood for a hierarchical model by including an intermediate, deterministic transformation on a set of the hyperparameters. The benefit is that difficult dependencies between the layers in the hierarchy are broken, producing a simpler posterior geometry. See a previous post for a walkthrough of the re-parameterization using a [simplified population model as part of a hierarchical linear model](https://www.occasionaldivergences.com/post/non-centered/).
+A non-centered parameterization re-expresses the population model and likelihood for a hierarchical model by including an intermediate, deterministic transformation on a set of the hyperparameters. The benefit is that difficult dependencies between the layers in the hierarchy are broken, producing a simpler posterior geometry. See a previous post for a walkthrough of the re-parameterization using a [simplified population model as part of a hierarchical linear model](https://www.occasionaldivergences.com/posts/non-centered/).
 
 Let's see a non-centered parameterization of the hierarchical multinomial logit.
 

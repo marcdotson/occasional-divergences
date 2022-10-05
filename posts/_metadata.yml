@@ -12,3 +12,6 @@ toc: true
 toc-title: In this post
 toc-location: right
 
+# Date format
+date-format: "DD MMM YYYY"
+
