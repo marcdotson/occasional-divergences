@@ -45,4 +45,7 @@ format:
       light: [flatly, styles-light.scss]
       dark: [darkly, styles-dark.scss]
     highlight-style: breeze
+    
+execute:
+  freeze: auto
 

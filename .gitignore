@@ -3,7 +3,6 @@
 .Rhistory
 .RData
 .Ruserdata
-public/
 .DS_Store
 
 # RDS Data.
@@ -11,3 +10,5 @@ public/
 
 # Quarto.
 /.quarto/
+/_site/
+
