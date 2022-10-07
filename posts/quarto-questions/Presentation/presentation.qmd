@@ -1,0 +1,82 @@
+---
+title: "Quarto Questions"
+format: revealjs
+---
+
+# Questions
+
+- What is Quarto?
+- Why should I use Quarto?
+- What functionality can I add to slides by moving to Quarto/revealjs? Can I just leapfrog xaringan to revealjs?
+- Can Quarto replicate my blog in a way that's simpler to manage?
+- Can Quarto replicate what's included in my RA training instructions and paper template? Does it make it easier or is too early in development?
+- When will we have a flexdashboard equivalent for Quarto?
+- Do we still have to render a Quarto document in the same folder as the associated project file?
+
+# What is Quarto?
+
+## Welcome to Quarto
+
+From .rmd to .qmd adheres more to the philosophy of Pandoc: Quarto is compute-agnostic, making it a single publishing system that isn't specific to RStudio or R. Like CmdStan, this means it can be run from the Terminal and use far more Pandoc options.
+
+![](Figures/rmarkdown.jpg)
+
+![](Figures/quarto.jpg)
+
+Quarto introduces a kind of grammar of documents (based on HTML/CSS): **Block elements** with **inline elements** (or other blocks) and **metadata**. A block element needs to share a line by itself. Also, to further illustrate Quarto's adherence to Pandoc, Quarto uses an extended version of Pandoc Markdown rather than R Markdown's more limited Markdown. This includes:
+
+- Superscript^2^, subscript~2~, ~~strike through~~, and [small caps]{.smallcaps}.
+- [Links](https://pandoc.org/MANUAL.html) and images.
+- Footnotes.
+- Use `(@)` for numbered lists that can continue after a paragraph break.
+
+Consistent with the positioning of Posit.
+
+## Document Structure
+
+To provide some consistency, there are generic block and inline elements and metadata. Think of blocks with their own inline and then metadata governing overall.
+
+### The Fenced Div
+
+This is for generic block elements. It's essentially a code chunk but for a block element. The term "div" for "division" refers to HTML/CSS for block elements.
+
+![](../Figures/fenced-div.jpg)
+
+Not all output formats support generic blocks. Classes include callout blocks, column and margins, etc. Attributes include ncol, nrow, valign, width, fig-align, etc.
+
+Instead of R Markdown code chunk options, Quarto code cells use the hashpipe `#|` where the options follow YAML notation so that it's language-agnostic.
+
+### The Bracketed Span
+
+This is for generic inline elements. The term "span" refers to HTML/CSS for in-line elements.
+
+![](../Figures/bracketed-span.jpg)
+
+### YAML
+
+YAML follows a `key: value` syntax.
+
+Because we use YAML notation for code cell options, we can move them into the YAML under the `execute` key to apply to all cells in the document. This is a replacement to the set-up code chunk in R Markdown. We can also set options under the `knitr` key, including `R.options`.
+
+## Presentations
+
+Different level headers create different kinds of slides (e.g., title slides with a first level header). Plus lots of functionality comes from revealjs (which you can create using R Markdown as well).
+
+- It includes **code animations** and **code highlighting**.
+- Everything can fly into a slide incrementally.
+- Auto animate?! This is how to animate code, by animating what changes between slides.
+- Chalkboard?!!
+
+## Documents
+
+For a parameterized document, the `params` key is saved as a list with named elements that can be referenced within the document.
+
+## Websites
+
+Quarto Projects/Blogs/Websites, etc. Like an RStudio Project, with specific types, to automate/initialize the type-specific YAML.
+
+- Includes search automatically.
+- Incremental functionality represented in the Quarto YAML.
+- Can set `execute: freeze: true` to not re-run old blog posts.
+- `quarto publish` works with Netlify!
+
