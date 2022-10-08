@@ -11,3 +11,9 @@
 # Quarto.
 /.quarto/
 /_site/
+
+# Posts-specific.
+Code/*.rds
+Data/
+Output/
+Presentation/
