@@ -22,21 +22,21 @@ But, if all of that feels like a *lot*, hopefully this can help ease you into th
 
 ## What is Quarto?
 
-CLI. Next generation of R Markdown. Available for use in VS Code, Jupyter, and RStudio.
+> Quarto is an open-source scientific and technical publishing system built on Pandoc.
 
-Pandoc and Lua filters. Instead of developing R packages to expand the functionality for R alone, development will happen in terms of new Lua filters so functionality is available across languages.
+Instead of writing a report or presentation in Word, PowerPoint, etc.; then running code in an R script; then saving output and visualizations; and then pasting them in the report or the presentation -- we can do it all in Quarto, a free system especially tailored to scientific and technical publishing. Pandoc is what makes it possible to take a single Quarto document and produce a report, presentation, website, etc.
 
-An open-source scientific and technical publishing system built on Pandoc.
+For those in the know, Quarto is the next generation of R Markdown. However, instead of being tied to R, Quarto is multilingual, used with R, Python, Julia, and Observable from RStudio, VS Code, and Jupyter. To make it available across all of these languages, it accesses Pandoc via the command-line interface. It also makes use of Lua filters, which are extensions to Pandoc. That means instead of developing R packages to expand the functionality for R alone, development will happen in terms of Lua filters so functionality is available across languages.
 
-Quarto is a single publishing system that is multi-lingual, meaning it isn't tied specifically to R. If you are familiar with R Markdown, you are probably familiar with this pipeline: When you knit an .rmd file, knitr converts your text and R code into a Markdown file and then uses pandoc to produce whatever output you've specified.
+If you are familiar with R Markdown, you are probably familiar with this pipeline: When you knit an `.rmd` file, knitr converts your text and R code into a Markdown file and then uses Pandoc to produce whatever output you've specified.
 
 ![](Figures/rmarkdown.jpg)
 
-A .qmd file on the other hand can be composed of text and R, Python, and/or Julia code. Either knitr or jupyter will then convert your text and code into a Markdown file followed by pandoc producing whatever output you've specified. 
+A `.qmd` file on the other hand can be composed of text and R, Python, and/or Julia code. Either knitr or jupyter will then convert your text and code into a Markdown file followed by Pandoc producing whatever output you've specified. 
 
 ![](Figures/quarto.jpg)
 
-Quarto accomplishes this by being fully separate from the R ecosystem. You can even run it from the Terminal, if you want to. While it distances itself from being language-specific in order to set up a bigger tent and provide the benefits of R Markdown to Python and Julia users alike, a move incredibly consistent with the positioning of RStudio-turned-Posit, it does align more directly with pandoc and makes more options available in the backend.
+Quarto accomplishes this by being fully separate from the R ecosystem. You can even run it from the Shell/Terminal, if you want to. While it distances itself from being language-specific in order to set up a bigger tent and provide the benefits of R Markdown to Python and Julia users alike, a move consistent with the positioning of RStudio-turned-Posit, it does align more directly with Pandoc and makes more options available in the back-end.
 
 ## Should I switch from R Markdown to Quarto?
 
@@ -44,7 +44,7 @@ If you are an R Markdown power user, there might not be reason to move to Quarto
 
 Quarto is not only compute-agnostic for those who are multilingual or work in a multilingual environment, it also natively incorporates much of the functionality and ease-of-use that has been developed in the R Markdown ecosystem. What that means for less-than-power-users is that Quarto has incorporated and streamlined much of what R Markdown has to offer right out-of-the-box, without the need to download a ton of additional specialty packages. In fact, Quarto is now included as part of the RStudio installation.
 
-For example, if you've used R Markdown to create presentations, you've probably used or at least heard of xaringan. It's the most powerful R Markdown tool for creating presentations, and it is incredibly finicky. If you know how to use it, great. If you don't know how to use it, just leapfrog to Quarto and start creating reveal.js presentations immediately.
+For example, if you've used R Markdown to create presentations, you've probably used or at least heard of xaringan. It's the most powerful R Markdown tool for creating presentations, and it can be incredibly finicky. If you know how to use it, great. If you don't know how to use it, just leapfrog to Quarto and start creating revealjs presentations immediately.
 
 This all comes with one big caveat: There is no replacement for flexdashboards in Quarto just yet. It's something that is high on the priority list, but if a big part of your workflow requires the use of flexdashboards, it's not yet the time to make the switch from R Markdown.
 
