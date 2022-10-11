@@ -7,7 +7,7 @@ description: |
 categories:
   - quarto
   - r
-image: Figures/bracketed-span.jpg
+image: Figures/example-quarto.png
 slug: quarto-questions
 ---
 
@@ -21,6 +21,10 @@ But, if all of that feels like a *lot*, hopefully this can help ease you into th
 - What are the benefits of using Quarto for _____?
 
 ## What is Quarto?
+
+![](Figures/example-quarto.png)
+
+A quarto is a book size that results from folding each printed sheet into four leaves. (The picture above is actually half an octavo, but the illustration still serves.) It's a real word. It means something. But we're giving it a new definition:
 
 > Quarto is an open-source scientific and technical publishing system built on Pandoc.
 
@@ -111,6 +115,11 @@ Quarto Projects (including websites), with freeze options.
 ### Code Cells
 
 Instead of R Markdown code chunk options, Quarto code cells use the hashpipe `#|` where the options follow YAML notation so that it's language-agnostic.
+
+```{{r}}
+#| echo: fenced
+example_code
+```
 
 YAML auto-completion with Quarto install.
 
