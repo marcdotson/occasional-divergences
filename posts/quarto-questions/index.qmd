@@ -143,29 +143,22 @@ It's worth repeating, but as the next generation of R Markdown, Quarto incorpora
 
 ### Websites
 
+Everything for HTML documents applies to websites, plus the following.
+
 - Start a website (like this [blog](https://occasionaldivergences.com)) with a Quarto project.
 - Functionality included in a global YAML.
 - Create a new post by creating a new folder and `.qmd`.
 - Includes search automatically.
 
-## Final thoughts
-
-Making a multilingual publishing system requires relying more heavily on a set of additional languages that go-between: Markdown, YAML, Pandoc.
-
-- What functionality can I add to slides by moving to Quarto/revealjs? Can I just leapfrog xaringan to revealjs?
-- Can Quarto replicate my blog in a way that's simpler to manage?
-- Can Quarto replicate what's included in my RA training instructions and paper template? Does it make it easier or is too early in development?
-
-- When will we have a flexdashboard equivalent for Quarto? Quarto plus Shiny UI? Dashboard builder? Instead of flexdashboard?
-- Do we still have to render a Quarto document in the same folder as the associated project file? Or is this just a function of the fact that "Quarto documents reference from their existing folder/directory"? Can we use `here::here()` instead?
-- Render on save?
-- Does Quarto handle tex styles? Does it create the .bib file automatically?
-
-Besides the [rstudio::conf(2022)](https://www.rstudio.com/blog/talks-and-workshops-from-rstudio-conf-2022/) workshops and keynote in addition to the [Quarto](https://quarto.org) documentation itself, here are a number of additional sources that I've found useful.
+Here are a number of additional sources that I've found useful in updating my blog.
 
 - [Blog in 100 seconds](https://www.youtube.com/watch?v=t8qtcDyCRFA)
 - [Building a Blog with Quarto](https://ivelasq.quarto.pub/building-a-blog-with-quarto/)
 - [Danielle Navarro's Blog](https://blog.djnavarro.net)
+
+## Final thoughts
+
+Making a multilingual publishing system requires leaning more heavily on a set of additional languages that link them: Markdown, YAML, and especially Pandoc. From what I've seen, it's a solid foundation for a powerful tool that I hope brings more people into the big tent of functionality that R Markdown has come to provide for R users specifically. It's not without limitations. The absence of a flexdashboard equivalent might be the biggest problem, but it's also one that the Quarto team has repeatedly said they're working on.
 
 -----
 
