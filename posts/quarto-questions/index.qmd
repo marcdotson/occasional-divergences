@@ -36,11 +36,11 @@ If you are familiar with R Markdown, you are probably familiar with this pipelin
 
 ![](Figures/rmarkdown.jpg)
 
-A `.qmd` file on the other hand can be composed of text and R, Python, and/or Julia code. Either knitr or jupyter will then convert your text and code into a Markdown file followed by Pandoc producing whatever output you've specified. 
+A `.qmd` file on the other hand can be composed of text and R, Python, and/or Julia code. Either knitr or jupyter will then render your text and code into a Markdown file followed by Pandoc producing whatever output you've specified. 
 
 ![](Figures/quarto.jpg)
 
-Quarto accomplishes this by being fully separate from the R ecosystem. You can even run it from the Shell/Terminal, if you want to. While it distances itself from being language-specific in order to set up a bigger tent and provide the benefits of R Markdown to Python and Julia users alike, a move consistent with the positioning of RStudio-turned-Posit, it does align more directly with Pandoc and makes more options available in the back-end.
+Quarto accomplishes this by being fully separate from the R ecosystem. You can even run it from the shell/terminal, if you want to. While it distances itself from being language-specific in order to set up a bigger tent and provide the benefits of R Markdown to Python and Julia users alike, a move consistent with the positioning of RStudio-turned-Posit, it does align more directly with Pandoc and makes more options available in the back-end.
 
 ## Should I switch from R Markdown to Quarto?
 
@@ -121,66 +121,51 @@ execute:
 
 ## What are the benefits of using Quarto for _____?
 
-As a 
+It's worth repeating, but as the next generation of R Markdown, Quarto incorporates a lot of the benefits of the R Markdown ecosystem into its base installation. There is far too much to repeat here, and I'm not trying to recreate the [Quarto](https://quarto.org) documentation, but I'd like to highlight a few things that I've found especially useful or interesting so far.
 
-Quarto Projects (including websites), with freeze options.
+### Documents
+
+- Parameterized documents with data and variables included in the header under the `params` key and saved as a list with named elements that can be referenced within the document.
+- Cache computationally intensive code with `#| cache: true` so it is re-rendered when the document is rendered again.
+- Freeze computationally intensive code with `#| freeze: auto` so that it only re-renders when the source file changes.
+- Use `#| code-fold: true` in HTML documents to hide the code but have it accessible to be folded out if needed.
+- Use `#| code-link: true` in HTML documents to link the functions back to their online documentation (only in knitr currently).
+
+### Presentations
+
+- revealjs as a replacement for xaringan.
+- The RStudio Visual Editor works with revealjs.
+- Code animations and code highlighting.
+- Auto animation?!
+- Chalkboard.
+- PDF export.
+- Multiplex.
+
+### Websites
+
+- Start a website (like this [blog](https://occasionaldivergences.com)) with a Quarto project.
+- Functionality included in a global YAML.
+- Create a new post by creating a new folder and `.qmd`.
+- Includes search automatically.
+
+## Final thoughts
+
+Making a multilingual publishing system requires relying more heavily on a set of additional languages that go-between: Markdown, YAML, Pandoc.
 
 - What functionality can I add to slides by moving to Quarto/revealjs? Can I just leapfrog xaringan to revealjs?
 - Can Quarto replicate my blog in a way that's simpler to manage?
 - Can Quarto replicate what's included in my RA training instructions and paper template? Does it make it easier or is too early in development?
 
-
-
-### Presentations
-
-RStudio Visual Editor works with revealjs (not the case with R Markdown presentation styles).
-
-revealjs is the replacement for xaringan but with pandoc-native syntax.
-
-Different level headers create different kinds of slides (e.g., title slides with a first level header). Plus lots of functionality comes from revealjs (which you can create using R Markdown as well).
-
-- It includes **code animations** and **code highlighting**.
-- Everything can fly into a slide incrementally.
-- Auto animate?! This is how to animate code, by animating what changes between slides.
-- Chalkboard?!!
-- .fragment class.
-
-PDF export, chalkboard, multiplex, code-line-numbers, and auto-animate revealjs options
-
-### Documents
-
-For a parameterized document, the `params` key is saved as a list with named elements that can be referenced within the document.
-
-- code-fold and code-link.
-- cache.
-- Does Quarto handle tex styles? Does it create the .bib file automatically?
-
-### Websites
-
-Quarto Projects/Blogs/Websites, etc. Like an RStudio Project, with specific types, to automate/initialize the type-specific YAML. Built-in instead of having to deal with blogdown as an add-on, for example.
-
-- Includes search automatically.
-- Incremental functionality represented in the Quarto YAML.
-- Can set `execute: freeze: true` to not re-run old blog posts, or `auto` to re-render only when the source changes. `cache` is another option.
-- `quarto publish` works with Netlify!?
-
-## Issues
-
 - When will we have a flexdashboard equivalent for Quarto? Quarto plus Shiny UI? Dashboard builder? Instead of flexdashboard?
 - Do we still have to render a Quarto document in the same folder as the associated project file? Or is this just a function of the fact that "Quarto documents reference from their existing folder/directory"? Can we use `here::here()` instead?
 - Render on save?
-
-## Additional Sources
+- Does Quarto handle tex styles? Does it create the .bib file automatically?
 
 Besides the [rstudio::conf(2022)](https://www.rstudio.com/blog/talks-and-workshops-from-rstudio-conf-2022/) workshops and keynote in addition to the [Quarto](https://quarto.org) documentation itself, here are a number of additional sources that I've found useful.
 
 - [Blog in 100 seconds](https://www.youtube.com/watch?v=t8qtcDyCRFA)
 - [Building a Blog with Quarto](https://ivelasq.quarto.pub/building-a-blog-with-quarto/)
 - [Danielle Navarro's Blog](https://blog.djnavarro.net)
-
-## Final thoughts
-
-Making a multilingual publishing system requires relying more heavily on a set of additional languages that go-between: Markdown, YAML, Pandoc.
 
 -----
 
