@@ -11,7 +11,7 @@ image: Figures/example-quarto.png
 slug: quarto-questions
 ---
 
-It seems like everyone is talking about Quarto. Maybe you've read some blogs or watched a presentation or two, but you still have questions. In an attempt to provide some answers, I've put together and streamlined my notes in a way I hope is useful. This post is largely summarized from material presented in the [Getting Started with Quarto](https://rstudio-conf-2022.github.io/get-started-quarto/) and [From R Markdown to Quarto](https://rstudio-conf-2022.github.io/rmd-to-quarto/) workshops, along with the [Hello Quarto](https://www.rstudio.com/conference/2022/keynotes/collaborate-with-quarto/) keynote, and other talks at [rstudio::conf(2022)](https://www.rstudio.com/blog/talks-and-workshops-from-rstudio-conf-2022/). Other helpful sources are included at the bottom of the post. Most importantly, the [Quarto](https://quarto.org) website has *incredible* documentation.
+It seems like everyone is talking about Quarto. Maybe you've read some blogs or watched a presentation or two, but you still have questions. In an attempt to provide some answers, I've put together and streamlined my notes in a way I hope is useful. This post is largely summarized from material presented in the [Getting Started with Quarto](https://rstudio-conf-2022.github.io/get-started-quarto/) and [From R Markdown to Quarto](https://rstudio-conf-2022.github.io/rmd-to-quarto/) workshops (where the super helpful hand-drawn illustrations come from), along with the [Hello Quarto](https://www.rstudio.com/conference/2022/keynotes/collaborate-with-quarto/) keynote, and other talks at [rstudio::conf(2022)](https://www.rstudio.com/blog/talks-and-workshops-from-rstudio-conf-2022/). Other helpful sources are included at the bottom of the post. Most importantly, the [Quarto](https://quarto.org) website has *incredible* documentation.
 
 But, if all of that feels like a *lot*, hopefully this can help ease you into things. This post is organized by the following questions and my best attempts to provide answers.
 
@@ -44,7 +44,7 @@ Quarto accomplishes this by being fully separate from the R ecosystem. You can e
 
 ## Should I switch from R Markdown to Quarto?
 
-If you are an R Markdown power user, there might not be reason to move to Quarto. R Markdown will continue to be supported along with Quarto (in fact, the teams are the same at Posit). However, if you aren't a power user, moving to Quarto is likely the right call.
+If you have a release of RStudio from at least the summer of 2022, you already have Quarto installed. But should you switch from using R Markdown? If you are an R Markdown power user, there might not be reason to move to Quarto. R Markdown will continue to be supported along with Quarto (in fact, the teams are the same at Posit). However, if you aren't a power user, moving to Quarto is likely the right call.
 
 Quarto is not only compute-agnostic for those who are multilingual or work in a multilingual environment, it also natively incorporates much of the functionality and ease-of-use that has been developed in the R Markdown ecosystem. What that means for less-than-power-users is that Quarto has incorporated and streamlined much of what R Markdown has to offer right out-of-the-box, without the need to download a ton of additional specialty packages. In fact, Quarto is now included as part of the RStudio installation.
 
@@ -54,57 +54,74 @@ This all comes with one big caveat: There is no replacement for flexdashboards i
 
 ## How do I get started using Quarto?
 
-Content, structure, appearance, format?
+It's helpful to consider the basic structure or *grammar*, if you will, of a document. For any given Quarto document, you'll have:
 
-- Content: Text, code, images.
-- Structure: Paragraphs, lists, emphasis, etc. (Block elements with inline elements and metadata.)
-- Appearance: Fonts, colors, layout.
-- Format: Functionality.
+- Content (text, figures, tables, diagrams, etc.)
+- Code and output
+- Metadata (format, appearance, etc.)
 
-Much of this is Quarto, but some of it comes straight out of pandoc. Use Quarto/Pandoc native attributes or HTML/CSS concepts.
+The [Quarto Guide](https://quarto.org/docs/guide/) under Authoring has everything you need to get started, beginning with some [Markdown Basics](https://quarto.org/docs/authoring/markdown-basics.html#overview). Markdown is an incredibly simple and human-readable formatting syntax, and Quarto takes advantage of Pandoc Markdown so it has even more features than R Markdown. RStudio also includes a Visual Editor as well so you can create your document using Word-like functionality and have it write your Markdown for you, though it can be a bit buggy switching between the Visual and Source Editors.
 
-CSS style-files using similar syntax, with key-value pairs?
+### Divs and Spans
 
-Metadata (YAML), code, text.
+One of the more powerful, but possibly confusing, additions is the introduction of Divs and Spans.
 
-Yet Another **Markup** Language.
+> Divs and Spans are generic HTML/CSS elements that are used to format a document. Divs are used for block-level formatting while Spans are used for in-line formatting.
 
-Quarto introduces a kind of grammar of documents (based on HTML/CSS): **Block elements** with **inline elements** (or other blocks) and **metadata**. A block element needs to share a line by itself. Also, to further illustrate Quarto's adherence to Pandoc, Quarto uses an extended version of Pandoc Markdown rather than R Markdown's more limited Markdown. This includes:
-
-- Superscript^2^, subscript~2~, ~~strike through~~, and [small caps]{.smallcaps}.
-- [Links](https://pandoc.org/MANUAL.html) and images.
-- Footnotes.
-- Use `(@)` for numbered lists that can continue after a paragraph break.
-
-Note that the visual editor (and its bugginess).
-
-### Document Structure
-
-To provide some consistency, there are generic block and inline elements and metadata. Think of blocks with their own inline and then metadata governing overall.
-
-### The Bracketed Span
-
-This is for generic inline elements. The term "span" refers to HTML/CSS for in-line elements.
-
-![](Figures/bracketed-span.jpg)
-
-- What content is in brackets that doesn't have parentheses after?
-
-### The Fenced Div
-
-This is for generic block elements. It's essentially a code chunk but for a block element. The term "div" for "division" refers to HTML/CSS for block elements.
+Let's start with a Div (or *Fenced* Div) for formatting block elements.
 
 ![](Figures/fenced-div.jpg)
 
-Not all output formats support generic blocks. Classes include callout blocks, column and margins, etc. Attributes include ncol, nrow, valign, width, fig-align, etc.
+This is incredibly useful if you want to format an entire block of content, such as a paragraph. For example, using the `.callout-warning` class, I can quickly make this:
+
+:::{.callout-warning}
+Pay attention to this information!
+:::
+
+Spans (or *Bracketed* Spans) work similarly, but are used to format in-line elements.
+
+![](Figures/bracketed-span.jpg)
+
+Not all output formats support all classes of Divs and Spans, but including Divs and Spans provides a *consistent* way to format blocks and in-line content and represents one of the many benefits of Quarto aligning closely with Pandoc.
 
 ### YAML
 
-YAML follows a `key: value` syntax.
+At the top of each document is a header where most of the metadata lives. Think of it as global formatting or settings for the entire document. This is written in *another* language called Yet Another **Markup** Language (i.e., YAML). It looks like this:
 
-YAML auto-completion with Quarto install.
+```
+---
+title: "Untitled"
+format: revealjs
+---
+```
+
+Like Markdown, it is incredibly simple and designed to be human-readable. It follows a `key: value` syntax. The header can include lots of different items, but perhaps the most is the `format` that, when you render a document, will tell Pandoc what type of document to create. Note that this is a change for R Markdwon where `format` was `output`. There are a number of changes like that, all part of making Quarto align more with Pandoc and better serve as a multilingual publishing tool. As a bonus, there is now YAML auto-completion with Quarto installed.
+
+### Code Cells
+
+Besides content like text, figures, etc., the real magic of using Quarto is including code and its output as part of the same document. Code cells are included using syntax that looks very similar to a Div.
+
+```{{r}}
+#| echo: fenced
+transcripts <- read_rds(here::here("Data", "transcripts.rds")) |> 
+  tibble() |> 
+  separate(doc_id, into = c("gvkey", "call_date", "title"), sep = "_")
+```
+
+The code cell is fenced with the language in braces, but instead of attributes in the braces, or the old R Markdown code chunk options, Quarto code cells use the new hashpipe operator `#|` where the options follow YAML notation. This allows for two things. First, the same YAML options can be used for languages other than R. Second, if there are code cell options that you want to apply to the entire document, you can just move them into the header:
+
+```
+---
+title: "Untitled"
+format: revealjs
+execute:
+  echo: false
+---
+```
 
 ## What are the benefits of using Quarto for _____?
+
+As a 
 
 Quarto Projects (including websites), with freeze options.
 
@@ -112,24 +129,7 @@ Quarto Projects (including websites), with freeze options.
 - Can Quarto replicate my blog in a way that's simpler to manage?
 - Can Quarto replicate what's included in my RA training instructions and paper template? Does it make it easier or is too early in development?
 
-### Code Cells
 
-Instead of R Markdown code chunk options, Quarto code cells use the hashpipe `#|` where the options follow YAML notation so that it's language-agnostic.
-
-```{{r}}
-#| echo: fenced
-example_code
-```
-
-YAML auto-completion with Quarto install.
-
-No caps -- just "false" for example.
-
-echo: fenced to execute and see code, including back ticks.
-
-Because we use YAML notation for code cell options, we can move them into the YAML under the `execute` key to apply to all cells in the document. This is a replacement to the set-up code chunk in R Markdown. We can also set options under the `knitr` key, including `R.options`.
-
-Reuse named code cells.
 
 ### Presentations
 
@@ -180,7 +180,7 @@ Besides the [rstudio::conf(2022)](https://www.rstudio.com/blog/talks-and-worksho
 
 ## Final thoughts
 
-
+Making a multilingual publishing system requires relying more heavily on a set of additional languages that go-between: Markdown, YAML, Pandoc.
 
 -----
 
