@@ -97,9 +97,9 @@ format: revealjs
 
 Like Markdown, it is incredibly simple and designed to be human-readable. It follows a `key: value` syntax. The header can include lots of different items, but perhaps the most is the `format` that, when you render a document, will tell Pandoc what type of document to create. Note that this is a change for R Markdwon where `format` was `output`. There are a number of changes like that, all part of making Quarto align more with Pandoc and better serve as a multilingual publishing tool. As a bonus, there is now YAML auto-completion with Quarto installed.
 
-### Code Cells
+### Code Blocks
 
-Besides content like text, figures, etc., the real magic of using Quarto is including code and its output as part of the same document. Code cells are included using syntax that looks very similar to a Div.
+Besides content like text, figures, etc., the real magic of using Quarto is including code and its output as part of the same document. Code blocks are included using syntax that looks very similar to a Div.
 
 ```{{r}}
 #| echo: fenced
@@ -108,7 +108,7 @@ transcripts <- read_rds(here::here("Data", "transcripts.rds")) |>
   separate(doc_id, into = c("gvkey", "call_date", "title"), sep = "_")
 ```
 
-The code cell is fenced with the language in braces, but instead of attributes in the braces, or the old R Markdown code chunk options, Quarto code cells use the new hashpipe operator `#|` where the options follow YAML notation. This allows for two things. First, the same YAML options can be used for languages other than R. Second, if there are code cell options that you want to apply to the entire document, you can just move them into the header:
+The code block is fenced with the language in braces, but instead of attributes in the braces, or the old R Markdown code chunk options, Quarto code blocks use the new hashpipe operator `#|` where the options follow YAML notation. This allows for two things. First, the same YAML options can be used for languages other than R. Second, if there are code cell options that you want to apply to the entire document, you can just move them into the header:
 
 ```
 ---
@@ -118,6 +118,8 @@ execute:
   echo: false
 ---
 ```
+
+One finicky thing to note: YAML keys and values all use lowercase values. If you're switching from R Markdown, don't get your `TRUE` and `true` mixed up.
 
 ## What are the benefits of using Quarto for _____?
 
