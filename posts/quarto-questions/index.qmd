@@ -1,0 +1,199 @@
+---
+title: "Quarto questions"
+author: "Marc Dotson"
+date: "2022-10-14"
+description: |
+  Everyone is talking about Quarto. Maybe you've read some blogs or watched a presentation or two, but you still have questions. I've attempted to (briefly) provide some answers.
+categories:
+  - quarto
+  - r
+image: Figures/example-quarto.png
+slug: quarto-questions
+---
+
+It seems like everyone is talking about Quarto. Maybe you've read some blogs or watched a presentation or two, but you still have questions. In an attempt to provide some answers, I've put together and streamlined my notes in a way I hope is useful. This post is largely summarized from material presented in the [Getting Started with Quarto](https://rstudio-conf-2022.github.io/get-started-quarto/) and [From R Markdown to Quarto](https://rstudio-conf-2022.github.io/rmd-to-quarto/) workshops (where Andrew Bray's super helpful hand-drawn illustrations come from), along with the [Hello Quarto](https://www.rstudio.com/conference/2022/keynotes/collaborate-with-quarto/) keynote, and other talks at [rstudio::conf(2022)](https://www.rstudio.com/blog/talks-and-workshops-from-rstudio-conf-2022/). Most importantly, the [Quarto](https://quarto.org) website has *incredible* documentation.
+
+But, if all of that feels like a *lot*, hopefully this can help ease you into things. This post is organized by the following questions and my best attempts to provide answers.
+
+- What is Quarto?
+- Should I switch from R Markdown to Quarto?
+- How do I get started using Quarto?
+- What are the benefits of using Quarto for _____?
+
+## What is Quarto?
+
+![](Figures/example-quarto.png)
+
+A quarto is a book size that results from folding each printed sheet into four leaves. (The picture above is actually half an octavo, but the illustration still serves.) It's a real word. It means something. But we're making it a proper noun and giving it a new definition:
+
+> Quarto is an open-source scientific and technical publishing system built on Pandoc.
+
+Instead of writing a report or presentation in Word, PowerPoint, etc.; then running code in an R script; then saving output and visualizations; and then pasting them in the report or the presentation -- we can do it all in Quarto, a free system especially tailored to scientific and technical publishing. Pandoc is what makes it possible to take a single Quarto document and produce a report, presentation, website, etc.
+
+For those in the know, Quarto is the next generation of R Markdown. However, instead of being tied to R, Quarto is multilingual, used with R, Python, Julia, and Observable from RStudio, VS Code, and Jupyter. To make it available across all of these languages, it uses the command-line interface (not that you have to). It also makes use of Lua filters, which are extensions to Pandoc. That means instead of developing R packages to expand the functionality for R alone, development will happen in terms of Lua filters so functionality is available across languages.
+
+If you are familiar with R Markdown, you are probably familiar with this pipeline: When you knit an R Markdown `.rmd` file, the R package knitr converts your text and R code into a Markdown file and then uses Pandoc to produce whatever output you've specified.
+
+![](Figures/rmarkdown.jpg)
+
+A Quarto `.qmd` file on the other hand can be composed of text and R, Python, and/or Julia code. Either the knitr or jupyter engines will then render your text and code into a Markdown file followed by Pandoc producing whatever output you've specified. 
+
+![](Figures/quarto.jpg)
+
+Quarto accomplishes this by being fully separate from the R ecosystem. You can even run it from the command-line interface (i.e., the shell or terminal), if you want to. While it distances itself from being language-specific in order to set up a bigger tent and provide the benefits of R Markdown to Python and Julia users alike, a move consistent with the positioning of RStudio-turned-Posit, it does align more closely with Pandoc and makes more options available in the back-end.
+
+## Should I switch from R Markdown to Quarto?
+
+If you have a release of RStudio from at least the summer of 2022, you already have Quarto installed. But should you switch from using R Markdown? If you are an R Markdown power user, there might not be reason to move to Quarto. R Markdown will continue to be supported along with Quarto (in fact, the teams are the same at Posit). However, if you aren't a power user, moving to Quarto is probably the right call.
+
+Quarto is not only compute-agnostic for those who are multilingual or work in a multilingual environment, it also natively incorporates much of the functionality and ease-of-use that has been developed in the R Markdown ecosystem. What that means for less-than-power-users is that Quarto has incorporated and streamlined much of what R Markdown has to offer right out-of-the-box, without the need to download a ton of additional specialty packages.
+
+For example, if you've used R Markdown to create presentations, you've probably used or at least heard of xaringan. It's the most powerful R Markdown tool for creating presentations, and it can be incredibly finicky. If you know how to use it, great. If you don't know how to use it, just leapfrog to Quarto and start creating revealjs presentations immediately.
+
+This all comes with one big caveat: There is no replacement for flexdashboards in Quarto just yet. It's something that is high on the priority list, but if a big part of your workflow requires the use of flexdashboards, it's not yet the time to make the switch from R Markdown.
+
+## How do I get started using Quarto?
+
+It's helpful to consider the basic structure or *grammar*, if you will, of a document. For any given Quarto document, you'll likely have:
+
+- Content (text, figures, tables, diagrams, etc.)
+- Code and output
+- Metadata (format, appearance, etc.)
+
+The [Quarto Guide](https://quarto.org/docs/guide/) under Authoring has everything you need to get started, beginning with some [Markdown Basics](https://quarto.org/docs/authoring/markdown-basics.html#overview). Markdown is an incredibly simple and human-readable formatting syntax, and Quarto takes advantage of Pandoc Markdown so it has even more features than R Markdown. RStudio also includes a Visual Editor as well so you can create your document using Word-like functionality and have it write your Markdown for you, though it can be a bit buggy when switching between the Visual and Source Editors.
+
+![](Figures/switch-editors.png)
+
+### Divs and Spans
+
+One of the more powerful, but possibly confusing, additions is the introduction of Divs and Spans.
+
+> Divs and Spans are generic HTML/CSS elements that are used to format a document. Divs are used for block-level formatting while Spans are used for in-line formatting.
+
+Let's start with a Div (or *Fenced* Div) for formatting block elements.
+
+![](Figures/fenced-div.jpg)
+
+This is incredibly useful if you want to format an entire block of content, such as a paragraph. For example, using the `.callout-warning` class, I can quickly make this:
+
+:::{.callout-warning}
+Pay attention to this information!
+:::
+
+Spans (or *Bracketed* Spans) work similarly, but are used to format in-line elements.
+
+![](Figures/bracketed-span.jpg)
+
+Not all output formats support all classes of Divs and Spans, but including Divs and Spans provides a *consistent* way to format blocks and in-line content and represents one of the many benefits of Quarto aligning more closely with Pandoc.
+
+### YAML
+
+At the top of each document is a header where most of the metadata lives. Think of it as global formatting or settings for the entire document. This is written in *another* language called Yet Another *Markup* Language (i.e., YAML). It looks like this:
+
+```
+---
+title: "Untitled"
+format: html
+---
+```
+
+Like Markdown, YAML is incredibly simple and designed to be human-readable. It follows a `key: value` syntax. The header can include lots of different items, but perhaps the most is the `format` that, when you render a document, will tell Pandoc what type of document to create. Note that this is a change from R Markdown where `format` was called `output`. There are a number of changes like this, all part of making Quarto align more with Pandoc and better serve as a multilingual publishing tool. As a bonus, there is now YAML auto-completion with Quarto installed.
+
+### Code Blocks
+
+Besides content like text, figures, etc., the real magic of using Quarto is including code and its output as part of the same document. Code blocks are included using syntax that looks very similar to a Div.
+
+```{{r}}
+#| echo: fenced
+transcripts <- read_rds(here::here("Data", "transcripts.rds")) |> 
+  tibble() |> 
+  separate(doc_id, into = c("gvkey", "call_date", "title"), sep = "_")
+```
+
+The code block is fenced with` ``` `and the language in braces, but instead of attributes in the braces, or the old R Markdown code chunk options, Quarto code blocks use the new hashpipe operator `#|` where the options use YAML syntax. This allows for two things. First, the same YAML options can be used for languages other than R. Second, if there are code block options that you want to apply to the entire document, you can just move them into the header.
+
+For example, `echo: fenced` says to not run the code but to show all of it, including the fence itself. We can include it for a specific code cell:
+
+```
+---
+title: "Untitled"
+format: html
+---
+```
+
+```{{r}}
+#| echo: fenced
+transcripts <- read_rds(here::here("Data", "transcripts.rds")) |> 
+  tibble() |> 
+  separate(doc_id, into = c("gvkey", "call_date", "title"), sep = "_")
+```
+
+Or we can make it apply to all code blocks in the document by moving it into the header:
+
+```
+---
+title: "Untitled"
+format: html
+execute:
+  echo: fenced
+---
+```
+
+```{{r}}
+transcripts <- read_rds(here::here("Data", "transcripts.rds")) |> 
+  tibble() |> 
+  separate(doc_id, into = c("gvkey", "call_date", "title"), sep = "_")
+```
+
+One finicky thing to note: YAML keys and values all use lowercase. So if you're switching from R Markdown, try not to get your `TRUE` and `true` mixed up!
+
+## What are the benefits of using Quarto for _____?
+
+It's worth repeating, but as the next generation of R Markdown, Quarto incorporates a lot of the benefits of the R Markdown ecosystem into its base installation. There is far too much to repeat here, and I'm not trying to recreate the [Quarto](https://quarto.org) documentation, but I'll highlight a few things that I've found especially useful or interesting so far.
+
+### Documents
+
+- [Parameterized documents](https://quarto.org/docs/computations/parameters.html) function the same as in R Markdown, with data and variables included in the header under the `params:` key and saved as a list with named elements that can be referenced within the document.
+- Use [code highlighting](https://quarto.org/docs/output-formats/html-code.html#highlighting).
+- [Freeze](https://quarto.org/docs/projects/code-execution.html#freeze) computationally intensive code so it only runs once or set `freeze: auto` so that it only re-renders when the source code changes.
+- Enable [code folding](https://quarto.org/docs/output-formats/html-code.html#folding-code) in HTML documents with `code-fold: true` to have it available if needed.
+- Enable [code linking](https://quarto.org/docs/output-formats/html-code.html#code-linking) in HTML documents with `code-link: true` to turn functions into links back to their online documentation (only available for knitr currently).
+- Built-in support for creating [diagrams](https://quarto.org/docs/authoring/diagrams.html).
+- Add [panel tabs](https://quarto.org/docs/output-formats/html-basics.html#tabsets) in HTML documents with the `{.panel-tabset}` Div class.
+- Take advantage of the pre-made [Quarto Journal](https://github.com/quarto-journals/) templates.
+
+### Presentations
+
+Everything for HTML documents applies to revealjs, plus the following.
+
+- Use [revealjs](https://quarto.org/docs/presentations/revealjs/) as a replacement for xaringan.
+- The RStudio Visual Editor works with revealjs.
+- Use [code animations](https://quarto.org/docs/presentations/revealjs/advanced.html#code-animations).
+- The [`{.fragment}`](https://quarto.org/docs/presentations/revealjs/advanced.html#fragments) class for Divs and Spans to incrementally bring in parts of a slide in any order you choose.
+- Add multiple columns with the [`{.columns}`](https://quarto.org/docs/presentations/revealjs/index.html#multiple-columns) Divs class.
+- Enable in-browser [auto animation](https://quarto.org/docs/presentations/revealjs/advanced.html#auto-animate) between slides.
+- Quickly turn you presentation into a [chalkboard](https://quarto.org/docs/presentations/revealjs/presenting.html#chalkboard), which includes the option for users to create a PDF export of the slide deck.
+- Use [multiplex](https://quarto.org/docs/presentations/revealjs/presenting.html#multiplex) to allow users to follow along with your slides and have them advance on their devices when you advance the presentation.
+
+### Websites
+
+Everything for HTML documents applies to websites, plus the following.
+
+- Quickly start a website (like this [blog](https://occasionaldivergences.com)) with a [Quarto project](https://quarto.org/docs/projects/quarto-projects.html).
+- Website functionality is richly detailed using YAML.
+- Quarto websites includes search automatically.
+
+If you're specifically looking to build a blog, here are a number of additional sources and examples that I've found useful in updating this blog to Quarto.
+
+- [Blog in 100 seconds](https://www.youtube.com/watch?v=t8qtcDyCRFA)
+- [Building a Blog with Quarto](https://ivelasq.quarto.pub/building-a-blog-with-quarto/)
+- [Danielle Navarro's Blog](https://blog.djnavarro.net)
+
+## Final thoughts
+
+Making a multilingual publishing system requires leaning more heavily on the set of additional languages that link them: Markdown, YAML, and especially Pandoc (and maybe some CSS as you need it). From what I've seen, it's a solid foundation for a powerful tool that I hope brings more people into the big tent of functionality that R Markdown has come to provide for R users specifically.
+
+#### Marc Dotson
+
+Marc is an assistant professor of marketing at the BYU Marriott School of Business. He graduated with an MSc from The London School of Economics and Political Science in 2009 and a PhD from The Ohio State University in 2016. His research interests include Bayesian inference, predictive modeling, consumer preference heterogeneity, and unstructured data. Marc teaches marketing analytics. You can find him on [Twitter](https://twitter.com/marcdotson) and [GitHub](https://github.com/marcdotson).
+
