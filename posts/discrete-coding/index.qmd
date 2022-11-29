@@ -10,9 +10,9 @@ image: Figures/flat-contrasts-dummy-01.png
 slug: discrete-coding
 ---
 
-There are a number of ways to code discrete (i.e., categorical) variables, with different coding strategies better suited for specific use cases. Additionally, there are certain practices that are questionable, such as specifying a brand intercept (i.e., index coding the brand attribute) in a hierarchical multinomial logit model where an intercept isn't identified. Finally, there is a question of using contrasts of marginal posteriors to answer hypotheses and how those contrasts are or are not impacted by the coding used.
+There are a number of ways to code discrete (i.e., categorical) explanatory variables, with different coding strategies better suited for specific use cases. Additionally, there are certain practices that are questionable, such as specifying a brand intercept (i.e., index coding the brand attribute) in a hierarchical multinomial logit model where an intercept isn't identified. Finally, there is a question of using contrasts of marginal posteriors to answer hypotheses and how those contrasts are or are not impacted by the coding used.
 
-Let's start with a simple model and work up to choice models (where we can use what was detailed in the previous post on choice model parameterizations).
+Let's start with a simple model and work up to choice models (where we can use what was detailed in a previous post on choice model parameterizations).
 
 ## Flat regression
 
@@ -352,7 +352,7 @@ fit_index$draws(variables = c("beta"), format = "draws_df") %>%
 
 ![](Figures/flat-contrasts-index-01.png){width=750px}
 
-```{r flat-contrasts-index-01, eval=FALSE}
+```{r flat-contrasts-index-02, eval=FALSE}
 contrast_values <- tibble(
   .variable = str_c("contrast", 1:2),
   values = c(
@@ -389,8 +389,6 @@ These should be equivalent. But what if it's a forced choice and there is no out
 ## Hierarchical regression and multinomial logit
 
 ## Final thoughts
-
------
 
 #### Marc Dotson
 
