@@ -1,22 +1,28 @@
 ---
-title: "Coding discrete variables"
+title: "Coding discrete explanatory variables"
 author: "Marc Dotson"
 date: "2022-11-26"
 description: |
-  An exploration of the different ways to code discrete (i.e., categorical) variables and their equivalence via contrasts.
+  An exploration of the different ways to code discrete (i.e., categorical) explanatory variables and their equivalence via contrasts.
 categories:
+  - bayesian inference
+  - stan
+  - hierarchical models
+  - choice models
   - r
 image: Figures/flat-contrasts-dummy-01.png
 slug: discrete-coding
 ---
 
-There are a number of ways to code discrete (i.e., categorical) explanatory variables, with different coding strategies better suited for specific use cases. Additionally, there are certain practices that are questionable, such as specifying a brand intercept (i.e., index coding the brand attribute) in a hierarchical multinomial logit model where an intercept isn't identified. Finally, there is a question of using contrasts of marginal posteriors to answer hypotheses and how those contrasts are or are not impacted by the coding used.
+There are a number of ways to code (i.e., encode) discrete (i.e., categorical) explanatory variables, with different coding strategies better suited for specific use cases.
+
+Additionally, there are certain practices that are questionable, such as specifying a brand intercept (i.e., index coding the brand attribute) in a hierarchical multinomial logit model where an intercept isn't identified. Finally, there is a question of using contrasts of marginal posteriors to answer hypotheses and how those contrasts are or are not impacted by the coding used.
 
 Let's start with a simple model and work up to choice models (where we can use what was detailed in a previous post on choice model parameterizations).
 
 ## Flat regression
 
-Generate data that follows index coding so its easy to extrapolate to other coding strategies.
+Generate flat data that includes discrete explanatory variables.
 
 ```{stan generate-flat-data, output.var="generate_flat_data", eval=FALSE}
 // Index and parameter values.
@@ -78,8 +84,8 @@ sim_values$X <- sim_X
 
 # Compile the model for generating data.
 generate_flat_data <- cmdstan_model(
-  stan_file = here::here("content", "post", "discrete-coding", "Code", "generate_flat_data.stan"),
-  dir = here::here("content", "post", "discrete-coding", "Code", "Compiled")
+  stan_file = here::here("posts", "discrete-coding", "Code", "generate_flat_data.stan"),
+  dir = here::here("posts", "discrete-coding", "Code", "Compiled")
 )
 
 # Generate data.
@@ -146,8 +152,8 @@ data <- list(
 
 # Compile the model.
 flat_regression_dummy <- cmdstan_model(
-  stan_file = here::here("content", "post", "discrete-coding", "Code", "flat_regression_dummy.stan"),
-  dir = here::here("content", "post", "discrete-coding", "Code", "Compiled")
+  stan_file = here::here("posts", "discrete-coding", "Code", "flat_regression_dummy.stan"),
+  dir = here::here("posts", "discrete-coding", "Code", "Compiled")
 )
 
 # Fit the model.

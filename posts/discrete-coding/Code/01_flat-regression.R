@@ -34,8 +34,8 @@ sim_values$X <- sim_X
 
 # Compile the model for generating data.
 generate_flat_data <- cmdstan_model(
-  stan_file = here::here("content", "post", "discrete-coding", "Code", "generate_flat_data.stan"),
-  dir = here::here("content", "post", "discrete-coding", "Code", "Compiled")
+  stan_file = here::here("posts", "discrete-coding", "Code", "generate_flat_data.stan"),
+  dir = here::here("posts", "discrete-coding", "Code", "Compiled")
 )
 
 # Generate data.
@@ -63,8 +63,8 @@ data <- list(
 
 # Compile the model.
 flat_regression_dummy <- cmdstan_model(
-  stan_file = here::here("content", "post", "discrete-coding", "Code", "flat_regression_dummy.stan"),
-  dir = here::here("content", "post", "discrete-coding", "Code", "Compiled")
+  stan_file = here::here("posts", "discrete-coding", "Code", "flat_regression_dummy.stan"),
+  dir = here::here("posts", "discrete-coding", "Code", "Compiled")
 )
 
 # Fit the model.
@@ -135,7 +135,7 @@ fit_dummy$draws(variables = "beta", format = "draws_df") %>%
 
 ggsave(
   "flat-contrasts-dummy-01.png",
-  path = here::here("content", "post", "discrete-coding", "Figures"),
+  path = here::here("posts", "discrete-coding", "Figures"),
   width = 5, height = 4, units = "in"
 )
 
@@ -160,7 +160,7 @@ fit_dummy$draws(variables = "beta", format = "draws_df") %>%
 
 ggsave(
   "flat-contrasts-dummy-02.png",
-  path = here::here("content", "post", "discrete-coding", "Figures"),
+  path = here::here("posts", "discrete-coding", "Figures"),
   width = 5, height = 4, units = "in"
 )
 
