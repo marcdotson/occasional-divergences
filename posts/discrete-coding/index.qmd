@@ -1,10 +1,11 @@
 ---
 title: "Coding discrete explanatory variables"
 author: "Marc Dotson"
-date: "2022-11-26"
+date: "2022-12-07"
 description: |
-  An exploration of the different ways to code discrete (i.e., categorical) explanatory variables and their equivalence via contrasts.
+  There are a number of ways to code discrete explanatory variables. In this post, we explore using two of the most common ways to code discrete explanatory variables: dummy coding and index coding.
 categories:
+  - index coding
   - bayesian inference
   - stan
   - hierarchical models
@@ -14,15 +15,13 @@ image: Figures/flat-contrasts-dummy-01.png
 slug: discrete-coding
 ---
 
-There are a number of ways to code (i.e., encode) discrete (i.e., categorical) explanatory variables, with different coding strategies better suited for specific use cases.
+There are a number of ways to code (i.e., encode) discrete (i.e., categorical) explanatory variables, with different coding strategies suited for specific use cases. In this post, we explore using two of the most common ways to code discrete explanatory variables: dummy coding and index coding. Another common approach is called effects or sum-to-one coding. For a great walkthrough of that approach and its benefits in the context of choice modeling, see Elea Feit's [post](https://eleafeit.com/posts/2021-05-23-parameterization-of-multinomial-logit-models-in-stan/) that helped inspire this one.
 
-Additionally, there are certain practices that are questionable, such as specifying a brand intercept (i.e., index coding the brand attribute) in a hierarchical multinomial logit model where an intercept isn't identified. Finally, there is a question of using contrasts of marginal posteriors to answer hypotheses and how those contrasts are or are not impacted by the coding used.
-
-Let's start with a simple model and work up to choice models (where we can use what was detailed in a previous post on choice model parameterizations).
+Let's start with a simple model and work up to choice models.
 
 ## Flat regression
 
-Generate flat data that includes discrete explanatory variables.
+Let's generate flat regression data that includes discrete explanatory variables.
 
 ```{stan generate-flat-data, output.var="generate_flat_data", eval=FALSE}
 // Index and parameter values.
@@ -35,7 +34,7 @@ data {
   real<lower = 0> tau; // Variance of the regression.
 }
 
-// Generate data according to the simple regression.
+// Generate data according to the flat regression.
 generated quantities {
   // Vector of observations.
   vector[N] y;
@@ -49,7 +48,8 @@ generated quantities {
 
 Call `generate_flat_data` from R.
 
-```{r call-generate-flat-data, eval=FALSE}
+```{r call-generate-flat-data, eval=TRUE}
+#| message: false
 # Load packages.
 library(tidyverse)
 library(cmdstanr)
@@ -82,6 +82,8 @@ for (n in 1:sim_values$N) {
 }
 sim_values$X <- sim_X
 
+head(sim_values$X)
+
 # Compile the model for generating data.
 generate_flat_data <- cmdstan_model(
   stan_file = here::here("posts", "discrete-coding", "Code", "generate_flat_data.stan"),
@@ -101,11 +103,17 @@ sim_data <- generate_flat_data$sample(
 sim_y <- sim_data$draws(variables = "y", format = "draws_list") %>%
   pluck(1) %>%
   flatten_dbl()
+
+head(sim_y)
 ```
 
 ### Dummy coding
 
-Also known as indicator coding, dummy coding is likely the most common way to code discrete variables. Here we include an intercept and drop the first level of each of the discrete variables. Here's a flat regression using dummy coding.
+Also known as indicator coding, dummy coding is the most common way to deal with discrete variables, where a single discrete variable with `K` levels is encoded as `K - 1` binary columns, each indicating the presence or absence of the given level. It is an approach to identifying the estimates of discrete explanatory levels that is inherited from frequentist models.
+
+If we include all levels of a single discrete variable, they sum up *across columns* to a constant---to an *intercept*. If we did that with more than one discrete variable, we would have more than one intercept and they would no longer be identified. With dummy coding, it is typical to include an intercept (i.e., a constant, often a column of `1`'s) and drop the first level (i.e., the reference level) of each of the discrete variables.
+
+Here's a flat regression using dummy coding.
 
 ```{stan flat-regression-dummy, output.var="flat_regression_dummy", eval=FALSE}
 // Index value and observations.
@@ -141,7 +149,8 @@ model {
 
 Let's call `flat_regression_dummy` from R.
 
-```{r call-flat-regression-dummy, eval=FALSE}
+```{r call-flat-regression-dummy, eval=TRUE}
+#| message: false
 # Specify data.
 data <- list(
   N = length(sim_y),    # Number of observations.
@@ -165,9 +174,9 @@ fit_dummy <- flat_regression_dummy$sample(
 )
 ```
 
-We can't recover the parameters values we used when simulating the data. Dummy coding is equivalent to specifying each included level as a contrast with the reference level. We can compare the dummy-coded marginal posteriors to the contrasted true parameter values in a number of ways.
+Note that we can't directly recover the parameters values we used when simulating the data. Dummy coding is equivalent to specifying each included level as a contrast with the reference level. We can compare the dummy-coded marginal posteriors to the contrasted true parameter values.
 
-```{r flat-contrasts-dummy-01, eval=FALSE}
+```{r flat-contrasts-dummy, eval=FALSE}
 # Extract draws and compare contrasts.
 contrast_values <- tibble(
   .variable = str_c("contrast", 1:(sim_values$I - length(sim_values$J))),
@@ -194,84 +203,15 @@ fit_dummy$draws(variables = "beta", format = "draws_df") %>%
 
 ![](Figures/flat-contrasts-dummy-01.png){width=750px}
 
-```{r flat-contrasts-dummy-02, eval=FALSE}
-contrast_values <- tibble(
-  .variable = str_c("contrast", 1:2),
-  values = c(
-    # Second discrete variable.
-    sim_values$beta[4] - sim_values$beta[5],
-    sim_values$beta[5] - sim_values$beta[4]
-  )
-)
-fit_dummy$draws(variables = "beta", format = "draws_df") %>%
-  mutate_variables(
-    contrast1 = `beta[2]` - `beta[3]`,
-    contrast2 = `beta[3]` - `beta[2]`
-  ) %>%
-  gather_draws(contrast1, contrast2) %>%
-  ggplot(aes(y = .variable, x = .value)) +
-  stat_histinterval() +
-  geom_vline(aes(xintercept = values), contrast_values, color = "red") +
-  facet_wrap(~ .variable, scales = "free", ncol = 1)
-```
-
-![](Figures/flat-contrasts-dummy-02.png){width=750px}
-
-### Effects coding
-
-Also known as sum-to-zero coding, effects coding comes in a variety of forms while generalizing the idea of dummy coding to more flexibly identify any contrast of interest among the levels of a discrete variable. Here we'll use simple contrast coding where the reference level is set to -1 and the relevant level is set to 1. The model is the same as with dummy coding.
-
-...and if that's the case, what's the point of effects coding? It may matter for making it easier to specify priors, especially in a hierarchical setting.
-
-```{stan flat-regression-effects, output.var="flat_regression_effects", eval=FALSE}
-// Index value and observations.
-data {
-  int<lower = 1> N;    // Number of observations.
-  int<lower = 1> I;    // Number of covariates.
-  vector[N] y;         // Vector of observations.
-  matrix[N, I] X;      // Matrix of covariates.
-}
-
-// Parameters.
-parameters {
-  real alpha;          // Intercept.
-  vector[I] beta;      // Vector of slopes.
-  real<lower = 0> tau; // Variance of the regression.
-}
-
-// Regression.
-model {
-  // Priors.
-  alpha ~ normal(0, 5);
-  for (i in 1:I) {
-    beta[i] ~ normal(0, 5);
-  }
-  tau ~ normal(0, 5);
-
-  // Likelihood.
-  for (n in 1:N) {
-    y[n] ~ normal(alpha + X[n,] * beta, tau);
-  }
-}
-```
-
-Let's call `flat_regression_effects` from R where the final level in each discrete variable is the reference level (i.e., coded as -1) to compare with the first level baseline inherent in dummy coding.
-
-```{r call-flat-regression-effects, eval=FALSE}
-
-```
-
-```{r flat-contrasts-effects-01, eval=FALSE}
-
-```
-
-```{r flat-contrasts-effects-02, eval=FALSE}
-
-```
+The drawback to dummy coding in a Bayesian setting with *real data* is that we need to specify priors over the contrasts rather than the parameters themselves. This complication for setting priors is a good reason to consider effects coding (again, see Elea Feit's [post](https://eleafeit.com/posts/2021-05-23-parameterization-of-multinomial-logit-models-in-stan/) on that topic). Dummy coding also enshrines the reference level as something special, making it non-trivial to compute other contrasts.
 
 ### Index coding
 
-For index coding we *don't* include an intercept and *don't* include any reference levels. By not including reference levels, the intercept is implied. But when we have more than one discrete variable we also have more than one implied intercept. We end up relying more heavily on the prior to identify each of the parameters, however the contrasts are always identified even if their constitutent parameter estimates are not. Here's a flat regression using index coding.
+Also known as one-hot encoding, index coding similarly turns each level of a discrete variable into its own binary column. However, with index coding we *don't* include an intercept and *don't* include any reference levels.
+
+By not including reference levels, the intercept is implied by the fact that the columns sum to a constant, as discussed previously. But when we have more than one discrete variable we also have more than one implied intercept. This would create an identification problem in a frequentist setting, but in a Bayesian analysis we simply rely on the prior to enable identification of each of the parameters. As a bonus, the contrasts are always identified even if their constituent parameter estimates are not.
+
+Here's a flat regression using index coding. Note that the only difference here is the absence of the intercept `alpha`.
 
 ```{stan flat-regression-index, output.var="flat_regression_index", eval=FALSE}
 // Index value and observations.
@@ -305,7 +245,8 @@ model {
 
 And we call `flat-regression-index` from R.
 
-```{r call-flat-regression-index, eval=FALSE}
+```{r call-flat-regression-index, eval=TRUE}
+#| message: false
 # Specify data.
 data <- list(
   N = length(sim_y),   # Number of observations.
@@ -316,8 +257,8 @@ data <- list(
 
 # Compile the model.
 flat_regression_index <- cmdstan_model(
-  stan_file = here::here("content", "post", "discrete-coding", "Code", "flat_regression_index.stan"),
-  dir = here::here("content", "post", "discrete-coding", "Code", "Compiled")
+  stan_file = here::here("posts", "discrete-coding", "Code", "flat_regression_index.stan"),
+  dir = here::here("posts", "discrete-coding", "Code", "Compiled")
 )
 
 # Fit the model.
@@ -329,9 +270,9 @@ fit_index <- flat_regression_index$sample(
 )
 ```
 
-With index coding, the parameter estimates don't produce an implied contrast, so we'll have to compute the contrasts from the marginal posteriors directly. Here we re-produce the same plot as before and compare it to the contrasted true parameter values.
+With index coding we *can* directly recover the parameters values we used when simulating the data! Additionally, it is straightforward to produce whatever contrasts we'd like! Here we re-produce the same plots as before and compare it to the contrasted true parameter values.
 
-```{r flat-contrasts-index-01, eval=FALSE}
+```{r flat-contrasts-index, eval=FALSE}
 # Extract draws and compare contrasts.
 contrast_values <- tibble(
   .variable = str_c("contrast", 1:(sim_values$I - length(sim_values$J))),
@@ -358,30 +299,14 @@ fit_index$draws(variables = c("beta"), format = "draws_df") %>%
 
 ![](Figures/flat-contrasts-index-01.png){width=750px}
 
-```{r flat-contrasts-index-02, eval=FALSE}
-contrast_values <- tibble(
-  .variable = str_c("contrast", 1:2),
-  values = c(
-    # Second discrete variable.
-    sim_values$beta[4] - sim_values$beta[5],
-    sim_values$beta[5] - sim_values$beta[4]
-  )
-)
-fit_index$draws(variables = "beta", format = "draws_df") %>%
-  mutate_variables(
-    contrast1 = `beta[4]` - `beta[5]`,
-    contrast2 = `beta[5]` - `beta[4]`
-  ) %>%
-  gather_draws(contrast1, contrast2) %>%
-  ggplot(aes(y = .variable, x = .value)) +
-  stat_histinterval() +
-  geom_vline(aes(xintercept = values), contrast_values, color = "red") +
-  facet_wrap(~ .variable, scales = "free", ncol = 1)
-```
+Index coding like this is only possible in a Bayesian framework where the use of priors obviates the necessity of strict identification strategies. However, it's not without costs. We will need to specify informative priors, which we should be doing anyway, and the model itself may take longer to converge.
 
-![](Figures/flat-contrasts-index-02.png){width=750px}
+## Hierarchical multinomial logit
 
-## Flat multinomial logit
+Questions: 
+
+- Specifying a brand intercept (i.e., index coding the brand attribute) in a hierarchical multinomial logit model where an intercept isn't identified.
+- Finally, there is a question of using contrasts of marginal posteriors to answer hypotheses and how those contrasts are or are not impacted by the coding used.
 
 And the peculiar case of intercepts and brand intercepts...if intercepts aren't identified, it could be the prior alone that is providing a sensible posterior. To test this, let's use a uniform prior.
 
@@ -391,8 +316,6 @@ It's not just the prior. When we consider choice models, it's the outside good t
 - Outside good coded as a binary attribute (it's own intecept) with dummy coded brands.
 
 These should be equivalent. But what if it's a forced choice and there is no outside option?
-
-## Hierarchical regression and multinomial logit
 
 ## Final thoughts
 

@@ -8,7 +8,7 @@ data {
   real<lower = 0> tau; // Variance of the regression.
 }
 
-// Generate data according to the simple regression.
+// Generate data according to the flat regression.
 generated quantities {
   // Vector of observations.
   vector[N] y;
