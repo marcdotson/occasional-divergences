@@ -303,19 +303,24 @@ Index coding like this is only possible in a Bayesian framework where the use of
 
 ## Hierarchical multinomial logit
 
-Questions: 
+- Read and reference previous post(s) on choice modeling.
+- Compare this `hmnl_noncentered` to what is used for why-donors-donate.
+- Discuss specifying a brand intercept (i.e., index coding the brand attribute) in a hierarchical multinomial logit model where an intercept isn't identified?
 
-- Specifying a brand intercept (i.e., index coding the brand attribute) in a hierarchical multinomial logit model where an intercept isn't identified.
-- Finally, there is a question of using contrasts of marginal posteriors to answer hypotheses and how those contrasts are or are not impacted by the coding used.
+If intercepts aren't identified, it could be the prior alone that is providing a sensible posterior. To test this, let's use a uniform prior. If it's not just the prior, then when we consider choice models, it's the outside good that is at play. The outside good provides a reference to the alternatives, a kind of intercept that is identified in the model even when a traditional intercept is not. To test, include the outside good coded as zero with brand intercepts and the outside good coded as a binary attribute (it's own intercept) with dummy coded brands. These should be equivalent. But what if it's a forced choice and there is no outside option? Did we include a forced choice for why-donors-donate?
 
-And the peculiar case of intercepts and brand intercepts...if intercepts aren't identified, it could be the prior alone that is providing a sensible posterior. To test this, let's use a uniform prior.
+Let's generate data with discrete explanatory variables from a hierarchical multinomial logit.
 
-It's not just the prior. When we consider choice models, it's the outside good that is at play. The outside good provides a reference to the alternatives, a kind of intercept that is identified in the model even when a traditional intercept is not. We have two things to test here:
+```{stan generate-hmnl-data, output.var="generate_hmnl_data", eval=FALSE}
 
-- Outside good coded as zero with brand intercepts.
-- Outside good coded as a binary attribute (it's own intecept) with dummy coded brands.
+```
 
-These should be equivalent. But what if it's a forced choice and there is no outside option?
+Call `generate_hmnl_data` from R.
+
+```{r call-generate-hmnl-data, eval=TRUE}
+#| message: false
+
+```
 
 ## Dummy coding
 
@@ -325,6 +330,7 @@ These should be equivalent. But what if it's a forced choice and there is no out
 
 ## Final thoughts
 
+Index coding is great if you can do it and demonstrates another benefit of being Bayesian. Intuitive. A little more computational complexity.
 
 #### Marc Dotson
 
