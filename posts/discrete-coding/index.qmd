@@ -17,7 +17,7 @@ slug: discrete-coding
 
 There are a number of ways to code (i.e., encode) discrete (i.e., categorical) explanatory variables, with different coding strategies suited for specific use cases. In this post, we explore using two of the most common ways to code discrete explanatory variables: dummy coding and index coding. Another common approach is called effects or sum-to-one coding. For a great walkthrough of that approach and its benefits in the context of choice modeling, see Elea Feit's [post](https://eleafeit.com/posts/2021-05-23-parameterization-of-multinomial-logit-models-in-stan/) that helped inspire this one.
 
-Let's start with a simple model and work up to choice models.
+Let's start with a simple, flat regression and then move to a far more complicated, hierarchical multinomial logit.
 
 ## Flat regression
 
@@ -317,7 +317,14 @@ It's not just the prior. When we consider choice models, it's the outside good t
 
 These should be equivalent. But what if it's a forced choice and there is no outside option?
 
+## Dummy coding
+
+
+## Index coding
+
+
 ## Final thoughts
+
 
 #### Marc Dotson
 
