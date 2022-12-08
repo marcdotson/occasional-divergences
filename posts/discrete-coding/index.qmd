@@ -17,13 +17,13 @@ slug: discrete-coding
 
 There are a number of ways to code (i.e., encode) discrete (i.e., categorical) explanatory variables, with different coding strategies suited for specific use cases. In this post, we explore using two of the most common ways to code discrete explanatory variables: dummy coding and index coding. Another common approach is called effects or sum-to-one coding. For a great walkthrough of that approach and its benefits in the context of choice modeling, see Elea Feit's [post](https://eleafeit.com/posts/2021-05-23-parameterization-of-multinomial-logit-models-in-stan/) that helped inspire this one.
 
-Let's start with a simple, flat regression and then move to a far more complicated, hierarchical multinomial logit.
+Let's start with a simple flat regression and then move to a far more complicated hierarchical multinomial logit.
 
 ## Flat regression
 
 Let's generate flat regression data that includes discrete explanatory variables.
 
-```{stan generate-flat-data, output.var="generate_flat_data", eval=FALSE}
+```{stan generate-flat-regression-data, output.var="generate_flat_regression_data", eval=FALSE}
 // Index and parameter values.
 data {
   int<lower = 1> N;    // Number of observations.
@@ -46,7 +46,7 @@ generated quantities {
 }
 ```
 
-Call `generate_flat_data` from R.
+Now we create the matrix of covariates and call `generate_flat_regression_data`.
 
 ```{r call-generate-flat-data, eval=TRUE}
 #| message: false
@@ -85,13 +85,13 @@ sim_values$X <- sim_X
 head(sim_values$X)
 
 # Compile the model for generating data.
-generate_flat_data <- cmdstan_model(
-  stan_file = here::here("posts", "discrete-coding", "Code", "generate_flat_data.stan"),
+generate_flat_regression_data <- cmdstan_model(
+  stan_file = here::here("posts", "discrete-coding", "Code", "generate_flat_regression_data.stan"),
   dir = here::here("posts", "discrete-coding", "Code", "Compiled")
 )
 
 # Generate data.
-sim_data <- generate_flat_data$sample(
+sim_data <- generate_flat_regression_data$sample(
   data = sim_values,
   chains = 1,
   iter_sampling = 1,
@@ -147,7 +147,7 @@ model {
 }
 ```
 
-Let's call `flat_regression_dummy` from R.
+Let's run this flat regression using dummy coding.
 
 ```{r call-flat-regression-dummy, eval=TRUE}
 #| message: false
@@ -176,7 +176,7 @@ fit_dummy <- flat_regression_dummy$sample(
 
 Note that we can't directly recover the parameters values we used when simulating the data. Dummy coding is equivalent to specifying each included level as a contrast with the reference level. We can compare the dummy-coded marginal posteriors to the contrasted true parameter values.
 
-```{r flat-contrasts-dummy, eval=FALSE}
+```{r flat-regression-contrasts-dummy, eval=FALSE}
 # Extract draws and compare contrasts.
 contrast_values <- tibble(
   .variable = str_c("contrast", 1:(sim_values$I - length(sim_values$J))),
@@ -201,7 +201,7 @@ fit_dummy$draws(variables = "beta", format = "draws_df") %>%
   facet_wrap(~ .variable, scales = "free", ncol = 1)
 ```
 
-![](Figures/flat-contrasts-dummy-01.png){width=750px}
+![](Figures/flat-regression-contrasts-dummy-01.png){width=750px}
 
 The drawback to dummy coding in a Bayesian setting with *real data* is that we need to specify priors over the contrasts rather than the parameters themselves. This complication for setting priors is a good reason to consider effects coding (again, see Elea Feit's [post](https://eleafeit.com/posts/2021-05-23-parameterization-of-multinomial-logit-models-in-stan/) on that topic). Dummy coding also enshrines the reference level as something special, making it non-trivial to compute other contrasts.
 
@@ -243,7 +243,7 @@ model {
 }
 ```
 
-And we call `flat-regression-index` from R.
+And now let's run this flat regression using index coding.
 
 ```{r call-flat-regression-index, eval=TRUE}
 #| message: false
@@ -272,7 +272,7 @@ fit_index <- flat_regression_index$sample(
 
 With index coding we *can* directly recover the parameters values we used when simulating the data! Additionally, it is straightforward to produce whatever contrasts we'd like! Here we re-produce the same plots as before and compare it to the contrasted true parameter values.
 
-```{r flat-contrasts-index, eval=FALSE}
+```{r flat-regression-contrasts-index, eval=FALSE}
 # Extract draws and compare contrasts.
 contrast_values <- tibble(
   .variable = str_c("contrast", 1:(sim_values$I - length(sim_values$J))),
@@ -297,33 +297,198 @@ fit_index$draws(variables = c("beta"), format = "draws_df") %>%
   facet_wrap(~ .variable, scales = "free", ncol = 1)
 ```
 
-![](Figures/flat-contrasts-index-01.png){width=750px}
+![](Figures/flat-regression-contrasts-index-01.png){width=750px}
 
-Index coding like this is only possible in a Bayesian framework where the use of priors obviates the necessity of strict identification strategies. However, it's not without costs. We will need to specify informative priors, which we should be doing anyway, and the model itself may take longer to converge.
+The contrasts and the recovered parameters are the same as the results from the dummy-coded model. Index coding like this is only possible in a Bayesian framework where the use of priors obviates the necessity of strict identification strategies. However, it's not without costs. We will need to specify informative priors, which we should be doing anyway, and the model itself may take longer to converge.
 
 ## Hierarchical multinomial logit
 
-- Read and reference previous post(s) on choice modeling.
+A hierarchical multinomial logit is the standard for choice modeling in marketing (see previous posts for details on [hierarchical models](https://occasionaldivergences.com/posts/stan-hierarchical/) and [choice models](https://occasionaldivergences.com/posts/choice-models/)). We'll specifically be using a [non-centered parameterization](https://occasionaldivergences.com/posts/non-centered/).
+
+First, let's generate data with discrete explanatory variables from a hierarchical multinomial logit.
+
+```{stan generate-hier-mnl-data, output.var="generate_hier_mnl_data", eval=FALSE}
+// Index and hyperprior values.
+data {
+  int<lower = 1> R;           // Number of respondents.
+  int<lower = 1> S;           // Number of choice tasks.
+  int<lower = 2> A;           // Number of choice alternatives.
+  int<lower = 1> I;           // Number of observation-level covariates.
+  int<lower = 1> J;           // Number of population-level covariates.
+
+  real Gamma_mean;            // Mean of population-level means.
+  real<lower=0> Gamma_scale;  // Scale of population-level means.
+  real<lower=0> Omega_shape;  // Shape of population-level scale.
+  real tau_df;                // Degrees of freedom of population-level scale.
+  
+  array[R, S] matrix[A, I] X; // Array of observation-level covariates.
+  matrix[R, J] Z;             // Matrix of population-level covariates.
+}
+
+// Generate data according to the hierarchical multinomial logit.
+generated quantities {
+  matrix[R, S] Y;             // Matrix of observations.
+  matrix[J, I] Gamma;         // Matrix of population-level hyperparameters.
+  corr_matrix[I] Omega;       // Population model correlation matrix hyperparameters.
+  vector[I] tau;              // Population model vector of scale hyperparameters.
+  matrix[R, I] Beta;          // Matrix of observation-level parameters.
+
+  // Draw parameter values and generate data.
+  for (j in 1:J) {
+    for (i in 1:I) {
+      Gamma[j, i] = normal_rng(Gamma_mean, Gamma_scale);
+    }
+  }
+  for (i in 1:I) {
+    tau[i] = chi_square_rng(tau_df);
+  }
+  Omega = lkj_corr_rng(I, Omega_shape);
+  for (r in 1:R) {
+    Beta[r,] = multi_normal_rng(Z[r,] * Gamma, quad_form_diag(Omega, tau))';
+    for (s in 1:S) {
+      Y[r, s] = categorical_logit_rng(X[r, s] * Beta[r,]');
+    }
+  }
+}
+```
+
+Now we create covariate arrays and call `generate_hier_mnl_data`.
+
+```{r call-generate-hier-mnl-data, eval=TRUE}
+#| message: false
+# Set the simulation seed.
+set.seed(42)
+
+# Specify data and hyperprior values.
+sim_values <- list(
+  R = 500,           # Number of respondents.
+  S = 10,            # Number of choice tasks.
+  A = 4,             # Number of choice alternatives.
+  L = c(3, 4, 5),    # Number of levels for each discrete attribute.
+  I = 12,            # Number of observation-level covariates.
+  J = 3,             # Number of population-level covariates.
+  
+  Gamma_mean = 0,    # Mean of population-level means.
+  Gamma_scale = 5,   # Scale of population-level means.
+  Omega_shape = 2,   # Shape of population-level scale.
+  tau_df = 2         # Degrees of freedom of population-level scale.
+)
+
+# Array of observation-level covariates.
+sim_X <- array(
+  data = NA,
+  dim = c(sim_values$R, sim_values$S, sim_values$A, sim_values$I)
+)
+for (r in 1:sim_values$R) {
+  for (s in 1:sim_values$S) {
+    temp_S <- NULL
+    for (l in 1:length(sim_values$L)) {
+      temp_L <- NULL
+      for (a in 1:sim_values$A) {
+        temp_A <- matrix(0, nrow = 1, ncol = sim_values$L[l])
+        temp_A[1, sample(seq(1, sim_values$L[l]), 1)] <- 1
+        temp_L <- rbind(temp_L, temp_A)
+      }
+      temp_S <- cbind(temp_S, temp_L)
+    }
+    sim_X[r, s,,] <- temp_S
+  }
+}
+sim_values$X <- sim_X
+
+head(sim_X[1,1,,])
+
+# Matrix of population-level covariates.
+sim_Z <- cbind(
+  rep(1, sim_values$R),
+  matrix(
+    runif(sim_values$R * (sim_values$J - 1), min = 2, max = 5),
+    nrow = sim_values$R
+  )
+)
+sim_values$Z <- sim_Z
+
+head(sim_Z)
+
+# Compile the model for generating data.
+generate_hier_mnl_data <- cmdstan_model(
+  stan_file = here::here("posts", "discrete-coding", "Code", "generate_hier_mnl_data.stan"),
+  dir = here::here("posts", "discrete-coding", "Code", "Compiled")
+)
+
+# Generate data.
+sim_data <- generate_hier_mnl_data$sample(
+  data = sim_values,
+  chains = 1,
+  iter_sampling = 1,
+  seed = 42,
+  fixed_param = TRUE
+)
+
+# Extract generated data.
+sim_Y <- sim_data$draws(variables = "Y", format = "draws_list") %>%
+  pluck(1) %>%
+  flatten_dbl()
+
+head(sim_Y)
+```
+
+## Dummy coding
+
 - Compare this `hmnl_noncentered` to what is used for why-donors-donate.
 - Discuss specifying a brand intercept (i.e., index coding the brand attribute) in a hierarchical multinomial logit model where an intercept isn't identified?
 
 If intercepts aren't identified, it could be the prior alone that is providing a sensible posterior. To test this, let's use a uniform prior. If it's not just the prior, then when we consider choice models, it's the outside good that is at play. The outside good provides a reference to the alternatives, a kind of intercept that is identified in the model even when a traditional intercept is not. To test, include the outside good coded as zero with brand intercepts and the outside good coded as a binary attribute (it's own intercept) with dummy coded brands. These should be equivalent. But what if it's a forced choice and there is no outside option? Did we include a forced choice for why-donors-donate?
 
-Let's generate data with discrete explanatory variables from a hierarchical multinomial logit.
+---
 
-```{stan generate-hmnl-data, output.var="generate_hmnl_data", eval=FALSE}
+Also known as indicator coding, dummy coding is the most common way to deal with discrete variables, where a single discrete variable with `K` levels is encoded as `K - 1` binary columns, each indicating the presence or absence of the given level. It is an approach to identifying the estimates of discrete explanatory levels that is inherited from frequentist models.
+
+If we include all levels of a single discrete variable, they sum up *across columns* to a constant---to an *intercept*. If we did that with more than one discrete variable, we would have more than one intercept and they would no longer be identified. With dummy coding, it is typical to include an intercept (i.e., a constant, often a column of `1`'s) and drop the first level (i.e., the reference level) of each of the discrete variables.
+
+Here's a flat regression using dummy coding.
+
+```{stan hier-mnl-dummy, output.var="hier_mnl_dummy", eval=FALSE}
 
 ```
 
-Call `generate_hmnl_data` from R.
+Let's run this flat regression using dummy coding.
 
-```{r call-generate-hmnl-data, eval=TRUE}
+```{r call-hier-mnl-dummy, eval=TRUE}
 #| message: false
 
 ```
 
-## Dummy coding
+Note that we can't directly recover the parameters values we used when simulating the data. Dummy coding is equivalent to specifying each included level as a contrast with the reference level. We can compare the dummy-coded marginal posteriors to the contrasted true parameter values.
 
+```{r hier-mnl-contrasts-dummy, eval=FALSE}
+# Extract draws and compare contrasts.
+contrast_values <- tibble(
+  .variable = str_c("contrast", 1:(sim_values$I - length(sim_values$J))),
+  values = c(
+    # First discrete variable.
+    sim_values$beta[2] - sim_values$beta[1],
+    # Second discrete variable.
+    sim_values$beta[4] - sim_values$beta[3],
+    sim_values$beta[5] - sim_values$beta[3]
+  )
+)
+fit_dummy$draws(variables = "beta", format = "draws_df") %>%
+  mutate_variables(
+    contrast1 = `beta[1]`,
+    contrast2 = `beta[2]`,
+    contrast3 = `beta[3]`
+  ) %>%
+  gather_draws(contrast1, contrast2, contrast3) %>%
+  ggplot(aes(y = .variable, x = .value)) +
+  stat_histinterval() +
+  geom_vline(aes(xintercept = values), contrast_values, color = "red") +
+  facet_wrap(~ .variable, scales = "free", ncol = 1)
+```
+
+<!-- ![](Figures/){width=750px} -->
+
+The drawback to dummy coding in a Bayesian setting with *real data* is that we need to specify priors over the contrasts rather than the parameters themselves. This complication for setting priors is a good reason to consider effects coding (again, see Elea Feit's [post](https://eleafeit.com/posts/2021-05-23-parameterization-of-multinomial-logit-models-in-stan/) on that topic). Dummy coding also enshrines the reference level as something special, making it non-trivial to compute other contrasts.
 
 ## Index coding
 

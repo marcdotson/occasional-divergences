@@ -33,13 +33,13 @@ for (n in 1:sim_values$N) {
 sim_values$X <- sim_X
 
 # Compile the model for generating data.
-generate_flat_data <- cmdstan_model(
-  stan_file = here::here("posts", "discrete-coding", "Code", "generate_flat_data.stan"),
+generate_flat_regression_data <- cmdstan_model(
+  stan_file = here::here("posts", "discrete-coding", "Code", "generate_flat_regression_data.stan"),
   dir = here::here("posts", "discrete-coding", "Code", "Compiled")
 )
 
 # Generate data.
-sim_data <- generate_flat_data$sample(
+sim_data <- generate_flat_regression_data$sample(
   data = sim_values,
   chains = 1,
   iter_sampling = 1,
@@ -134,7 +134,7 @@ fit_dummy$draws(variables = "beta", format = "draws_df") %>%
   facet_wrap(~ .variable, scales = "free", ncol = 1)
 
 ggsave(
-  "flat-contrasts-dummy-01.png",
+  "flat-regression-contrasts-dummy-01.png",
   path = here::here("posts", "discrete-coding", "Figures"),
   width = 5, height = 4, units = "in"
 )
@@ -159,13 +159,10 @@ fit_dummy$draws(variables = "beta", format = "draws_df") %>%
   facet_wrap(~ .variable, scales = "free", ncol = 1)
 
 ggsave(
-  "flat-contrasts-dummy-02.png",
+  "flat-regression-contrasts-dummy-02.png",
   path = here::here("posts", "discrete-coding", "Figures"),
   width = 5, height = 4, units = "in"
 )
-
-# # Save output.
-# fit_dummy$save_object(file = here::here("content", "post", "discrete-coding", "Output", "fit_dummy.rds"))
 
 # Index Coding ------------------------------------------------------------
 # Specify data.
@@ -251,7 +248,7 @@ fit_index$draws(variables = c("beta"), format = "draws_df") %>%
   facet_wrap(~ .variable, scales = "free", ncol = 1)
 
 ggsave(
-  "flat-contrasts-index-01.png",
+  "flat-regression-contrasts-index-01.png",
   path = here::here("content", "post", "discrete-coding", "Figures"),
   width = 5, height = 4, units = "in"
 )
@@ -276,10 +273,8 @@ fit_index$draws(variables = "beta", format = "draws_df") %>%
   facet_wrap(~ .variable, scales = "free", ncol = 1)
 
 ggsave(
-  "flat-contrasts-index-02.png",
+  "flat-regression-contrasts-index-02.png",
   path = here::here("content", "post", "discrete-coding", "Figures"),
   width = 5, height = 4, units = "in"
 )
 
-# # Save output.
-# fit_index$save_object(file = here::here("content", "post", "discrete-coding", "Output", "fit_index.rds"))

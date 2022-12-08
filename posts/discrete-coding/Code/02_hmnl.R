@@ -10,36 +10,61 @@ library(tidybayes)
 set.seed(42)
 
 # Generate Data -----------------------------------------------------------
-# Specify data and parameter values.
+# Specify data and hyperprior values.
 sim_values <- list(
-  N = 50,                    # Number of observations.
-  I = 5,                     # Number of covariates.
-  J = c(2, 3),               # Number of levels for each discrete variable.
-  beta = c(1, -4, 6, 3, -2), # Vector of slopes.
-  tau = 1                    # Variance of the regression.
+  R = 500,           # Number of respondents.
+  S = 10,            # Number of choice tasks.
+  A = 4,             # Number of choice alternatives.
+  L = c(3, 4, 5),    # Number of levels for each discrete attribute.
+  I = 12,            # Number of observation-level covariates.
+  J = 3,             # Number of population-level covariates.
+  
+  Gamma_mean = 0,    # Mean of population-level means.
+  Gamma_scale = 5,   # Scale of population-level means.
+  Omega_shape = 2,   # Shape of population-level scale.
+  tau_df = 2         # Degrees of freedom of population-level scale.
 )
 
-# Matrix of covariates.
-sim_X <- matrix(data = 0, nrow = sim_values$N, ncol = (sim_values$I))
-for (n in 1:sim_values$N) {
-  temp_X <- NULL
-  for (j in 1:length(sim_values$J)) {
-    temp_J <- rep(0, sim_values$J[j])
-    temp_J[sample(seq(1, (sim_values$J[j])), 1)] <- 1
-    temp_X <- c(temp_X, temp_J)
+# Array of observation-level covariates.
+sim_X <- array(
+  data = NA,
+  dim = c(sim_values$R, sim_values$S, sim_values$A, sim_values$I)
+)
+for (r in 1:sim_values$R) {
+  for (s in 1:sim_values$S) {
+    temp_S <- NULL
+    for (l in 1:length(sim_values$L)) {
+      temp_L <- NULL
+      for (a in 1:sim_values$A) {
+        temp_A <- matrix(0, nrow = 1, ncol = sim_values$L[l])
+        temp_A[1, sample(seq(1, sim_values$L[l]), 1)] <- 1
+        temp_L <- rbind(temp_L, temp_A)
+      }
+      temp_S <- cbind(temp_S, temp_L)
+    }
+    sim_X[r, s,,] <- temp_S
   }
-  sim_X[n,] <- temp_X
 }
 sim_values$X <- sim_X
 
+# Matrix of population-level covariates.
+sim_Z <- cbind(
+  rep(1, sim_values$R),
+  matrix(
+    runif(sim_values$R * (sim_values$J - 1), min = 2, max = 5),
+    nrow = sim_values$R
+  )
+)
+sim_values$Z <- sim_Z
+
 # Compile the model for generating data.
-generate_flat_data <- cmdstan_model(
-  stan_file = here::here("posts", "discrete-coding", "Code", "generate_flat_data.stan"),
+generate_hier_mnl_data <- cmdstan_model(
+  stan_file = here::here("posts", "discrete-coding", "Code", "generate_hier_mnl_data.stan"),
   dir = here::here("posts", "discrete-coding", "Code", "Compiled")
 )
 
 # Generate data.
-sim_data <- generate_flat_data$sample(
+sim_data <- generate_hier_mnl_data$sample(
   data = sim_values,
   chains = 1,
   iter_sampling = 1,
@@ -48,7 +73,7 @@ sim_data <- generate_flat_data$sample(
 )
 
 # Extract generated data.
-sim_y <- sim_data$draws(variables = "y", format = "draws_list") %>%
+sim_Y <- sim_data$draws(variables = "Y", format = "draws_list") %>%
   pluck(1) %>%
   flatten_dbl()
 
