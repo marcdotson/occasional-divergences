@@ -1,9 +1,9 @@
 ---
 title: "Coding discrete explanatory variables"
 author: "Marc Dotson"
-date: "2022-12-07"
+date: "2023-01-10"
 description: |
-  There are a number of ways to code discrete explanatory variables. In this post, we explore using two of the most common ways to code discrete explanatory variables: dummy coding and index coding.
+  There are a number of ways to code discrete explanatory variables. In this post, we explore the equivalence of using two of the most common ways: dummy coding and index coding.
 categories:
   - index coding
   - bayesian inference
@@ -435,7 +435,8 @@ head(sim_Y)
 
 ## Dummy coding
 
-- Compare this `hmnl_noncentered` to what is used for why-donors-donate.
+- Update extracting generated data for an HMNL above.
+- Compare this `hmnl_noncentered` to what is used for why-donors-donate (hmnl_parameterizations.R?)
 - Discuss specifying a brand intercept (i.e., index coding the brand attribute) in a hierarchical multinomial logit model where an intercept isn't identified?
 
 If intercepts aren't identified, it could be the prior alone that is providing a sensible posterior. To test this, let's use a uniform prior. If it's not just the prior, then when we consider choice models, it's the outside good that is at play. The outside good provides a reference to the alternatives, a kind of intercept that is identified in the model even when a traditional intercept is not. To test, include the outside good coded as zero with brand intercepts and the outside good coded as a binary attribute (it's own intercept) with dummy coded brands. These should be equivalent. But what if it's a forced choice and there is no outside option? Did we include a forced choice for why-donors-donate?

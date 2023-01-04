@@ -77,6 +77,8 @@ sim_Y <- sim_data$draws(variables = "Y", format = "draws_list") %>%
   pluck(1) %>%
   flatten_dbl()
 
+# rstan::extract(sim_data)$Y[1,,]
+
 # Dummy Coding ------------------------------------------------------------
 # Specify data.
 data <- list(
@@ -306,5 +308,3 @@ ggsave(
   width = 5, height = 4, units = "in"
 )
 
-# # Save output.
-# fit_index$save_object(file = here::here("content", "post", "discrete-coding", "Output", "fit_index.rds"))
