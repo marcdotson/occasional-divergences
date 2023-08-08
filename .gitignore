@@ -5,15 +5,15 @@
 .Ruserdata
 .DS_Store
 
-# RDS Data.
-*.rds
-
 # Quarto.
 /.quarto/
 /_site/
 
+# RDS Data.
+*.rds
+
 # Posts-specific.
-Code/Compiled/
-Data/
-Output/
+posts/*/Code/Compiled/
+posts/*/Data/
+posts/*/Output/
 
