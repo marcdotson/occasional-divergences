@@ -1,0 +1,305 @@
+---
+title: "Coding discrete explanatory variables"
+author: "Marc Dotson"
+date: "2023-08-08"
+description: |
+  There are a number of ways to code discrete explanatory variables. In this post, we explore the equivalence of using two of the most common ways: dummy coding and index coding.
+categories:
+  - index coding
+  - bayesian inference
+  - stan
+  - r
+image: Figures/flat-regression-contrasts-dummy-01.png
+slug: discrete-coding
+---
+
+There are a number of ways to code (i.e., encode) discrete (i.e., categorical) explanatory variables, with different coding strategies suited for specific use cases. In this post, we explore using two of the most common ways to code discrete explanatory variables: dummy coding and index coding. Another approach is called effects or sum-to-one coding. For a great walkthrough of that approach and its benefits in the context of choice modeling, see Elea Feit's [post](https://eleafeit.com/posts/2021-05-23-parameterization-of-multinomial-logit-models-in-stan/) that helped inspire this one.
+
+Let's start by generating flat regression data that includes discrete explanatory variables.
+
+```{stan generate-flat-regression-data, output.var="generate_flat_regression_data", eval=FALSE}
+// Index and parameter values.
+data {
+  int<lower = 1> N;    // Number of observations.
+  int<lower = 1> I;    // Number of covariates.
+  matrix[N, I] X;      // Matrix of covariates.
+
+  vector[I] beta;      // Vector of slopes.
+  real<lower = 0> tau; // Variance of the regression.
+}
+
+// Generate data according to the flat regression.
+generated quantities {
+  // Vector of observations.
+  vector[N] y;
+
+  // Generate data.
+  for (n in 1:N) {
+    y[n] = normal_rng(X[n,] * beta, tau);
+  }
+}
+```
+
+Now we create the matrix of covariates and call `generate_flat_regression_data`.
+
+```{r call-generate-flat-data, eval=TRUE}
+#| message: false
+# Load packages.
+library(tidyverse)
+library(cmdstanr)
+library(posterior)
+library(bayesplot)
+library(tidybayes)
+
+# Set the simulation seed.
+set.seed(42)
+
+# Specify data and parameter values.
+sim_values <- list(
+  N = 50,                    # Number of observations.
+  I = 5,                     # Number of covariates.
+  J = c(2, 3),               # Number of levels for each discrete variable.
+  beta = c(1, -4, 6, 3, -2), # Vector of slopes.
+  tau = 1                    # Variance of the regression.
+)
+
+# Matrix of covariates.
+sim_X <- matrix(data = 0, nrow = sim_values$N, ncol = (sim_values$I))
+for (n in 1:sim_values$N) {
+  temp_X <- NULL
+  for (j in 1:length(sim_values$J)) {
+    temp_J <- rep(0, sim_values$J[j])
+    temp_J[sample(seq(1, (sim_values$J[j])), 1)] <- 1
+    temp_X <- c(temp_X, temp_J)
+  }
+  sim_X[n,] <- temp_X
+}
+sim_values$X <- sim_X
+
+head(sim_values$X)
+
+# Compile the model for generating data.
+generate_flat_regression_data <- cmdstan_model(
+  stan_file = here::here("posts", "discrete-coding", "Code", "generate_flat_regression_data.stan"),
+  dir = here::here("posts", "discrete-coding", "Code", "Compiled")
+)
+
+# Generate data.
+sim_data <- generate_flat_regression_data$sample(
+  data = sim_values,
+  chains = 1,
+  iter_sampling = 1,
+  seed = 42,
+  fixed_param = TRUE
+)
+
+# Extract generated data.
+sim_y <- sim_data$draws(variables = "y", format = "draws_list") %>%
+  pluck(1) %>%
+  flatten_dbl()
+
+head(sim_y)
+```
+
+## Dummy coding
+
+Also known as indicator coding, dummy coding is the most common way to deal with discrete variables, where a single discrete variable with `K` levels is encoded as `K - 1` binary columns, each indicating the presence or absence of the given level. It is an approach to identifying the estimates of discrete explanatory levels that has a specific contrast hard-wired.
+
+If we include all levels of a single discrete variable, they sum up *across columns* to a constant---to an *intercept*. If we did that with more than one discrete variable, we would have more than one intercept and they would no longer be identified. With dummy coding, it is typical to include an intercept (i.e., a constant, often a column of `1`'s) and drop the first level (i.e., the reference level) of each of the discrete variables.
+
+Here's a flat regression using dummy coding.
+
+```{stan flat-regression-dummy, output.var="flat_regression_dummy", eval=FALSE}
+// Index value and observations.
+data {
+  int<lower = 1> N;    // Number of observations.
+  int<lower = 1> I;    // Number of covariates.
+  vector[N] y;         // Vector of observations.
+  matrix[N, I] X;      // Matrix of covariates.
+}
+
+// Parameters.
+parameters {
+  real alpha;          // Intercept.
+  vector[I] beta;      // Vector of slopes.
+  real<lower = 0> tau; // Variance of the regression.
+}
+
+// Regression.
+model {
+  // Priors.
+  alpha ~ normal(0, 5);
+  for (i in 1:I) {
+    beta[i] ~ normal(0, 5);
+  }
+  tau ~ normal(0, 5);
+
+  // Likelihood.
+  for (n in 1:N) {
+    y[n] ~ normal(alpha + X[n,] * beta, tau);
+  }
+}
+```
+
+Let's run this flat regression using dummy coding.
+
+```{r call-flat-regression-dummy, eval=TRUE}
+#| message: false
+# Specify data.
+data <- list(
+  N = length(sim_y),    # Number of observations.
+  I = ncol(sim_X) - 2,  # Number of covariates.
+  y = sim_y,            # Vector of observations.
+  X = sim_X[, -c(1, 3)] # Matrix of covariates.
+)
+
+# Compile the model.
+flat_regression_dummy <- cmdstan_model(
+  stan_file = here::here("posts", "discrete-coding", "Code", "flat_regression_dummy.stan"),
+  dir = here::here("posts", "discrete-coding", "Code", "Compiled")
+)
+
+# Fit the model.
+fit_dummy <- flat_regression_dummy$sample(
+  data = data,
+  chains = 4,
+  parallel_chains = 4,
+  seed = 42
+)
+```
+
+Note that we can't directly recover the parameters values we used when simulating the data. Dummy coding is equivalent to specifying each included level as a "hard-wired" contrast with the reference level. We can compare the dummy-coded marginal posteriors to the contrasted true parameter values.
+
+```{r flat-regression-contrasts-dummy, eval=FALSE}
+# Extract draws and compare contrasts.
+contrast_values <- tibble(
+  .variable = str_c("contrast", 1:(sim_values$I - length(sim_values$J))),
+  values = c(
+    # First discrete variable.
+    sim_values$beta[2] - sim_values$beta[1],
+    # Second discrete variable.
+    sim_values$beta[4] - sim_values$beta[3],
+    sim_values$beta[5] - sim_values$beta[3]
+  )
+)
+fit_dummy$draws(variables = "beta", format = "draws_df") %>%
+  mutate_variables(
+    contrast1 = `beta[1]`,
+    contrast2 = `beta[2]`,
+    contrast3 = `beta[3]`
+  ) %>%
+  gather_draws(contrast1, contrast2, contrast3) %>%
+  ggplot(aes(y = .variable, x = .value)) +
+  stat_histinterval() +
+  geom_vline(aes(xintercept = values), contrast_values, color = "red") +
+  facet_wrap(~ .variable, scales = "free", ncol = 1)
+```
+
+![](Figures/flat-regression-contrasts-dummy-01.png){width=750px}
+
+The drawback to dummy coding in a Bayesian setting with *real data* is that we need to specify priors over the contrasts rather than the parameters themselves. This complication for setting priors is a good reason to consider effects coding (again, see Elea Feit's [post](https://eleafeit.com/posts/2021-05-23-parameterization-of-multinomial-logit-models-in-stan/) on that topic). Dummy coding also enshrines the reference level as something special, making it non-trivial to compute other contrasts.
+
+## Index coding
+
+Also known as one-hot encoding, index coding similarly turns each level of a discrete variable into its own binary column. However, with index coding we *don't* include an intercept and *don't* include any reference levels.
+
+By not including reference levels, the intercept is implied by the fact that the columns sum to a constant, as discussed previously. But when we have more than one discrete variable we also have more than one implied intercept. This would create an identification problem in a frequentist setting, but in a Bayesian analysis we simply rely on the prior to enable identification of each of the parameters. As a bonus, the contrasts are always identified even if their constituent parameter estimates are not.
+
+Here's a flat regression using index coding. Note that the only difference here is the absence of the intercept `alpha`.
+
+```{stan flat-regression-index, output.var="flat_regression_index", eval=FALSE}
+// Index value and observations.
+data {
+  int<lower = 1> N;    // Number of observations.
+  int<lower = 1> I;    // Number of covariates.
+  vector[N] y;         // Vector of observations.
+  matrix[N, I] X;      // Matrix of covariates.
+}
+
+// Parameters.
+parameters {
+  vector[I] beta;      // Vector of slopes.
+  real<lower = 0> tau; // Variance of the regression.
+}
+
+// Regression.
+model {
+  // Priors.
+  for (i in 1:I) {
+    beta[i] ~ normal(0, 5);
+  }
+  tau ~ normal(0, 5);
+
+  // Likelihood.
+  for (n in 1:N) {
+    y[n] ~ normal(X[n,] * beta, tau);
+  }
+}
+```
+
+And now let's run this flat regression using index coding.
+
+```{r call-flat-regression-index, eval=TRUE}
+#| message: false
+# Specify data.
+data <- list(
+  N = length(sim_y),   # Number of observations.
+  I = ncol(sim_X),     # Number of covariates.
+  y = sim_y,           # Vector of observations.
+  X = sim_X            # Matrix of covariates.
+)
+
+# Compile the model.
+flat_regression_index <- cmdstan_model(
+  stan_file = here::here("posts", "discrete-coding", "Code", "flat_regression_index.stan"),
+  dir = here::here("posts", "discrete-coding", "Code", "Compiled")
+)
+
+# Fit the model.
+fit_index <- flat_regression_index$sample(
+  data = data,
+  chains = 4,
+  parallel_chains = 4,
+  seed = 42
+)
+```
+
+With index coding we *can* directly recover the parameters values we used when simulating the data! Additionally, it is straightforward to produce whatever contrasts we'd like! Here we reproduce the same plots as before and compare it to the contrasted true parameter values.
+
+```{r flat-regression-contrasts-index, eval=FALSE}
+# Extract draws and compare contrasts.
+contrast_values <- tibble(
+  .variable = str_c("contrast", 1:(sim_values$I - length(sim_values$J))),
+  values = c(
+    # First discrete variable.
+    sim_values$beta[2] - sim_values$beta[1],
+    # Second discrete variable.
+    sim_values$beta[4] - sim_values$beta[3],
+    sim_values$beta[5] - sim_values$beta[3]
+  )
+)
+fit_index$draws(variables = c("beta"), format = "draws_df") %>%
+  mutate_variables(
+    contrast1 = `beta[2]` - `beta[1]`,
+    contrast2 = `beta[4]` - `beta[3]`,
+    contrast3 = `beta[5]` - `beta[3]`
+  ) %>%
+  gather_draws(contrast1, contrast2, contrast3) %>%
+  ggplot(aes(y = .variable, x = .value)) +
+  stat_histinterval() +
+  geom_vline(aes(xintercept = values), contrast_values, color = "red") +
+  facet_wrap(~ .variable, scales = "free", ncol = 1)
+```
+
+![](Figures/flat-regression-contrasts-index-01.png){width=750px}
+
+The contrasts and the recovered parameters are the same as the results from the dummy-coded model. Index coding like this is only possible in a Bayesian framework where the use of priors obviates the necessity of strict identification strategies. However, it's not without costs. We will need to specify informative priors, which we should be doing anyway, and the model itself may take longer to converge.
+
+## Final thoughts
+
+Dummy coding is straightforward but requires some care when considering what the reference level and thus the hard-coded contrast should be. For simple models, index coding is great and demonstrates another benefit of being Bayesian. However, for more complicated models or with thinner data, the priors may need to be even *more* informative to ensure identifiability and model convergence. Finally, you can consider something of a hybrid coding scheme where one of the discrete variables can be index-coded in place of an intercept even when dummy coding with the other discrete variables.
+
+#### Marc Dotson
+
+Marc is an assistant professor of marketing at the BYU Marriott School of Business. He graduated with an MSc from The London School of Economics and Political Science in 2009 and a PhD from The Ohio State University in 2016. His research interests include Bayesian inference, predictive modeling, consumer preference heterogeneity, and unstructured data. Marc teaches marketing analytics. You can find him on [Twitter](https://twitter.com/marcdotson) and [GitHub](https://github.com/marcdotson).
+
