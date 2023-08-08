@@ -1,3 +1,12 @@
+# Discuss specifying a brand intercept (i.e., index coding the brand attribute) in a 
+# hierarchical multinomial logit model where an intercept isn't identified?
+
+# The outside good provides a reference to the alternatives, a kind of intercept that is 
+# identified in the model even when a traditional intercept is not. To test, include the 
+# outside good coded as zero with brand intercepts and the outside good coded as a binary 
+# attribute (it's own intercept) with dummy coded brands. These should be equivalent. But 
+# what if it's a forced choice and there is no outside option?
+
 # Preamble ----------------------------------------------------------------
 # Load packages.
 library(tidyverse)
