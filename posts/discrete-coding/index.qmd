@@ -9,7 +9,7 @@ categories:
   - bayesian inference
   - stan
   - r
-image: Figures/flat-contrasts-dummy-01.png
+image: Figures/flat-regression-contrasts-dummy-01.png
 slug: discrete-coding
 ---
 
