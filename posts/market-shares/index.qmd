@@ -1,0 +1,34 @@
+---
+title: "Estimating market shares and causal estimands from conjoint data"
+author: "Marc Dotson"
+date: "2023-08-30"
+description: |
+  Posterior predictions resulting from modeling conjoint experiment data yield a number of informative statistics, though in practice there hasn't been as much concern with making formal causal estimates.
+categories:
+  - choice models
+  - bayesian inference
+  - posterior predictions
+  - causal inference
+  - stan
+  - r
+image: Figures/flat-regression-contrasts-dummy-01.png
+slug: market-shares
+---
+
+Andrew's post about different kinds of posterior predictions: https://www.andrewheiss.com/blog/2022/09/26/guide-visualizing-types-posteriors/#when-posterior_epred-isnt-just-the-back-transformed-linear-predictor
+
+
+
+What are the posterior predictions for causal inference?
+- Use {marginaleffects}?
+- Standardization/g-computation, inverse probability weighting, and maximum likelihood estimation.
+- Application of causal machine learning?
+
+Can we think about ACMEs as a different way for computing attribute or level importance?
+
+## Market shares
+
+## Causal estimands
+
+## Final thoughts
+
