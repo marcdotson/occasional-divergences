@@ -299,7 +299,3 @@ The contrasts and the recovered parameters are the same as the results from the 
 
 Dummy coding is straightforward but requires some care when considering what the reference level and thus the hard-coded contrast should be. For simple models, index coding is great and demonstrates another benefit of being Bayesian. However, for more complicated models or with thinner data, the priors may need to be even *more* informative to ensure identifiability and model convergence. Finally, you can consider something of a hybrid coding scheme where one of the discrete variables can be index-coded in place of an intercept even when dummy coding with the other discrete variables.
 
-#### Marc Dotson
-
-Marc is an assistant professor of marketing at the BYU Marriott School of Business. He graduated with an MSc from The London School of Economics and Political Science in 2009 and a PhD from The Ohio State University in 2016. His research interests include Bayesian inference, predictive modeling, consumer preference heterogeneity, and unstructured data. Marc teaches marketing analytics. You can find him on [Twitter](https://twitter.com/marcdotson) and [GitHub](https://github.com/marcdotson).
-

@@ -540,9 +540,3 @@ Does it matter if we use a centered or non-centered parameterization for a hiera
 
 This difference in choice model parameterizations is a concern because the centered parameterization is used almost exclusively in practice. However, since HMC isn't as widespread, the diagnostics accompanying other estimation paradigms might not indicate any problems. This post doesn't go so far as to establish the edge cases of when either parameterization might work best or consider *how* wrong the centered parameterization is. Regardless, given the savings in computation time and the evidence presented using simulated data, the non-centered parameterization should be our default approach in choice modeling.
 
------
-
-### Marc Dotson
-
-Marc is an assistant professor of marketing at the BYU Marriott School of Business. He graduated with an MSc from The London School of Economics and Political Science in 2009 and a PhD from The Ohio State University in 2016. His research interests include Bayesian inference, predictive modeling, consumer preference heterogeneity, and unstructured data. Marc teaches marketing analytics. You can find him on [Twitter](https://twitter.com/marcdotson) and [GitHub](https://github.com/marcdotson).
-
