@@ -193,7 +193,3 @@ If you're specifically looking to build a blog, here are a number of additional 
 
 Making a multilingual publishing system requires leaning more heavily on the set of additional languages that link them: Markdown, YAML, and especially Pandoc (and maybe some CSS as you need it). From what I've seen, it's a solid foundation for a powerful tool that I hope brings more people into the big tent of functionality that R Markdown has come to provide for R users specifically.
 
-#### Marc Dotson
-
-Marc is an assistant professor of marketing at the BYU Marriott School of Business. He graduated with an MSc from The London School of Economics and Political Science in 2009 and a PhD from The Ohio State University in 2016. His research interests include Bayesian inference, predictive modeling, consumer preference heterogeneity, and unstructured data. Marc teaches marketing analytics. You can find him on [Twitter](https://twitter.com/marcdotson) and [GitHub](https://github.com/marcdotson).
-
