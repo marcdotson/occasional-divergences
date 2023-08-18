@@ -15,9 +15,17 @@ image: Figures/flat-regression-contrasts-dummy-01.png
 slug: market-shares
 ---
 
-Andrew's post about different kinds of posterior predictions: https://www.andrewheiss.com/blog/2022/09/26/guide-visualizing-types-posteriors/#when-posterior_epred-isnt-just-the-back-transformed-linear-predictor
+Andrew's post about different kinds of posterior predictions: https://www.andrewheiss.com/blog/2022/09/26/guide-visualizing-types-posteriors
 
 
+
+## Market shares
+
+- Market shares using point estimates.
+- Market shares propagating uncertainty from the entire posterior.
+- Place of different kind of posterior predictions in market share calculations?
+
+## Causal estimands
 
 What are the posterior predictions for causal inference?
 - Use {marginaleffects}?
@@ -25,10 +33,6 @@ What are the posterior predictions for causal inference?
 - Application of causal machine learning?
 
 Can we think about ACMEs as a different way for computing attribute or level importance?
-
-## Market shares
-
-## Causal estimands
 
 ## Final thoughts
 
