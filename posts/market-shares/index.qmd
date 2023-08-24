@@ -17,7 +17,26 @@ slug: market-shares
 
 Andrew's post about different kinds of posterior predictions: https://www.andrewheiss.com/blog/2022/09/26/guide-visualizing-types-posteriors
 
+### Posterior predictions
 
+`tidybayes::add_predicted_draws()` and `brms::posterior_predict()` adds draws from the posterior predictive distribution. In other words, given the posterior, what is the predicted distribution of outcomes. This posterior predictive distribution propagates all uncertainty in the posterior distribution through to the distribution of outcomes (i.e., it uses the entire distribution of posterior draws to make the predictive distribution).
+
+### Expectation of the posterior predictive distribution
+
+`tidybayes::add_epred_draws()` and `brms::posterior_epred()` adds draws from the *expectation* of the posterior predictive distribution. This assumes that the posterior predictive distribution has an expectation. This is analogous to taking the expectation (e.g., mean or median) of a marginal posterior distribution to describe the most likely parameter value. Instead, we're using the expectation of the posterior predictive distribution to describe the most likely predicted outcome.
+
+As with the posterior predictive distribution, this propagates all uncertainty forward but then abandons it for the expected value only. Additionally, the uncertainty present in the variance is no longer present.
+
+### Posterior of the linear predictor
+
+`tidybayes::add_linpred_draws()` and `brms::posterior_linpred()` adds draws the posterior linear predictors. This is a posterior prediction for the linear model only. It's possible that the posterior linear predictor is equivalent to the expectation of the posterior predictive distribution (e.g., with Normal regression).
+
+Additionally, the uncertainty present in the variance is no longer present.
+
+Andrew's post about ACMEs and marginal means:
+https://www.andrewheiss.com/blog/2023/07/25/conjoint-bayesian-frequentist-guide/#average-marginal-component-effect-amce
+
+Is using point estimates to compute market shares the same as the expectation of the posterior predictive distribution? If not, how is it different? I suppose there is no uncertainty present in the prediction?
 
 ## Market shares
 
