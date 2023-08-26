@@ -15,7 +15,7 @@ image: Figures/flat-regression-contrasts-dummy-01.png
 slug: market-shares
 ---
 
-Andrew's post about different kinds of posterior predictions: https://www.andrewheiss.com/blog/2022/09/26/guide-visualizing-types-posteriors
+## Andrew's post about different kinds of posterior predictions https://www.andrewheiss.com/blog/2022/09/26/guide-visualizing-types-posteriors
 
 ### Posterior predictions
 
@@ -25,18 +25,55 @@ Andrew's post about different kinds of posterior predictions: https://www.andrew
 
 `tidybayes::add_epred_draws()` and `brms::posterior_epred()` adds draws from the *expectation* of the posterior predictive distribution. This assumes that the posterior predictive distribution has an expectation. This is analogous to taking the expectation (e.g., mean or median) of a marginal posterior distribution to describe the most likely parameter value. Instead, we're using the expectation of the posterior predictive distribution to describe the most likely predicted outcome.
 
-As with the posterior predictive distribution, this propagates all uncertainty forward but then abandons it for the expected value only. Additionally, the uncertainty present in the variance is no longer present.
+As with the posterior predictive distribution, this propagates all uncertainty forward but then abandons it for the expected value only. Additionally, the uncertainty present in the variance is no longer included.
 
 ### Posterior of the linear predictor
 
 `tidybayes::add_linpred_draws()` and `brms::posterior_linpred()` adds draws the posterior linear predictors. This is a posterior prediction for the linear model only. It's possible that the posterior linear predictor is equivalent to the expectation of the posterior predictive distribution (e.g., with Normal regression).
 
-Additionally, the uncertainty present in the variance is no longer present.
+Additionally, the uncertainty present in the variance is no longer included.
 
-Andrew's post about ACMEs and marginal means:
+## Andrew's post about ACMEs and marginal means
+
 https://www.andrewheiss.com/blog/2023/07/25/conjoint-bayesian-frequentist-guide/#average-marginal-component-effect-amce
 
-Is using point estimates to compute market shares the same as the expectation of the posterior predictive distribution? If not, how is it different? I suppose there is no uncertainty present in the prediction?
+Is using point estimates to compute market shares the same as the expectation of the posterior predictive distribution? If not, how is it different? I suppose there is no uncertainty present in the prediction? Is it because the uncertainty present in the variance is no longer included?
+
+```{r}
+#| eval: false
+#| label: acme-mms
+
+# This is like computing the persona betas in the market simulator:
+# - Instead of organization or persona configurations, we have all possible combinations of attribute levels.
+# - Instead of computing expected utility, we're average to marginal means.
+# - Instead of normalizing to market shares, we're using plogis() to get everything on probability scales.
+# - And we're doing this for the entire set of posterior draws.
+
+###################################################################
+# Computing marginal means on the probability scale.
+###################################################################
+# Start with the Gamma draws form the heterogeneity model.
+all_combos_means <- gammas_raw %>%
+  # Get a data frame of all estimable attribute levels.
+  pivot_wider(names_from = i, values_from = Gamma) %>%
+  # Create a list-column of draws for all estimable attribute levels.
+  group_by(j, .chain, .iteration, .draw) %>%
+  nest() %>%
+  # Matrix multiply each set of draws by the all combinations grid.
+  mutate(pi = map(data, ~{
+    preds <- as.numeric(all_combos_design_grid %*% as.numeric(.))
+    all_combos %>%
+      mutate(
+        .linpred = preds,
+        # fake bc it's not actually mean(posterior_predict(.))
+        .epred = plogis(preds)
+      )
+  })) %>%
+  select(-data) %>%
+  unnest(pi)
+###################################################################
+```
+
 
 ## Market shares
 
