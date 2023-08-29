@@ -15,7 +15,13 @@ image: Figures/flat-regression-contrasts-dummy-01.png
 slug: market-shares
 ---
 
-## Andrew's post about different kinds of posterior predictions https://www.andrewheiss.com/blog/2022/09/26/guide-visualizing-types-posteriors
+Posterior predictions resulting from modeling conjoint experiment data yield a number of informative statistics, though in practice there hasn't been as much concern with making formal causal estimates. However, there is a relationship between market shares and computing causal estimates.
+
+In this blog we explore how market shares and causal estimates are computed "in practice" and consider a new way to compute market shares that retains all of the benefits found in the causal estimates, including uncertainty estimates for market shares. We call these "causal market shares."
+
+## Andrew's post about different kinds of posterior predictions
+
+[https://www.andrewheiss.com/blog/2022/09/26/guide-visualizing-types-posteriors](link)
 
 ### Posterior predictions
 
@@ -35,17 +41,28 @@ Additionally, the uncertainty present in the variance is no longer included.
 
 ## Andrew's post about ACMEs and marginal means
 
-https://www.andrewheiss.com/blog/2023/07/25/conjoint-bayesian-frequentist-guide/#average-marginal-component-effect-amce
+[https://www.andrewheiss.com/blog/2023/07/25/conjoint-bayesian-frequentist-guide/#average-marginal-component-effect-amce](link)
 
 Is using point estimates to compute market shares the same as the expectation of the posterior predictive distribution? If not, how is it different? I suppose there is no uncertainty present in the prediction? Is it because the uncertainty present in the variance is no longer included?
+
+*Causal estimates are some sort of averaged probability conditioned on counterfactual predictions.*
+
+average of `gammas_draw %*% every possible combination of levels` for every draw...
+
+1. Take the dot product of the parameter estimates and *every* possible combination of the attribute levels. Do this for *every* (post warm-up) draw from the posterior.
+2. Take the inverse logit of those products to convert them to the probability space.
+3. Average these predicted probabilities across draws for a given attributes' levels.
+4. Produce any contrast you'd like using these (I don't know what to call them) marginal posterior predictive counterfactual distributions.
 
 ```{r}
 #| eval: false
 #| label: acme-mms
 
+# see acme_mms.R in why-donors-donate/private
+
 # This is like computing the persona betas in the market simulator:
 # - Instead of organization or persona configurations, we have all possible combinations of attribute levels.
-# - Instead of computing expected utility, we're average to marginal means.
+# - Instead of computing expected utility, we're averaging to marginal means.
 # - Instead of normalizing to market shares, we're using plogis() to get everything on probability scales.
 # - And we're doing this for the entire set of posterior draws.
 
@@ -71,9 +88,34 @@ all_combos_means <- gammas_raw %>%
   })) %>%
   select(-data) %>%
   unnest(pi)
+
+# Let's split this up into parts...
+###################################################################
+gammas_nested <- gammas_raw %>%
+  # Get a data frame of all estimable attribute levels.
+  pivot_wider(names_from = i, values_from = Gamma) %>%
+  # Create a list-column of draws for all estimable attribute levels.
+  group_by(j, .chain, .iteration, .draw) %>%
+  nest()
+
+# Single draw of gammas.
+gammas_unnested <- gammas_nested |> ungroup() |> slice(1) |> select(data) |> unnest(cols = c(data)) |> as.numeric()
+
+# Matrix multiply single draw of gammas with every possible combination.
+preds <- as.numeric(all_combos_design_grid %*% gammas_unnested)
+
+# Append the dot product for every possible combination with a single draw of gammas.
+all_combos_one_draw <- all_combos %>%
+  mutate(
+    .linpred = preds,
+    # fake bc it's not actually mean(posterior_predict(.))
+    .epred = plogis(preds)
+  )
+
+# Now stack this with the same procedure for *every* draw.
+all_combos_one_draw
 ###################################################################
 ```
-
 
 ## Market shares
 
@@ -89,6 +131,12 @@ What are the posterior predictions for causal inference?
 - Application of causal machine learning?
 
 Can we think about ACMEs as a different way for computing attribute or level importance?
+
+## Equivalence
+
+### Using posterior means first
+
+### Propagation uncertatiny from the posterior
 
 ## Final thoughts
 
