@@ -1,0 +1,42 @@
+---
+title: "Maintaining environments with {renv}"
+author: "Marc Dotson"
+date: "2023-10-01"
+description: |
+  Environments are a pain, but {renv} makes things better. For R and Python!
+categories:
+  - r
+  - python
+image: Figures/mcmc_trace-gamma.png
+slug: rep-env
+---
+
+Recently in full release at 1.0.0. Implement for R and Python.
+
+[https://rstudio.github.io/renv/index.html](link)
+
+For *r*eproducible *env*ironment.
+
+- `renv::init()` to create a project library `renv/library` and a lockfile `renv.lock`.
+- `renv::snapshot()` to record packages and their sources in the lockfile.
+- `renv::restore()` to reinstall the specific package versions recorded in the lockfile.
+
+> You’ll then need to commit renv.lock, .Rprofile, renv/settings.json and renv/activate.R to version control, ensuring that others can recreate your project environment. If you’re using git, this is particularly simple because renv will create a .gitignore for you, and you can just commit all suggested files.
+
+## What are environments?
+
+### Python
+
+Discuss Python study group and use of environments (see https://blog.jeremarc.com/posts/python-env/).
+
+### R
+
+System library where all packages are installed. {renv} makes it easy to create project libraries.
+
+Go over {renv} and its use for Python in the RStudio IDE.
+Any helpful discussion of environments in WTF?
+
+## Final thoughts
+
+
+
