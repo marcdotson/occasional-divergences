@@ -18,6 +18,8 @@ Every package you install lives in your system library, accessible to all projec
 - To install the specific packages of an already-existing project library, use `renv::restore()`.
 - To update all packages in the project library, call `renv::update()`. Make sure code is working with the updated packages before calling `renv::snapshot()` to update the lockfile.
 
+Do you have to prune packages that are no longer used or does renv::snapshot() do that for you? The renv::dependencies() crawls the files to check for packages that are used while renv::status() will report issues found. Using renv::snapshot() will help resolve inconsistencies between what is used in the code and what is stored in the lockfile.
+
 Read [here](https://rstudio.github.io/renv/index.html) for more on using `{renv}`, including creating and maintaining Python environments.
 
 Recently in full release at 1.0.0. Implement for R and Python.
@@ -31,8 +33,6 @@ For *r*eproducible *env*ironment.
 - `renv::restore()` to reinstall the specific package versions recorded in the lockfile.
 
 > You’ll then need to commit renv.lock, .Rprofile, renv/settings.json and renv/activate.R to version control, ensuring that others can recreate your project environment. If you’re using git, this is particularly simple because renv will create a .gitignore for you, and you can just commit all suggested files.
-
-- Do you have to prune packages that are no longer used or does renv::snapshot() do that for you?
 
 ## What are environments?
 
@@ -50,6 +50,10 @@ Any helpful discussion of environments in WTF?
 ### Python and R
 
 How does {renv} work with a project that includes both R and Python? Any references in the R and Python for the Modern Data Scientist?
+
+Let's gooooo!
+
+Use `renv::use_python()` to tell {renv} to create and use a project-local Python environment. Assuming this is all through {reticulate}, it's stored easily as another part of the lockfile. Then all of the functions, snapshot(), restore(), etc. will operate for R and Python simultaneously.
 
 ## Final thoughts
 
