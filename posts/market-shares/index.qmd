@@ -122,6 +122,9 @@ all_combos_one_draw
 - Market shares using point estimates.
 - Market shares propagating uncertainty from the entire posterior.
 - Place of different kind of posterior predictions in market share calculations?
+- Issue with how the outside option is coded (all zeros) and it inflating the marginal means? From Andrew:
+
+> My theory is that the zero option is somehow messing with the manual matrix multiplication and lumping zeros together in strange ways that lead to a tripling of the estimates.
 
 ## Causal estimands
 
