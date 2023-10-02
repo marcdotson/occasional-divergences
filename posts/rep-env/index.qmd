@@ -55,5 +55,7 @@ Let's gooooo!
 
 Use `renv::use_python()` to tell {renv} to create and use a project-local Python environment. Assuming this is all through {reticulate}, it's stored easily as another part of the lockfile. Then all of the functions, snapshot(), restore(), etc. will operate for R and Python simultaneously.
 
+The Python environment associated with the project will load automatically when using Python from R.
+
 ## Final thoughts
 
