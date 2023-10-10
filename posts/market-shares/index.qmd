@@ -49,9 +49,9 @@ Is using point estimates to compute market shares the same as the expectation of
 
 average of `gammas_draw %*% every possible combination of levels` for every draw...
 
-1. Take the dot product of the parameter estimates and *every* possible combination of the attribute levels. Do this for *every* (post warm-up) draw from the posterior.
-2. Take the inverse logit of those products to convert them to the probability space.
-3. Average these predicted probabilities across draws for a given attributes' levels.
+1. Calculate posterior predictions by taking the dot product of the parameter estimates and *every* possible combination of the attribute levels. Do this for *every* (post warm-up) draw from the posterior.
+2. Take the inverse logit of these posterior predictions to convert them to the probability space.
+3. Average these posterior predicted probabilities across draws for a given attributes' levels.
 4. Produce any contrast you'd like using these (I don't know what to call them) marginal posterior predictive counterfactual distributions.
 
 ```{r}
