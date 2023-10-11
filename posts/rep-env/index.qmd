@@ -1,61 +1,91 @@
 ---
-title: "Maintaining environments with {renv}"
+title: "Reproducible environments for R and Python"
 author: "Marc Dotson"
-date: "2023-10-01"
+date: "2023-10-11"
 description: |
-  Environments are a pain, but {renv} makes things better. For R and Python!
+  Reproducible environments are a pain, but {renv} makes things easy for R and works well with venv for Python. Add pyenv, and you should be covered.
 categories:
   - r
   - python
-image: Figures/mcmc_trace-gamma.png
+image: figures/xkcd_python-env.png
 slug: rep-env
 ---
 
-Every package you install lives in your system library, accessible to all projects. However, packages change. Add a reproducible environment by creating a project library using the `{renv}` package.
+Reproducible environments. If you're primarily a Pythonista, you're likely already familiar with the necessity. And the horror. XKCD did it best:
 
-- Initialize the project library once using `renv::init()`. This will create the `renv` folder (with its own `.gitignore`), a lockfile `renv.lock`, and an `.Rprofile` file.
+![](figures/xkcd_python-env.png){width=60% fig-align="center"}
+
+If you're primarily an R user, you might not be familiar with either the necessity or the horror of reproducible environments. This post is about facilitating the former and minimizing the latter. I've written this primarily for R users, especially those who, like me, find themselves supplementing their existing R workflows with Python. We'll focus on using {renv} to create reproducible environments for R and Python, along with some venv and pyenv.
+
+## What is a reproducible environment?
+
+You already work in an environment. It's composed of the packages you use and their dependencies along with R and Python for a given project. What makes it reproducible is keeping track of *which* version of those packages, their dependencies, and R and Python you're using for your given project. While "keeping track" could happen in many different ways, ideally you want to keep track of your environment such that it can be easily *reproduced* on another machine, by you (including future you) or someone else.
+
+Okay, but *why*? Packages change. Functions get deprecated. And R and Python continue to evolve. Just because your project code works now doesn't mean that it will work for someone else or in the future. (Technically, your environment could be extended to your operating system version as well, depending on the project, but that's beyond the scope of this post.) Ensuring your project environment is reproducible enables collaboration, future-proofing, and open science.
+
+## R
+
+There are many ways to create reproducible environments in R, but [{renv}](https://rstudio.github.io/renv/index.html) recently reached 1.0.0 and has a streamlined workflow that helps minimize the horror for both R and Python (more on that in a bit). As an R user, you should be familiar with working in a [project](https://r4ds.hadley.nz/workflow-scripts.html#projects). It will help to think about creating a reproducible environment in two parts:
+
+1. The version of R you're using for your project.
+2. The version of the packages (and dependencies) you're using for your project.
+
+Let's address each of these in turn.
+
+### Version
+
+If you're like me, you don't often think about which version of R you're using. I often wait for a little while after a new version is released to make sure there aren't any breaking problems with the packages and software I use most (I'm looking at you, compilers). I also find myself reminding students to *not* update to the most recent version of R mid-semester for that same reason. You probably just update R a few times a year, maybe notice the version number and its cute Peanuts-themed release name when you open a new instance, and call it good.
+
+- Does {renv} keep track of which version of R you're using?
+- If not, how can you keep track of which version of r you're using?
+
+### Packages
+
+Every package you install lives in your system library, accessible to all projects. We'll use {renv} to make it easy to create project libraries.
+
+- Initialize the project library once using `renv::init()`. This will create the `renv` folder (with its own `.gitignore` file), a lockfile `renv.lock`, and an `.Rprofile` file.
 - Once you've installed packages, add them to the project library using `renv::snapshot()`.
 - To install the specific packages of an already-existing project library, use `renv::restore()`.
 - To update all packages in the project library, call `renv::update()`. Make sure code is working with the updated packages before calling `renv::snapshot()` to update the lockfile.
 
-Do you have to prune packages that are no longer used or does renv::snapshot() do that for you? The renv::dependencies() crawls the files to check for packages that are used while renv::status() will report issues found. Using renv::snapshot() will help resolve inconsistencies between what is used in the code and what is stored in the lockfile.
-
-Read [here](https://rstudio.github.io/renv/index.html) for more on using `{renv}`, including creating and maintaining Python environments.
-
-Recently in full release at 1.0.0. Implement for R and Python.
-
-[https://rstudio.github.io/renv/index.html](link)
-
-For *r*eproducible *env*ironment.
-
-- `renv::init()` to create a project library `renv/library` and a lockfile `renv.lock`.
-- `renv::snapshot()` to record packages and their sources in the lockfile.
-- `renv::restore()` to reinstall the specific package versions recorded in the lockfile.
-
 > You’ll then need to commit renv.lock, .Rprofile, renv/settings.json and renv/activate.R to version control, ensuring that others can recreate your project environment. If you’re using git, this is particularly simple because renv will create a .gitignore for you, and you can just commit all suggested files.
 
-## What are environments?
+The `renv::dependencies()` crawls the files to check for packages that are used while `renv::status()` will report issues found. Using `renv::snapshot()` will help resolve inconsistencies between what is used in the code and what is stored in the lockfile.
 
-### Python
+If renv isn't loading on it's own, you can use `renv::load()` to load the project library.
 
-Discuss Python study group and use of environments (see https://blog.jeremarc.com/posts/python-env/).
+## Python
 
-### R
+Again, it's helpful to think about creating a reproducible environment in two parts:
 
-System library where all packages are installed. {renv} makes it easy to create project libraries.
+1. The version of Python you're using for your project.
+2. The version of the packages (and dependencies) you're using for your project.
+
+Let's address each of these in turn.
+
+### Version
 
 Go over {renv} and its use for Python in the RStudio IDE.
-Any helpful discussion of environments in WTF?
 
-### Python and R
+- Does {renv} keep track of which version of R you're using?
+- Pair with pyenv?
+- Any helpful discussion of environments in WTF?
+- Any references in the R and Python for the Modern Data Scientist?
 
-How does {renv} work with a project that includes both R and Python? Any references in the R and Python for the Modern Data Scientist?
+::: {.callout-warning}
+This is a callout with a title.
+:::
 
-Let's gooooo!
+The Python environment associated with the project will load automatically when using Python from R?
 
-Use `renv::use_python()` to tell {renv} to create and use a project-local Python environment. Assuming this is all through {reticulate}, it's stored easily as another part of the lockfile. Then all of the functions, snapshot(), restore(), etc. will operate for R and Python simultaneously.
+### Packages
 
-The Python environment associated with the project will load automatically when using Python from R.
+Use `renv::use_python()` to tell {renv} to create and use a project-local Python environment. Assuming this is all through {reticulate}, it's stored easily as another part of the lockfile. Then all of the functions, `snapshot()`, `restore()`, etc. will operate for R and Python simultaneously.
+
+- What is the relationship between renv and venv?
+- A `requirements.txt` is added once `snapshot()` includes Python packages as well.
 
 ## Final thoughts
+
+It's environments all the way down.
 
