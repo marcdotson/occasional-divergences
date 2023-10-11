@@ -21,38 +21,65 @@ If you're primarily an R user, you might not be familiar with either the necessi
 
 You already work in an environment. It's composed of the packages you use and their dependencies along with R and Python for a given project. What makes it reproducible is keeping track of *which* version of those packages, their dependencies, and R and Python you're using for your given project. While "keeping track" could happen in many different ways, ideally you want to keep track of your environment such that it can be easily *reproduced* on another machine, by you (including future you) or someone else.
 
-Okay, but *why*? Packages change. Functions get deprecated. And R and Python continue to evolve. Just because your project code works now doesn't mean that it will work for someone else or in the future. (Technically, your environment could be extended to your operating system version as well, depending on the project, but that's beyond the scope of this post.) Ensuring your project environment is reproducible enables collaboration, future-proofing, and open science.
+Okay, but *why*? Packages change. Functions get deprecated. And R and Python continue to evolve. Just because your project code works now doesn't mean that it will work for someone else or in the future. (Technically, your environment could be extended to your operating system version as well, depending on the project, but worrying about machine images is beyond the scope of this post.) Ensuring your project environment is reproducible enables collaboration, future-proofing, and open science.
 
 ## R
 
-There are many ways to create reproducible environments in R, but [{renv}](https://rstudio.github.io/renv/index.html) recently reached 1.0.0 and has a streamlined workflow that helps minimize the horror for both R and Python (more on that in a bit). As an R user, you should be familiar with working in a [project](https://r4ds.hadley.nz/workflow-scripts.html#projects). It will help to think about creating a reproducible environment in two parts:
+There are many ways to create reproducible environments in R, but [{renv}](https://rstudio.github.io/renv/index.html) recently reached 1.0.0 and has a streamlined workflow that helps minimize the horror for both R and Python (more on that in a bit). As an R user, you should already be familiar with working in a [project](https://r4ds.hadley.nz/workflow-scripts.html#projects).
+
+Once you have {renv} installed, get started with your existing project or a new project by calling `renv::init()`. This will create two essential items in your project's working directory:
+
+1. A **lockfile** called `renv.lock`.
+2. A **project library** called `/renv`.
+
+More on both of these in a minute. An `.Rprofile` file is also created that will automatically run when you open your project and make sure you're using the correct reproducible environment. If for whatever reason you don't get a prompt in the Console saying that {renv} is running when you open your project after it's been initialized, you may have to jump start this by calling `renv::load()`. Also, please note that if you're using some sort of [version control](https://happygitwithr.com), you'll commit all three of these additions to your project (an automatically generated `/renv/.gitignore` file will make this simple if you're using Git).
+
+It will help to think about creating a reproducible environment in two parts:
 
 1. The version of R you're using for your project.
 2. The version of the packages (and dependencies) you're using for your project.
 
-Let's address each of these in turn.
+Let's discuss each in turn.
 
 ### Version
 
-If you're like me, you don't often think about which version of R you're using. I often wait for a little while after a new version is released to make sure there aren't any breaking problems with the packages and software I use most (I'm looking at you, compilers). I also find myself reminding students to *not* update to the most recent version of R mid-semester for that same reason. You probably just update R a few times a year, maybe notice the version number and its cute Peanuts-themed release name when you open a new instance, and call it good.
+If you're like me, you don't often think about which version of R you're using. I often wait for a little while after a new version is released to make sure there aren't any breaking problems with the packages and software I use most (I'm looking at you, compilers). I also find myself reminding students to *not* update to the most recent version of R mid-semester for that same reason. You probably just update R a few times a year, maybe notice the version number and its cute [Peanuts](https://en.wikipedia.org/wiki/Peanuts)-themed release name when you open a new instance, and call it good.
 
-- Does {renv} keep track of which version of R you're using?
-- If not, how can you keep track of which version of r you're using?
+When you called `renv::init()`, the first thing that was recorded in the `renv.lock` **lockfile** (which tracks the versions of everything to make your environment reproducible) was the version of R you're using. The lockfile is a json, and those details will look something like this:
+
+```
+{
+  "R": {
+    "Version": "4.3.1",
+    "Repositories": [
+      {
+        "Name": "CRAN",
+        "URL": "https://packagemanager.posit.co/cran/latest"
+      }
+    ]
+  }
+}
+```
+
+While {renv} records this information to track your R version, it can't really help a collaborator or future you get this version of R because {renv} is running *inside* of R. However, this probably isn't an issue. You likely only have a single version of R installed at any given time. When you update R, you likely overwrite the old version with the new version. And that's probably enough. R is a specialized language that the operating system isn't using elsewhere and has from its beginning been committed to remaining backwards compatible. All of which to say, a version of R that is *at least* as current as the one you're using for your project will likely be sufficient for others, including future you.
+
+That said, if you find yourself needing to maintain multiple versions of R on the same computer, you'll want to invest the time in a version management tool like [rig](https://github.com/r-lib/rig).
 
 ### Packages
 
-Every package you install lives in your system library, accessible to all projects. We'll use {renv} to make it easy to create project libraries.
+It may come as a surprise, but I also don't often think about which version of packages I'm using. You might be similar. You might update your packages when prompted or do that manually once a year. Much like most R users maintain a single version of R, by default all packages are installed in a single, global library (where a library is simply a directory with installed packages) known as the **system library**. When you called `renv::init()`, the `/renv` folder that was created is now your **project library**. This helps highlight an important feature of reproducible workflows: Each project will have its own project library and thus be *isolated*. If two projects use different versions of the same package, they won't conflict with each other because they'll each have their own project library.
 
-- Initialize the project library once using `renv::init()`. This will create the `renv` folder (with its own `.gitignore` file), a lockfile `renv.lock`, and an `.Rprofile` file.
-- Once you've installed packages, add them to the project library using `renv::snapshot()`.
-- To install the specific packages of an already-existing project library, use `renv::restore()`.
-- To update all packages in the project library, call `renv::update()`. Make sure code is working with the updated packages before calling `renv::snapshot()` to update the lockfile.
+Well, not *exactly*. {renv} uses something called a **global package cache**. You only ever need to install the version of a given package once. If that same version is needed for another project, {renv} will just link your project library to the corresponding package version in that global cache.
 
-> You’ll then need to commit renv.lock, .Rprofile, renv/settings.json and renv/activate.R to version control, ensuring that others can recreate your project environment. If you’re using git, this is particularly simple because renv will create a .gitignore for you, and you can just commit all suggested files.
+So how do you track the version of the packages and their dependencies for your project? Once you've installed the packages you need for your project, call `renv::snapshot()`. This takes a snapshot of your package version and records them in the lockfile, along with the R version as shown above. Whenever you add new packages, or update the version of packages you're using, call `renv::snapshot()` to update the lockfile accordingly. When someone else is trying to reproduce your environment, once they have your project working directory, they simply need to call `renv::restore()` to install the correct version of the required packages.
 
-The `renv::dependencies()` crawls the files to check for packages that are used while `renv::status()` will report issues found. Using `renv::snapshot()` will help resolve inconsistencies between what is used in the code and what is stored in the lockfile.
+I've tried to provide enough detail to explain why it works the way it does, but the workflow itself remains simple. Let's review:
 
-If renv isn't loading on it's own, you can use `renv::load()` to load the project library.
+1. Create a new lockfile and project library once by calling `renv::init()`.
+2. Track installed package versions, and any changes to the project library, using `renv::snapshot()`.
+3. Reproduce the environment by installing the correct project library with `renv::restore()`.
+
+There are [many other functions](https://rstudio.github.io/renv/reference/index.html) available to manage specific problems or are at work behind the scenes. For example, whenever you open a new instance of a given project that uses {renv}, `renv::status()` will automatically run to check for inconsistencies between the lockfile and what is available in the project library. When issues are found, follow the prompts to address them. This may mean calling `renv::restore()` to get certain packages installed or using `renv::snapshot()` to resolve inconsistencies between what is actually being used in your project's code and what is being tracked in the lockfile.
 
 ## Python
 
