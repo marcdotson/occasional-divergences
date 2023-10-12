@@ -83,7 +83,7 @@ There are [many other functions](https://rstudio.github.io/renv/reference/index.
 
 ## Python
 
-Again, it's helpful to think about creating a reproducible environment in two parts:
+There are even *more* ways to create reproducible environments in Python than there are in R. Since this is written primarily for R users who are supplementing their workflows with Python, we'll continue using {renv} while adding pyenv and showing how {renv} works with venv. That's a lot of envs, so let's get to it. Again, it's helpful to think about creating a reproducible environment in two parts:
 
 1. The version of Python you're using for your project.
 2. The version of the packages (and dependencies) you're using for your project.
@@ -92,16 +92,37 @@ Let's address each of these in turn.
 
 ### Version
 
+Unlike R users, Pythonistas have *always* had to worry about which version of Python they're using. There are a number of reasons for this, and a few might provide some helpful context:
+
+- R was developed by statisticians while Python was developed by computer scientists. It shows.
+- Python is a big tent with many different uses beyond data science. More uses and users has resulted in a plethora of opinionated approaches to versions and environments.
+- Not all Python versions are backwards compatible.
+- Python comes pre-installed on many operating systems since some of the actual operating system uses that specific version of Python. This is a version you *should not use* for any of your project work.
+
+For all of these reasons (if not the last reason alone), you need the ability to maintain multiple versions of Python on the same computer, which means you should invest the time to learn how to use a version management tool. While there are many version management tools, I recommend [pyenv](https://github.com/pyenv/pyenv), which is designed to be a *simple* version management tool.
+
+::: {.callout-warning title="Python Version Management"}
+Python version management is where the horror comes in. This is true for R users, but remember that it's also true for Python users (see the XKCD comic above). While pyenv is simple, it will require you to use the command line (i.e., terminal or shell). Be patient and *take your time* walking carefully through the [installation instructions](https://github.com/pyenv/pyenv#installation). A few things to help as you install:
+
+- The command line is the programming interface into your operating system itself. You don't have to know everything about it to follow instructions.
+- When you get to the section [Set up your shell environment for pyenv](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv), the instructions are different based on the *type* of command line. If you're on a Mac that's running macOS Catalina 10.15.7 or later, the terminal is Zsh. If you're using Linux, the shell is Bash (and you probably already know that).
+
+Some `pyenv` commands:
+
+- `which python`: will always point to pyenv
+- `pyenv which python`: give you the path to python in use
+- `pyenv versions`: See all installed versions and which one in use
+- `pyenv install --list`: list all available python to install
+- `pyenv install --list | grep 3.11`: list all python 3.11.x
+- `pyenv install 3.11.5`: install python 3.11.5
+- `pyenv global <PYTHON VERSION>`: sets the default python
+- `pyenv local <PYTHON VERSION>`: creates a `.python-version` file
+- `pyenv shell <PYTHON VERSION>`: uses `<PYTHON VERSION>` right now
+:::
+
 Go over {renv} and its use for Python in the RStudio IDE.
 
-- Does {renv} keep track of which version of R you're using?
-- Pair with pyenv?
-- Any helpful discussion of environments in WTF?
-- Any references in the R and Python for the Modern Data Scientist?
 
-::: {.callout-warning}
-This is a callout with a title.
-:::
 
 The Python environment associated with the project will load automatically when using Python from R?
 
