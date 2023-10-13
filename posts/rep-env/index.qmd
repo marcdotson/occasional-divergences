@@ -1,9 +1,9 @@
 ---
 title: "Reproducible environments for R and Python"
 author: "Marc Dotson"
-date: "2023-10-11"
+date: "2023-10-13"
 description: |
-  Reproducible environments are a pain, but {renv} makes things easy for R and works well with venv for Python. Add pyenv, and you should be covered.
+  Reproducible environments are a pain, but {renv} makes things easy for R and works well with venv for Python. Add pyenv, and you should be covered for both R and Python.
 categories:
   - r
   - python
@@ -45,7 +45,7 @@ Let's discuss each in turn.
 
 If you're like me, you don't often think about which version of R you're using. I often wait for a little while after a new version is released to make sure there aren't any breaking problems with the packages and software I use most (I'm looking at you, compilers). I also find myself reminding students to *not* update to the most recent version of R mid-semester for that same reason. You probably just update R a few times a year, maybe notice the version number and its cute [Peanuts](https://en.wikipedia.org/wiki/Peanuts)-themed release name when you open a new instance, and call it good.
 
-When you called `renv::init()`, the first thing that was recorded in the `renv.lock` **lockfile** (which tracks the versions of everything to make your environment reproducible) was the version of R you're using. The lockfile is a json, and those details will look something like this:
+When you called `renv::init()`, the first thing that was recorded in the `renv.lock` **lockfile** (which tracks the versions of everything to make your environment reproducible) was the version of R you're using. The lockfile is a json, and, as an FYI, those details will look something like this:
 
 ```{r}
 #| eval: false
@@ -62,25 +62,25 @@ When you called `renv::init()`, the first thing that was recorded in the `renv.l
 }
 ```
 
-While {renv} records this information to track your R version, it can't really help a collaborator or future you get this version of R because {renv} is running *inside* of R. However, this probably isn't an issue. You likely only have a single version of R installed at any given time. When you update R, you likely overwrite the old version with the new version. And that's probably enough. R is a specialized language that the operating system isn't using elsewhere and has from its beginning been committed to remaining backwards compatible. All of which to say, a version of R that is *at least* as current as the one you're using for your project will likely be sufficient for others, including future you.
+While {renv} records this information to track your R version, it can't really help you or a collaborator get this version of R because {renv} is running *inside* of R. However, this probably isn't an issue. You likely only have a single version of R installed at any given time. When you update R, you likely overwrite the old version with the new version. And that's probably enough. R is a specialized language that the operating system isn't using elsewhere and has from its beginning been committed to remaining backwards compatible. All of which to say, a version of R that is *at least* as current as the one you're using for your project will likely be sufficient for others, including future you.
 
-That said, if you find yourself needing to maintain multiple versions of R on the same computer, you'll want to invest the time in a version management tool like [rig](https://github.com/r-lib/rig).
+That said, if you find yourself needing to maintain multiple versions of R on the same computer, you'll want to invest the time in an R version management tool like [rig](https://github.com/r-lib/rig).
 
 ### Packages
 
-It may come as a surprise, but I also don't often think about which version of packages I'm using. You might be similar. You might update your packages when prompted or do that manually once a year. Much like most R users maintain a single version of R, by default all packages are installed in a single, global library (where a library is simply a directory with installed packages) known as the **system library**. When you called `renv::init()`, the `/renv` folder that was created is now your **project library**. This helps highlight an important feature of reproducible workflows: Each project will have its own project library and thus be *isolated*. If two projects use different versions of the same package, they won't conflict with each other because they'll each have their own project library.
+I also don't often think about which version of packages I'm using (*shocker*, I know). Maybe you're similar. You might update your packages when prompted or do that manually once a year. Much like most R users maintain a single version of R, by default all packages are installed in a single, global library (where a library is simply a directory with installed packages) known as the **system library**. When you called `renv::init()`, the `/renv` folder that was created is now your **project library**. This helps highlight an important feature of reproducible workflows: Each project will have its own project library and thus be *isolated*. If two projects use different versions of the same package, they won't conflict with each other because they'll each have their own project library.
 
 Well, not *exactly*. {renv} uses something called a **global package cache**. You only ever need to install the version of a given package once. If that same version is needed for another project, {renv} will just link your project library to the corresponding package version in that global cache.
 
 So how do you track the version of the packages and their dependencies for your project? Once you've installed the packages you need for your project, call `renv::snapshot()`. This takes a snapshot of your package version and records them in the lockfile, along with the R version as shown above. Whenever you add new packages, or update the version of packages you're using, call `renv::snapshot()` to update the lockfile accordingly. When someone else is trying to reproduce your environment, once they have your project working directory, they simply need to call `renv::restore()` to install the correct version of the required packages.
 
-I've tried to provide enough detail to explain why it works the way it does, but the workflow itself remains simple. Let's review:
+I've tried to provide enough detail to explain why {renv} works the way it does, but the workflow itself remains simple. Let's review:
 
 1. Create a new lockfile and project library once by calling `renv::init()`.
 2. Track installed package versions, and any changes to the project library, using `renv::snapshot()`.
-3. Reproduce the environment by installing the correct project library with `renv::restore()`.
+3. Reproduce the environment on another machine by installing the correct project library with `renv::restore()`.
 
-There are [many other functions](https://rstudio.github.io/renv/reference/index.html) available to manage specific problems or are at work behind the scenes. For example, whenever you open a new instance of a given project that uses {renv}, `renv::status()` will automatically run to check for inconsistencies between the lockfile and what is available in the project library. When issues are found, follow the prompts to address them. This may mean calling `renv::restore()` to get certain packages installed or using `renv::snapshot()` to resolve inconsistencies between what is actually being used in your project's code and what is being tracked in the lockfile.
+There are [many other functions](https://rstudio.github.io/renv/reference/index.html) available to manage specific problems or are at work behind the scenes. For example, whenever you open a new instance of a given project that uses {renv}, `renv::status()` will automatically run to check for inconsistencies between the lockfile and what is available in the given project library. When issues are found, follow the prompts to address them. This may mean calling `renv::restore()` to get certain packages installed or using `renv::snapshot()` to resolve inconsistencies between what is actually being used in your project's code and what is being tracked in the lockfile.
 
 ## Python
 
@@ -93,29 +93,28 @@ Let's address each of these in turn.
 
 ### Version
 
-Unlike R users, Pythonistas have *always* had to worry about which version of Python they're using. There are a number of reasons for this, and a few might provide some helpful context:
+Unlike R users, Pythonistas have *always* had to worry about which version of Python they're using. There are a number of reasons for this, and a few will provide some helpful context:
 
-- R was developed by statisticians while Python was developed by computer scientists. It shows.
 - Python is a big tent with many different uses beyond data science. More uses and users has resulted in a plethora of opinionated approaches to versions and environments.
-- Not all Python versions are backwards compatible.
-- Python comes pre-installed on many operating systems since some of the actual operating system uses that specific version of Python. This is a version you *should not use* for any of your project work.
+- Not all Python versions are (or were) backwards compatible.
+- Most importantly, Python comes pre-installed on many operating systems since some of the actual operating system uses that specific version of Python. This is a version you *should not use* for any of your project work.
 
-For all of these reasons (if not the last reason alone), you need the ability to maintain multiple versions of Python on the same computer, which means you should invest the time to learn how to use a version management tool. While there are many version management tools, I recommend [pyenv](https://github.com/pyenv/pyenv), which is designed to be a *simple* version management tool.
+For all of these reasons (if not the last one alone), you need the ability to maintain multiple versions of Python on the same computer, which means you should invest the time to learn how to use a Python version management tool. While there are many version management tools, I recommend [pyenv](https://github.com/pyenv/pyenv), which is designed to be as *simple* as possible. Though what constitutes "simple" is a matter of experience and your mileage may vary.
 
 ::: {.callout-warning title="Python Version Management"}
-Python version management is where the horror comes in. This is true for R users, but remember that it's also true for Python users (re: the XKCD comic above). While pyenv is simple, it will require you to use the command line (i.e., terminal or shell). Be patient and *take your time* walking carefully through the [installation instructions](https://github.com/pyenv/pyenv#installation). A few things to help as you install:
+Python version management is where the horror can happen. This is true for R users, but remember that it's also true for Python users (re: the XKCD comic above). While pyenv is simple, it will require you to use the command line (i.e., terminal or shell). Be patient and *take your time* walking carefully through the [installation instructions](https://github.com/pyenv/pyenv#installation). Daniel Chen also has a [great write-up](https://chendaniely.github.io/python_setup/210-python_install.html) of the installation instructions that may be a bit easier to follow. A few things to help as you install:
 
 - The command line is the programming interface into your operating system itself. You don't have to know everything about it to follow instructions.
 - When you get to the section [Set up your shell environment for pyenv](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv), the instructions are different based on the *type* of command line. If you're on a Mac that's running macOS Catalina 10.15.7 or later, the terminal is Zsh. If you're using Linux, the shell is Bash (and you probably already know that).
 
-Now that you have pyenv installed, you can install and manage all the versions of Python on your computer. To see what versions you already have installed, on the command line, run `pyenv versions`. At first this is probably just the system version. Note that if you've installed Python before, it won't be listed: `pyenv versions` will only list the system version and any additional versions you install. To see all the available versions of Python that you can install, run `pyenv install --list`. This can be overwhelming, but a good place to start is a version of python that has a stable release (i.e., doesn't have a `-dev` tag). For example, to install Python 3.11.5, run `pyenv install 3.11.5`.
+Now that you have pyenv installed, you can install and manage all the versions of Python on your computer. To see what versions you already have installed, on the command line, run `pyenv versions`. At first this is probably just the system version. Note that if you've installed Python before pyenv, it won't be listed: `pyenv versions` will only list the system version and any additional versions you install using pyenv. To see all the available versions of Python that you can install, run `pyenv install --list`. This can be overwhelming, but a good place to start is the latest a version of Python that has a stable release (i.e., doesn't have a `-dev` tag). For example, to install Python 3.11.5, run `pyenv install 3.11.5`.
 
-Remember how you shouldn't use the system version of Python? You can set the default version of Python that you'll use (leaving the operating system to do it's own thing). For example, to set Python 3.11.5 as the default global version, run `pyenv global 3.11.5`. If you run `pyenv versions` again you should see an asterisk by the default you specified.
+Remember how you shouldn't use the system version of Python? You can set the default version of Python that you'll use (leaving the operating system to do it's own thing). For example, to set Python 3.11.5 as the default global version, run `pyenv global 3.11.5`. If you run `pyenv versions` again you should see an asterisk by the global default you specified.
 
-There's a lot more that [pyenv can do](https://realpython.com/intro-to-pyenv/), but if you've been able to follow all of this so far, you should be set to safely manage and use Python.
+There's a lot more that [pyenv can do](https://realpython.com/intro-to-pyenv/), but now you should be set to safely manage and use Python.
 :::
 
-You need to let {renv} know that you're also using Python for your project. (And if you're working in RStudio, that technically means letting [{reticulate}](https://rstudio.github.io/reticulate/) know.) You can do this by calling `renv::use_python()`. You should get a prompt asking you to select the version of Python you want to use. This should probably be the latest version you've installed. Doing this will update the lockfile to include version information for both R and Python, which will look something like this:
+You need to let {renv} know that you're also using Python for your project along with which version you're using. (And if you're working in RStudio, that technically means letting [{reticulate}](https://rstudio.github.io/reticulate/) know.) This is a lot like calling `renv::init()` again, but for the Python parts of your project specifically. You can do this, assuming again that you're using Python 3.11.5, by calling `renv::use_python(python = "~/.pyenv/versions/3.11.5/bin/python3")`. Doing this will update the lockfile to include version information for both R and Python, which will look something like this:
 
 ```{r}
 #| eval: false
@@ -137,28 +136,27 @@ You need to let {renv} know that you're also using Python for your project. (And
 }
 ```
 
-As before, this tracks the Python version but it can't really help a collaborator or future you get this version of Python.
+As before, this tracks the Python version but it can't really help a collaborator or future you get this version of Python. What it can do is let you know which version of Python was used. A version of Python that is *at least* as current as the one you're using for your project will likely be sufficient for others, including future you. However, to ensure that you keep using the same version of Python for your project, you'll need to add a line to that new `.Rprofile` file. As a reminder, it's the file that {renv} added that runs automatically when you open the project. For example, to set 3.11.5 as the default for the project, add `Sys.setenv(RETICULATE_PYTHON = "~/.pyenv/versions/3.11.5/bin/python3")` on a new line in `.Rprofile`. Another benefit of using pyenv is that this file path should be the same for anyone else who has 3.11.5 installed (typical file path shennanigans between operating systems aside).
 
-????
+::: {.callout-note title="Python Virtual Environments (Part One)"}
+Speaking of future-proofing, let's quickly review how this would work with pyenv if you were using Python alone. This comparison will hopefully help solidify the concepts involved, regardless of your workflow.
 
-For that, we need to use pyenv in the command line again once we've navigated to our project's working directory. The most straightforward way to do this is to use the Terminal pane if we're using RStudio. There we can run `pyenv local 3.11.5`, or whatever version of Python we want to use for this project.
-
-- `pyenv local <PYTHON VERSION>`: creates a `.python-version` file
-
-This will create a `.python-version` file in your project directory that specifies the version of Python you're using. This file is automatically tracked by {renv} and will be used to create a project-specific Python environment.
-
-
-The Python environment associated with the project will load automatically when using Python from R?
+If we were just working with Python, after navigating to our project's working directory in the command line, we would run `pyenv local 3.11.5`, assuming again we want Python 3.11.5 to be set as the default. This would create a `.python-version` file in that directory that specified the version of Python to use for that project. This `.python-version` file is the Python-only workflow equivalent to modifying the `.Rprofile` file to specify the version of Python {reticulate} should use for that project in the R and Python workflow.
+:::
 
 ### Packages
 
-Use `renv::use_python()` to tell {renv} to create and use a project-local Python environment. Assuming this is all through {reticulate}, it's stored easily as another part of the lockfile. Then all of the functions, `snapshot()`, `restore()`, etc. will operate for R and Python simultaneously.
+When you called `renv::use_python()`, a Python project library (also called a **virtual environment**) was created in the `/renv` folder using the built-in virtual environment tool that comes with Python called venv. Once again, this will isolate the Python project library for this project from the Python libraries for other projects. Unsurprisingly, Python also employs a global cache to avoid having to install the version of a given package more than once. If you've installed Python prior to using pyenv, you may have a global cache that is borked. You can run `pip cache purge` in the command line to start fresh.
 
-- Is it in the correct environment?
-- Can I load sklearn or is its cache borked as well?
-- `!pip install -r requirements.txt`
-- What is the relationship between renv and venv?
-- A `requirements.txt` is added once `snapshot()` includes Python packages as well.
+Once again, after you've installed the packages you need for your project (where you can call the command line *from* the Python console with a leading exclamation mark, for example `!pip install pandas`) you will again call `renv::snapshot()`. This function call will now check and record changes for both R and Python packages in the project. A Python-specific lockfile will also be created in the working directory called `requirements.txt`.
+
+Whenever you add new packages, or update the version of packages you're using, call `renv::snapshot()` to update the lockfile and `requirements.txt` accordingly. When someone else is trying to reproduce your environment, once they have your project working directory, they simply need to call `renv::restore()` to install the correct version of the required packages. (Note that as of writing this, `renv::restore()` will only install the R packages. You'll need to install the Python packages manually by calling `!pip install -r requirements.txt`.)
+
+::: {.callout-note title="Python Virtual Environments (Part Two)"}
+If we were just working with Python, after navigating to our project's working directory in the command line, we would create a virtual environment for our project by running `python -m venv venv`. This would create a `/venv` folder in the working directory that will contain the project library. This `/venv` folder is the Python-only workflow equivalent to the `/renv` folder that {renv} created for us in the R and Python workflow.
+
+We would also need to activate this virtual environment whenenver we worked with the project by running `source venv/bin/activate`. To update our lockfile equivalent, we would run `pip freeze > requirements.txt` (which is actually what `renv::snapshot()` runs for us). And to install the packages on a new machine, we would run `pip install -r requirements.txt` (which is actually what `renv::restore()` *should* run for us).
+:::
 
 ## Final thoughts
 
