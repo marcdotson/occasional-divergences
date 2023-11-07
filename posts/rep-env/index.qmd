@@ -1,9 +1,9 @@
 ---
 title: "Reproducible environments for R and Python"
 author: "Marc Dotson"
-date: "2023-10-13"
+date: "2023-11-07"
 description: |
-  Reproducible environments are a pain, but {renv} makes things easy for R and works well with Python. Add pyenv and some venv, and you should be covered for both R and Python.
+  Reproducible environments are a pain, but {renv} makes things easy for R and works well with Python. Add pyenv and some venv, and you should be set for both R and Python.
 categories:
   - r
   - python
@@ -25,7 +25,7 @@ Okay, but *why*? Packages change. Functions get deprecated. And R and Python con
 
 ## R
 
-There are a number of ways to create reproducible environments in R, but [{renv}](https://rstudio.github.io/renv/index.html) recently reached 1.0.0 and has a streamlined workflow that helps minimize the horror for both R and Python (more on that in a bit).
+There are a number of ways to create reproducible environments in R, but [{renv}](https://rstudio.github.io/renv/index.html) recently reached 1.0.0 and has a streamlined workflow that helps minimize the horror for both R and Python (more on Python in a bit).
 
 As an R user, you should already be familiar with working in a [project](https://r4ds.hadley.nz/workflow-scripts.html#projects). Once you have {renv} installed, get started with making your project environment reproducible by calling `renv::init()`. This will create two essential items in your project's working directory:
 
@@ -68,14 +68,14 @@ That said, if you find yourself needing to maintain multiple versions of R on th
 
 ### Packages
 
-I also don't often think about which version of packages I'm using (*shocker*, I know). Maybe you're similar. You might update your packages when prompted or update manually once a year. Much like most R users maintain a single version of R, by default all packages are installed in a single, global library (where a library is simply a directory with installed packages) known as the **system library**. When you called `renv::init()`, the `/renv` folder that was created is your **project library**. This helps highlight an important feature of reproducible environments: Each project will have its own project library and thus be *isolated*. If two projects use different versions of the same package, they won't conflict with each other because they'll each have their own project library.
+I also don't often think about which version of packages I'm using (*shocker*, I know). Maybe you're similar. You might update your packages when prompted or update manually once a year. Much like most R users maintain a single version of R, by default all packages are installed in a single, global library (a library is simply a directory with installed packages) known as the **system library**. When you called `renv::init()`, the `/renv` folder that was created is your **project library**. This helps highlight an important feature of reproducible environments: Each project will have its own project library and thus be *isolated*. If two projects use different versions of the same package, they won't conflict with each other because they'll each have their own project library.
 
 Well, not *exactly*. {renv} uses something called a **global package cache**. You only ever need to install the version of a given package once. If that same version is needed for another project, {renv} will just link your project library to the corresponding package version in that global cache.
 
-So how do you track the version of the packages and their dependencies for your project? Once you've installed the packages you need for your project, call `renv::snapshot()`. This takes a snapshot of your package version and records them in the lockfile, along with the R version as shown above. Whenever you add new packages, or update the version of packages you're using, call `renv::snapshot()` to update the lockfile accordingly. When someone else is trying to reproduce your environment, once they have your project working directory, they simply need to call `renv::restore()` to install the correct version of the required packages.
+So how do you track the version of the packages and their dependencies for your project? Once you've installed the packages you need for your project, call `renv::snapshot()`. This takes a snapshot of your package version and records them in the lockfile, along with the R version as shown above. Whenever you add new packages, or update the version of packages you're using, call `renv::snapshot()` again to update the lockfile accordingly. When someone else is trying to reproduce your environment, once they have your project working directory, they simply need to call `renv::restore()` to install the correct version of the required packages.
 
 ::: {.callout-tip title="Non-Standard Repositories"}
-If a package you're using has a non-standard repository (i.e., not on CRAN or another supported repository network), you'll need to update the `renv.lock` file to ensure the environment remains reproducible. When `renv::status()` runs it will tell you if a repository you downloaded a package from is non-standard and has difficulty tracking.
+If a package you're using has a non-standard repository (i.e., not on CRAN or another supported repository network), you'll need to update the `renv.lock` file to ensure the environment remains reproducible. When you open a project, `renv::status()` will run and tell you if a repository you downloaded a package from is non-standard.
 
 For example, for Stan packages, the R entry in the json `renv.lock` file will need to include:
 
@@ -166,9 +166,9 @@ As before, this tracks the Python version but it can't really help a collaborato
 However, to ensure that you keep using the same version of Python for your project, you'll need to add a line to that new `.Rprofile` file. As a reminder, it's the file that {renv} added that runs automatically when you open the project. For example, to set 3.11.5 as the default for the project, add `Sys.setenv(RETICULATE_PYTHON = "~/.pyenv/versions/3.11.5/bin/python3")` on a new line in `.Rprofile`. Another benefit of using pyenv is that this file path should be the same for anyone else who has 3.11.5 installed (typical file path shenanigans between operating systems aside).
 
 ::: {.callout-note title="Python Virtual Environments (Part One)"}
-Speaking of future-proofing, let's quickly review how this would work if you were using Python alone. (Well, Python and using the command line only -- some of these details might change when working with an IDE or code editor.) This comparison will hopefully help solidify the concepts involved, regardless of your workflow.
+Speaking of future-proofing, let's quickly review how this would work if you were using Python alone. (Well, Python and using the command line only---some of these details might change when working with an IDE or code editor.) This comparison will hopefully help solidify the concepts involved, regardless of your workflow.
 
-If you were just working with Python, after navigating to our project's working directory in the command line, we would run `pyenv local 3.11.5`, assuming again you want Python 3.11.5 to be set as the default. This would create a `.python-version` file in that directory that specified the version of Python to use for that project. This `.python-version` file is the Python-only workflow equivalent to modifying the `.Rprofile` file to specify the version of Python {reticulate} should use for that project in the R and Python workflow.
+If you were just working with Python, after navigating to your project's working directory in the command line, you would run `pyenv local 3.11.5`, assuming again you want Python 3.11.5 to be set as the default. This would create a `.python-version` file in that directory that specified the version of Python to use for that project. This `.python-version` file is the Python-only workflow equivalent to modifying the `.Rprofile` file to specify the version of Python {reticulate} should use for that project in the R-and-Python workflow.
 :::
 
 ### Packages
@@ -177,12 +177,12 @@ When you called `renv::use_python()`, a Python project library (also referred to
 
 Once again, after you've installed the packages you need for your project (where you can call the command line *from* the Python console with a leading exclamation mark, for example `!pip install pandas`) you will again call `renv::snapshot()`. This function call will now check and record changes for both R and Python packages in the project. A Python-specific "lockfile" will also be created in the working directory called `requirements.txt`.
 
-Whenever you add new packages, or update the version of packages you're using, call `renv::snapshot()` to update the lockfile and `requirements.txt` accordingly. When someone else is trying to reproduce your environment, once they have your project working directory, they simply need to call `renv::restore()` to install the correct version of the required packages. (Note that as of writing this, `renv::restore()` may only install the R packages. You may need to install the Python packages manually by calling `!pip install -r requirements.txt`, even though `renv::restore()` is designed to do this for you.)
+Whenever you add new packages, or update the version of packages you're using, call `renv::snapshot()` again to update `requirements.txt` accordingly. When someone else is trying to reproduce your environment, once they have your project working directory, they simply need to call `renv::restore()` to install the correct version of the required packages. (Note that as of writing this, `renv::restore()` may only install the R packages. You may need to install the Python packages manually by calling `!pip install -r requirements.txt`, even though `renv::restore()` is designed to do this for you.)
 
 ::: {.callout-note title="Python Virtual Environments (Part Two)"}
-If we were just working with Python (using the command line), after navigating to our project's working directory in the command line, we would create a virtual environment for our project by running `python -m venv venv`. This would create a `/venv` folder in the working directory that contained the project library or *virtual environment*. This `/venv` folder is the Python-only workflow equivalent to the `/renv` folder that {renv} created for us in the R and Python workflow.
+If you were just working with Python (using the command line), after navigating to your project's working directory in the command line, you would create a virtual environment for your project by running `python -m venv venv`. This would create a `/venv` folder in the working directory that contained the project library or *virtual environment*. This `/venv` folder is the Python-only workflow equivalent to the `/renv` folder that {renv} created for us in the R-and-Python workflow.
 
-We would also need to activate this virtual environment whenever we worked in the project by running `source venv/bin/activate`. To update our lockfile equivalent, we would run `pip freeze > requirements.txt` (which is actually what `renv::snapshot()` runs for us). And to install the packages on a new machine, we would run `pip install -r requirements.txt` (which is actually what `renv::restore()` *should* run for us).
+You would also need to activate this virtual environment whenever you started working in the project by running `source venv/bin/activate`. To update your lockfile equivalent, you would run `pip freeze > requirements.txt` (which is actually what `renv::snapshot()` runs for you). And to install the packages on a new machine, you would run `pip install -r requirements.txt` (which is actually what `renv::restore()` *should* run for you).
 :::
 
 ## Final thoughts
