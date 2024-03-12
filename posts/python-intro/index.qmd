@@ -1,0 +1,42 @@
+---
+title: "An introduction to Python for R Users"
+author: "Marc Dotson"
+date: "2024-04-02"
+description: |
+  Most introductions to Python are written for new programmers. But if you know another language already, it's often easier to learn a new language with your known language as scaffolding. This introduction to Python is written for R users.
+categories:
+  - r
+  - python
+# image: figures/xkcd_python-env.png
+slug: python-intro
+---
+
+Intro...
+
+- reference to reproducible environments post
+- reference texts used
+
+<!-- ![](figures/xkcd_python-env.png){width=60% fig-align="center"} -->
+
+pandas. Encapsulated NumPy while allowing for data frames. Eager evaluation that doesn’t optimize queries on its own. Good for small data. Can’t natively take advantage of multi-threading or GPUs? Use the .pipe() method when chaining.
+
+Polars. A Rust library with Python bindings. A query engine with a data frame API on top. Something of an answer to pandas problems. The backend is in Rust instead of NumPy. Built on chaining expressions inside contexts instead of working on Series. Good with small and medium data. Everything stored in Arrow formats, including improvements for storing strings. No row indices. Lazy instead of eager evaluation, including a benefit for chaining. 
+
+datar?
+
+seaborn is a high-level interface to matplotlib. Originally focused on filling gaps in matplotlib’s feature set. Now it’s bringing some tidy philosophy to its plotting. Figure setups via motplotlib, plot function and parameters, axis parameters and decorations. Now seaborn.objects is more based on the underlying grammar of graphics. Start with a .Plot() and then add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
+
+plotnine is a port (of an older) ggplot2 for Python with aesthetics as strings.
+    
+In learning Python find something that provides real value quickly. This is the pitch for Shiny for Python. It has programmatic range with a consistent philosophy with reactivity. Streamlit is optimized for simple applications, like a parameterized Quarto document. Dash is built on stateless applications (i.e., independent components), like Shiny without reactive expressions where the different pieces can’t communicate. Django/Flask/FastAPI is great for large apps.
+
+## Section 1
+
+::: {.callout-tip title="Non-Standard Repositories"}
+
+:::
+
+## Final thoughts
+
+Conclude...
+
