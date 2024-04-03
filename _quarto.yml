@@ -21,17 +21,19 @@ website:
       - text: "About"
         file: about.qmd
       - icon: github
-        menu:
-          - text: "Marc's GitHub"
-            url: https://github.com/marcdotson
-          - text: "Jeff's GitHub"
-            url: https://github.com/jeff-dotson
-      - icon: twitter
-        menu:
-          - text: "Marc's Twitter"
-            url: https://twitter.com/marcdotson
-          - text: "Jeff's Twitter"
-            url: https://twitter.com/jdotson77
+        url: https://github.com/marcdotson
+        # menu:
+        #   - text: "Marc's GitHub"
+        #     url: https://github.com/marcdotson
+        #   - text: "Jeff's GitHub"
+        #     url: https://github.com/jeff-dotson
+      - icon: bluesky
+        url: https://bsky.app/profile/marcdotson.com
+        # menu:
+        #   - text: "Marc's Twitter"
+        #     url: https://twitter.com/marcdotson
+        #   - text: "Jeff's Twitter"
+        #     url: https://twitter.com/jdotson77
   page-footer:
     left:
       - href: https://www.quarto.org
