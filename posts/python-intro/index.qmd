@@ -11,38 +11,86 @@ categories:
 slug: python-intro
 ---
 
-In classes and workshops over many years, I've taught an introduction R.
+In classes and workshops over many years, I've taught introductions R. But in my new position, I'll need to be teaching in Python. This introduction to Python is really just a way for me to detail what I've learned about Python as an R user. But hopefully it proves useful to others as well.
 
-- write parallel to my own introduction to R
-- include notes from the "Introduction to Data Science with Python" workshop
-- reference texts used
-- reference to reproducible environments post
+Resources used:
 
-Python Rgonomics, starting with https://emilyriederer.netlify.app/post/py-rgo/.
+- [VS Code with Python](https://github.com/RamiKrispin/vscode-python)
+- [VS Code with R](https://github.com/RamiKrispin/vscode-r)
+- Python for Data Analysis
+- Python and R for the Modern Data Scientist
+- Effective Polars?
+- [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/)
+- [Polars’ Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-polars/)
+- [Base Python Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-base/)
+- [A tidyverse R and polars Python side-by-side](https://robertmitchellv.com/blog/2022-07-r-python-side-by-side/r-python-side-by-side.html)
+- [Tidy Data Manipulation: dplyr vs pandas](https://blog.tidy-intelligence.com/posts/dplyr-vs-pandas/)
+- [Tidy Data Manipulation: dplyr vs polars](https://blog.tidy-intelligence.com/posts/dplyr-vs-polars/)
+- [Tidy Data Visualization: ggplot2 vs seaborn](https://blog.tidy-intelligence.com/posts/ggplot2-vs-seaborn/)
+- [Tidy Data Visualization: ggplot2 vs matplotlib](https://blog.tidy-intelligence.com/posts/ggplot2-vs-matplotlib/)
+- the "Introduction to Data Science with Python" workshop
+- the "Machine Learning and Deep Learning with Python" workshop
 
 <!-- ![](figures/xkcd_python-env.png){width=60% fig-align="center"} -->
 
-## Frame of Mind/Mindset
+## Mindset
 
-Object-oriented programming vs. functional programming.
-Computer Science vs. Statistics.
-General vs. Specialized Languages.
-No primary IDE, etc.: RStudio, VS Code, Google Colab, etc.
-Python vs. Python Data Stack.
+R is:
+
+- Specialized language
+- Developed by statisticians
+- Lazy about efficiency
+- Lazy about namespacing
+- Functional programming
+- Small and medium data
+- Data wrangling and visualization
+- Spacing is for convenience
+- Dominated by Posit
+- R Markdown and Quarto
+- Consistency in the tidyverse
+- "R Users" and "Tidy" code
+
+Python is:
+
+- General language
+- Developed by computer scientists
+- Obsessed with efficiency
+- Obsessed with namespacing
+- Object-oriented programming
+- Small, medium, and large data
+- Machine learning and deep learning
+- Spacing is part of the syntax
+- No single authority
+- Jupyter Notebooks
+- Inconsistent (i.e., no tidyverse)
+- "Pythonistas" and "Pythonic" code
 
 ::: {.callout-tip title="Non-Standard Repositories"}
 
 :::
 
-## RStudio Orientation
+## The CLI?
 
-Like Posit Cloud.
-Jupyter notebooks?
-Or use pyenv and VS Code?
+Learning to be okay with command line for installation.
 
-# Python
+## Installation and environments?
 
-## Python Basics?
+- pyenv and venv or pdm?
+- VS Code or Posit's new code editor? Quarto as motivation.
+- Reference my own reproducible environments post, but now just for Python.
+
+## The (chosen) PyData stack
+
+The Python data (i.e., PyData) stack refers to the ecosystem of packages that enables data analysis.
+
+- NumPy is short for "Numerical Python." It includes arrays and efficient computation across arrays.
+- pandas is short for "panel data." It is built on NumPy and adds data frames for tabular or "heterogeneous" data and is the most popular package for data wrangling.
+- Polars is a newer package for data wrangling. It's name is an anagram of the query engine it uses (OLAP) and the language it's built in (Rust or rs).
+- matplotlib provides a foundation for plotting.
+- seaborn is built on matplotlib and integrates with pandas. seaborn.objects is a more consistent API based on grammar of graphics.
+- scikit-learn is a machine learning library built on NumPy, SciPy, and matplotlib.
+
+## Python basics?
 
 - Code relies on white space not braces.
 - Everything is an object, including imported modules (a module is a single file, while a package is a collection of modules in a directory).
@@ -54,89 +102,31 @@ Or use pyenv and VS Code?
 - **Remember that Python is zero-indexed.**
 - `NULL` is referred to as `None`. Other types include `str`, `bytes` (binary), `float`, `bool`, and `int`.
 
-# Data Wrangling
+## Data wrangling
 
-## NumPy
+Polars. A Rust library with Python bindings. A query engine with a data frame API on top. Something of an answer to pandas problems. The backend is in Rust instead of NumPy. Built on chaining expressions inside contexts instead of working on Series. Good with small and medium data. Everything stored in Arrow formats, including improvements for storing strings. No row indices. Lazy instead of eager evaluation, including a benefit for chaining.
 
-The NumPy package is short for Numerical Python. It includes arrays and efficient computation across arrays. This includes linear algebra and an interface for C, C++, and Fortran libraries. It covers a similar space as {dplyr} and {purrr}.
+- Walkthrough? See the my own introduction to Python workshop with Python/R comparisons.
 
-```{python}
-# Import the NumPy package as the np namespace.
-import numpy as np
-
-# The ndarray object is the primary data class.
-data = np.array([[1.5, -0.1, 3], [0, -3, 6.5]])
-data
-
-# And we can perform linear algebra on the array.
-data * 10
-data + data
-```
-
-## Pandas
-
-pandas. Encapsulated NumPy while allowing for data frames. Eager evaluation that doesn’t optimize queries on its own. Good for small data. Can’t natively take advantage of multi-threading or GPUs? Use the .pipe() method when chaining.
-
-- Data Frames
-- Observation Transformations
-- Variable Transformations
-- Joins
-- Chaining Functions?
-
-## Other Data Structures
-
-- Tuples are fixed-length, immutable sequences of objects. They can be indexed with brackets (0-indexed) and nested with more complicated expressions.
-
-```{python}
-tup = (4, 5, 6)
-
-tup[0]
-
-nested_tup = tup, (7, 8)
-
-nested_tup
-```
-
-- The objects within a tuple may be mutable and thus can be modified in-place.
-- Tuples feel like very specific vector-like objects.
-- Lists, on the other hand, are mutable. Tuples and lists can be somewhat interchangeable.
-- You can use the `append`, `insert` or `pop`, and `remove` methods to modify a list in-place.
-- The most important built-in data structure is a dictionary, also known as a hash map or associative array. It is composed of key-value pairs.
-- Some of the same syntax from tuples and lists applies to dictionaries.
-
-```{python}
-d1 = {"a": "some value", "b": [1, 2, 3, 4]}
-d1
-
-d1[7] = "an integer"
-d1
-
-d1["b"]
-```
-
-## Other Data Wrangling Libraries
-
-Polars. A Rust library with Python bindings. A query engine with a data frame API on top. Something of an answer to pandas problems. The backend is in Rust instead of NumPy. Built on chaining expressions inside contexts instead of working on Series. Good with small and medium data. Everything stored in Arrow formats, including improvements for storing strings. No row indices. Lazy instead of eager evaluation, including a benefit for chaining. 
-
-Method chaining...
-
-# Visualizing
-
-## Seaborn, etc.
+## Visualization
 
 seaborn is a high-level interface to matplotlib. Originally focused on filling gaps in matplotlib’s feature set. Now it’s bringing some tidy philosophy to its plotting. Figure setups via motplotlib, plot function and parameters, axis parameters and decorations. Now seaborn.objects is more based on the underlying grammar of graphics. Start with a .Plot() and then add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
 
-# Modeling
+- Walkthrough?
 
-## More of the Python Data Stack
+## Modeling
 
 scikitlearn, etc.
 
-## Installation and Reproducible Environments
+- Walkthrough?
 
-See previous blog post...
+## Communication
+
+- Quarto.
+- Shiny for Python?
+- Walkthrough?
 
 ## Final thoughts
 
-Conclude...
+Conclude...and follow-up with advanced ____ for the R user?
 
