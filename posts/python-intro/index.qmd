@@ -122,6 +122,8 @@ scikitlearn, etc.
 
 ## Communication
 
+In learning Python find something that provides real value quickly. This is the pitch for Shiny for Python. It has programmatic range with a consistent philosophy with reactivity. Streamlit is optimized for simple applications, like a parameterized Quarto document. Dash is built on stateless applications (i.e., independent components), like Shiny without reactive expressions where the different pieces can’t communicate. Django/Flask/FastAPI is great for large apps.
+
 - Quarto.
 - Shiny for Python?
 - Walkthrough?
