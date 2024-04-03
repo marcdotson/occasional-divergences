@@ -27,7 +27,7 @@ website:
         #     url: https://github.com/marcdotson
         #   - text: "Jeff's GitHub"
         #     url: https://github.com/jeff-dotson
-      - icon: bluesky
+      - icon: {{<fa-brands fa-bluesky>}}
         url: https://bsky.app/profile/marcdotson.com
         # menu:
         #   - text: "Marc's Twitter"
