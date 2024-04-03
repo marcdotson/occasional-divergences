@@ -695,9 +695,3 @@ Note that we assumed throughout that the population model has a common variance.
 
 Hierarchical models provide partial information pooling, a middle-ground between no information pooling (i.e., separate flat or non-hierarchical models for each group), which may not be possible, and complete information pooling (i.e., a single flat or non-hierarchical model), which provides limited inference. They also allow for covariates and parameter estimation at both the observation and population levels. To summarize, hierarchical models allow us to appropriately model heterogeneity -- differences across groups. Given the prevalence of heterogeneity, hierarchical models should be our default approach in most applications and Stan removes the barriers to entry for the required Bayesian computation.
 
------
-
-### Marc Dotson
-
-Marc is an assistant professor of marketing at the BYU Marriott School of Business. He graduated with an MSc from The London School of Economics and Political Science in 2009 and a PhD from The Ohio State University in 2016. His research interests include Bayesian inference, predictive modeling, consumer preference heterogeneity, and unstructured data. Marc teaches marketing analytics. You can find him on [Twitter](https://twitter.com/marcdotson) and [GitHub](https://github.com/marcdotson).
-
