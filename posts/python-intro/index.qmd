@@ -1,9 +1,9 @@
 ---
-title: "An introduction to Python for R Users"
+title: "An introduction to Python for R users"
 author: "Marc Dotson"
 date: "2024-04-02"
 description: |
-  Most introductions to Python are written for new programmers. But if you know another language already, it's often easier to learn a new language with your known language as scaffolding. This introduction to Python is written for R users.
+  Most introductions to Python are written for new programmers. But if you already know another language already, it's easier to learn the new language with your known language employed as an analogy. This introduction to Python is written for R users.
 categories:
   - r
   - python
@@ -11,30 +11,130 @@ categories:
 slug: python-intro
 ---
 
-Intro...
+In classes and workshops over many years, I've taught an introduction R.
 
-- reference to reproducible environments post
+- write parallel to my own introduction to R
+- include notes from the "Introduction to Data Science with Python" workshop
 - reference texts used
+- reference to reproducible environments post
+
+Python Rgonomics, starting with https://emilyriederer.netlify.app/post/py-rgo/.
 
 <!-- ![](figures/xkcd_python-env.png){width=60% fig-align="center"} -->
 
-pandas. Encapsulated NumPy while allowing for data frames. Eager evaluation that doesn’t optimize queries on its own. Good for small data. Can’t natively take advantage of multi-threading or GPUs? Use the .pipe() method when chaining.
+## Frame of Mind/Mindset
 
-Polars. A Rust library with Python bindings. A query engine with a data frame API on top. Something of an answer to pandas problems. The backend is in Rust instead of NumPy. Built on chaining expressions inside contexts instead of working on Series. Good with small and medium data. Everything stored in Arrow formats, including improvements for storing strings. No row indices. Lazy instead of eager evaluation, including a benefit for chaining. 
-
-datar?
-
-seaborn is a high-level interface to matplotlib. Originally focused on filling gaps in matplotlib’s feature set. Now it’s bringing some tidy philosophy to its plotting. Figure setups via motplotlib, plot function and parameters, axis parameters and decorations. Now seaborn.objects is more based on the underlying grammar of graphics. Start with a .Plot() and then add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
-
-plotnine is a port (of an older) ggplot2 for Python with aesthetics as strings.
-    
-In learning Python find something that provides real value quickly. This is the pitch for Shiny for Python. It has programmatic range with a consistent philosophy with reactivity. Streamlit is optimized for simple applications, like a parameterized Quarto document. Dash is built on stateless applications (i.e., independent components), like Shiny without reactive expressions where the different pieces can’t communicate. Django/Flask/FastAPI is great for large apps.
-
-## Section 1
+Object-oriented programming vs. functional programming.
+Computer Science vs. Statistics.
+General vs. Specialized Languages.
+No primary IDE, etc.: RStudio, VS Code, Google Colab, etc.
+Python vs. Python Data Stack.
 
 ::: {.callout-tip title="Non-Standard Repositories"}
 
 :::
+
+## RStudio Orientation
+
+Like Posit Cloud.
+Jupyter notebooks?
+Or use pyenv and VS Code?
+
+# Python
+
+## Python Basics?
+
+- Code relies on white space not braces.
+- Everything is an object, including imported modules (a module is a single file, while a package is a collection of modules in a directory).
+- The assignment (or *binding*) operator is `=`.
+- Attached functions called *methods* use the `.` notation following the object, `obj.some_method(x, y, z)`. Note that CmdStanR adopts this syntax. For example `model$sample()` in CmdStanR is `model.sample()` in CmdStanPy.
+- Lists are the fundamental data class and are created with single square brackets.
+- Objects aren't copied needlessly, they are just bound to the same underlying data structure.
+- Many objects or *mutable*. Their contents can be changed.
+- **Remember that Python is zero-indexed.**
+- `NULL` is referred to as `None`. Other types include `str`, `bytes` (binary), `float`, `bool`, and `int`.
+
+# Data Wrangling
+
+## NumPy
+
+The NumPy package is short for Numerical Python. It includes arrays and efficient computation across arrays. This includes linear algebra and an interface for C, C++, and Fortran libraries. It covers a similar space as {dplyr} and {purrr}.
+
+```{python}
+# Import the NumPy package as the np namespace.
+import numpy as np
+
+# The ndarray object is the primary data class.
+data = np.array([[1.5, -0.1, 3], [0, -3, 6.5]])
+data
+
+# And we can perform linear algebra on the array.
+data * 10
+data + data
+```
+
+## Pandas
+
+pandas. Encapsulated NumPy while allowing for data frames. Eager evaluation that doesn’t optimize queries on its own. Good for small data. Can’t natively take advantage of multi-threading or GPUs? Use the .pipe() method when chaining.
+
+- Data Frames
+- Observation Transformations
+- Variable Transformations
+- Joins
+- Chaining Functions?
+
+## Other Data Structures
+
+- Tuples are fixed-length, immutable sequences of objects. They can be indexed with brackets (0-indexed) and nested with more complicated expressions.
+
+```{python}
+tup = (4, 5, 6)
+
+tup[0]
+
+nested_tup = tup, (7, 8)
+
+nested_tup
+```
+
+- The objects within a tuple may be mutable and thus can be modified in-place.
+- Tuples feel like very specific vector-like objects.
+- Lists, on the other hand, are mutable. Tuples and lists can be somewhat interchangeable.
+- You can use the `append`, `insert` or `pop`, and `remove` methods to modify a list in-place.
+- The most important built-in data structure is a dictionary, also known as a hash map or associative array. It is composed of key-value pairs.
+- Some of the same syntax from tuples and lists applies to dictionaries.
+
+```{python}
+d1 = {"a": "some value", "b": [1, 2, 3, 4]}
+d1
+
+d1[7] = "an integer"
+d1
+
+d1["b"]
+```
+
+## Other Data Wrangling Libraries
+
+Polars. A Rust library with Python bindings. A query engine with a data frame API on top. Something of an answer to pandas problems. The backend is in Rust instead of NumPy. Built on chaining expressions inside contexts instead of working on Series. Good with small and medium data. Everything stored in Arrow formats, including improvements for storing strings. No row indices. Lazy instead of eager evaluation, including a benefit for chaining. 
+
+Method chaining...
+
+# Visualizing
+
+## Seaborn, etc.
+
+seaborn is a high-level interface to matplotlib. Originally focused on filling gaps in matplotlib’s feature set. Now it’s bringing some tidy philosophy to its plotting. Figure setups via motplotlib, plot function and parameters, axis parameters and decorations. Now seaborn.objects is more based on the underlying grammar of graphics. Start with a .Plot() and then add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
+
+# Modeling
+
+## More of the Python Data Stack
+
+scikitlearn, etc.
+
+## Installation and Reproducible Environments
+
+See previous blog post...
 
 ## Final thoughts
 
