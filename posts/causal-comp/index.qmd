@@ -1,5 +1,5 @@
 ---
-title: "Competing perspectives on causal inference"
+title: "Competing perspectives on/philosophies for causal inference"
 author: "Marc Dotson"
 date: "2024-06-31"
 description: |
@@ -10,9 +10,29 @@ categories:
 slug: discrete-coding
 ---
 
+Data Analytics is the perfect place to learn about Causal Inference because it’s become such an interdisciplinary field of its own.
+
 One the domain of econometrics only, causal inference has blossomed into its own field at the intersection of methods from econometrics, epidemiology, and computer science. In this post I try and lay out the fundamental assumptions that differentiate each approach, including which problems they are especially appropriate to use for each.
 
+Is deductive vs. inductive reasoning the same as "estimating effects from known causes" vs. "forming reasonable beliefs about causes from known effects"? Is this related to focusing on avoiding omitted variable bias vs. included variable bias?
+
+Or just Rubin vs. Pearl? Is it because of posturing/arrogance that they appear to ignore each other?
+
 ## Econometrics
+
+Traditionally about observational data.
+
+Referred to as "program evaluation" in Wooldridge (2010), with specific reference to policy and its effects.
+
+Economists favor inductive reasoning because of their focus on policy evaluation, in "estimating effects from known causes"? Given a set of assumptions, draw some logical conclusions. But what if you want to evaluate your assumptions? Science needs both deductive and inductive reasoning.
+
+Obsession with OLS because of its properties? Focused on avoiding omitted variable bias but not included variable bias? WHY DON'T ECONOMISTS TAKE PROBABILITY SERIOUSLY?
+
+## Statistics?
+
+Traditionally about sampling and experimentation.
+
+What about Bayes? Where "we can form reasonable beliefs about causes from known effects."
 
 ## Epidemiology
 
@@ -20,5 +40,5 @@ One the domain of econometrics only, causal inference has blossomed into its own
 
 ## Final thoughts
 
-Dummy coding is straightforward but requires some care when considering what the reference level and thus the hard-coded contrast should be. For simple models, index coding is great and demonstrates another benefit of being Bayesian. However, for more complicated models or with thinner data, the priors may need to be even *more* informative to ensure identifiability and model convergence. Finally, you can consider something of a hybrid coding scheme where one of the discrete variables can be index-coded in place of an intercept even when dummy coding with the other discrete variables.
+
 
