@@ -1,0 +1,24 @@
+---
+title: "Competing perspectives on causal inference"
+author: "Marc Dotson"
+date: "2024-06-31"
+description: |
+  Econometrics vs. ...
+categories:
+  - causal inference
+# image: figures/flat-regression-contrasts-dummy-01.png
+slug: discrete-coding
+---
+
+One the domain of econometrics only, causal inference has blossomed into its own field at the intersection of methods from econometrics, epidemiology, and computer science. In this post I try and lay out the fundamental assumptions that differentiate each approach, including which problems they are especially appropriate to use for each.
+
+## Econometrics
+
+## Epidemiology
+
+## Computer science
+
+## Final thoughts
+
+Dummy coding is straightforward but requires some care when considering what the reference level and thus the hard-coded contrast should be. For simple models, index coding is great and demonstrates another benefit of being Bayesian. However, for more complicated models or with thinner data, the priors may need to be even *more* informative to ensure identifiability and model convergence. Finally, you can consider something of a hybrid coding scheme where one of the discrete variables can be index-coded in place of an intercept even when dummy coding with the other discrete variables.
+
