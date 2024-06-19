@@ -10,6 +10,8 @@ categories:
 slug: discrete-coding
 ---
 
+Causal inference defined... I'm a generalist, which is probably a kind way to say that I'm eclectic, interested in many things but not especially good at any one of them. This is probably why I became a journalist and why I eventually got into data analytics. The challenge for someone like me, and maybe for you as well, is that science is broad and different fields have developed different approaches. This is also true for the social sciences. And it's true for data analysis and causal inference. I've found it especially important when you live in an interdisciplinary environment to do the best you can to understand the perspectives of those you speak to, which requires some understanding of their axioms or assumptions that guide their thinking. Philosophy of science -- you can't escape it.
+
 Data Analytics is the perfect place to learn about Causal Inference because it’s become such an interdisciplinary field of its own.
 
 One the domain of econometrics only, causal inference has blossomed into its own field at the intersection of methods from econometrics, epidemiology, and computer science. In this post I try and lay out the fundamental assumptions that differentiate each approach, including which problems they are especially appropriate to use for each.
