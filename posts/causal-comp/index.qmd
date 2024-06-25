@@ -1,7 +1,7 @@
 ---
-title: "Competing perspectives on/philosophies for causal inference"
+title: "Differing perspectives on knowing the causes of things"
 author: "Marc Dotson"
-date: "2024-06-31"
+date: "2024-07-15"
 description: |
   Econometrics vs. ...
 categories:
@@ -10,19 +10,36 @@ categories:
 slug: discrete-coding
 ---
 
-Causal inference defined... I'm a generalist, which is probably a kind way to say that I'm eclectic, interested in many things but not especially good at any one of them. This is probably why I became a journalist and why I eventually got into data analytics. The challenge for someone like me, and maybe for you as well, is that science is broad and different fields have developed different approaches. This is also true for the social sciences. And it's true for data analysis and causal inference. I've found it especially important when you live in an interdisciplinary environment to do the best you can to understand the perspectives of those you speak to, which requires some understanding of their axioms or assumptions that guide their thinking. Philosophy of science -- you can't escape it.
+## Outline
 
-Data Analytics is the perfect place to learn about Causal Inference because it’s become such an interdisciplinary field of its own.
+- Define causal inference
+- Provide a brief review of the fields involved
+- Discuss the tree analogy for an interdisciplinary approach
+
+## Questions
+
+- Is deductive vs. inductive reasoning the same as "estimating effects from known causes" vs. "forming reasonable beliefs about causes from known effects"? Is this related to focusing on avoiding omitted variable bias vs. included variable bias?
+- Is this just Rubin vs. Pearl? Is it because of posturing/arrogance that they appear to ignore each other?
+- Explain causal identification as a fundamental idea for science and data analysis? How can we know what is causing an effect? Consider an A/B experiment. We assign A to some customers and B to others. If we don't disentangle potential causal effects, then our interepretation is confounded -- we can't tell the causal effects apart from one another.
+
+While attending the London School of Economics and Political Science, I was always struck by the school's motto: "rerum cognoscere causas" or "to know the causes of things." Clearly knowing the causes of things is important. It's our attempts to intuit the causes of things that help keep us out of danger, lead us into fulfilling activities, and assist us in social interactions. However, actually trying to *know* the causes of things is aspirational. It's at the heart of science and essential to effective decision-making.
+
+Trying to know the causes of things is what causal inference is all about. A little more formally, causal inference is the work of estimating the effects of theorized causes on an outcome of interest. We're making estimates because we're doing this in the presence of uncertainty and the causes are theorized because the actual cause-and-effect relationships are not observed and are usually unobservable. There are also *lots* of outcomes of interest: disease prevention, firm performance, graduation rates, gross domestic product, income inequality, etc. It shouldn't be surprising that causal inference in one form or another is a critical concern in many fields of study.
+
+
+
+
+And it's true for data analysis and causal inference. I've found it especially important when you live in an interdisciplinary environment to do the best you can to understand the perspectives of those you speak to, which requires some understanding of their axioms or assumptions that guide their thinking. Philosophy of science -- you can't escape it.
+
+Interdisciplinary work at its best is ecumenical -- a unity among differing perspectives, a search to understand and build upon common ground. Or an analogy of a tree, with disciplines budding off from a common branch and trunk. To really understand, you need to understand the branch or entire tree itself. Data Analytics is the perfect place to learn about Causal Inference because it’s become such an interdisciplinary field of its own.
 
 One the domain of econometrics only, causal inference has blossomed into its own field at the intersection of methods from econometrics, epidemiology, and computer science. In this post I try and lay out the fundamental assumptions that differentiate each approach, including which problems they are especially appropriate to use for each.
-
-Is deductive vs. inductive reasoning the same as "estimating effects from known causes" vs. "forming reasonable beliefs about causes from known effects"? Is this related to focusing on avoiding omitted variable bias vs. included variable bias?
-
-Or just Rubin vs. Pearl? Is it because of posturing/arrogance that they appear to ignore each other?
 
 ## Econometrics
 
 Traditionally about observational data.
+
+Primarily concerened with economic agents and theory of their interactions in markets with data analysis being secondary. Science before statisitcs.
 
 Referred to as "program evaluation" in Wooldridge (2010), with specific reference to policy and its effects.
 
@@ -30,9 +47,17 @@ Economists favor inductive reasoning because of their focus on policy evaluation
 
 Obsession with OLS because of its properties? Focused on avoiding omitted variable bias but not included variable bias? WHY DON'T ECONOMISTS TAKE PROBABILITY SERIOUSLY?
 
+Or is it just that they have complex enough observational data that they want to run very simple models? A preference for parsimony as manifest as a dogmatism toward OLS? A desire to be focused on laws like in the hard sciences?
+
+Random sampling from a population is baked into the idea of OLS and its underlying assumptions.
+
 ## Statistics?
 
-Traditionally about sampling and experimentation.
+Traditionally about sampling and experimentation. Population. But also underlying data-generating processes.
+
+Often just data summarization, a descriptive model.
+
+Obsessed with the rules of the game.
 
 What about Bayes? Where "we can form reasonable beliefs about causes from known effects."
 
