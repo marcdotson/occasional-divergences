@@ -1,5 +1,5 @@
 ---
-title: "Differing perspectives on knowing the causes of things"
+title: "An interdisciplinary approach to causal inference"
 author: "Marc Dotson"
 date: "2024-07-15"
 description: |
@@ -10,30 +10,31 @@ categories:
 slug: discrete-coding
 ---
 
-## Outline
+While attending the London School of Economics and Political Science, I was always struck by the school's motto: *rerum cognoscere causas* or "to know the causes of things." Clearly knowing the causes of things is important. It's our attempts to intuit the causes of things that help us navigate life, including keeping us out of danger, leading us into fulfilling activities, and assisting us in social interactions. However, actually trying to *know* the causes of things is aspirational. It's at the heart of science and essential to effective decision-making.
 
-- Define causal inference
-- Provide a brief review of the fields involved
-- Discuss the tree analogy for an interdisciplinary approach
+Trying to know the causes of things is what causal inference is all about. A little more formally, causal inference is the work of estimating the effects of theorized causes on an outcome of interest. We're making estimates because we're doing this in the presence of uncertainty and the causes are theorized because the actual cause-and-effect relationships are not observed and are usually not observable. There are also *lots* of outcomes of interest: disease prevention, firm performance, graduation rates, gross domestic product, income inequality, etc.
 
-## Questions
+It shouldn't be surprising that causal inference in one form or another is a critical concern in many fields of study. In this post, I attempt to specify the assumptions that differentiate approaches to causal inference across fields of study. Though different fields of study can be very territorial (some more than others), there is much to be gained by being interdisciplinary and taking in the breadth of perspectives on causal inference.
 
+Add References:
+- Causal Inference: The Mixtape
+- Regression and Other Stories
+- The Book of Why
+- Introductory Econometrics
+- Andrew's course materials?
+
+- Do I characterize this as Rubin vs. Pearl or as Statistics, Economics, and Computer Science?
 - Is deductive vs. inductive reasoning the same as "estimating effects from known causes" vs. "forming reasonable beliefs about causes from known effects"? Is this related to focusing on avoiding omitted variable bias vs. included variable bias?
-- Is this just Rubin vs. Pearl? Is it because of posturing/arrogance that they appear to ignore each other?
-- Explain causal identification as a fundamental idea for science and data analysis? How can we know what is causing an effect? Consider an A/B experiment. We assign A to some customers and B to others. If we don't disentangle potential causal effects, then our interepretation is confounded -- we can't tell the causal effects apart from one another.
 
-While attending the London School of Economics and Political Science, I was always struck by the school's motto: "rerum cognoscere causas" or "to know the causes of things." Clearly knowing the causes of things is important. It's our attempts to intuit the causes of things that help keep us out of danger, lead us into fulfilling activities, and assist us in social interactions. However, actually trying to *know* the causes of things is aspirational. It's at the heart of science and essential to effective decision-making.
+## Statistics
 
-Trying to know the causes of things is what causal inference is all about. A little more formally, causal inference is the work of estimating the effects of theorized causes on an outcome of interest. We're making estimates because we're doing this in the presence of uncertainty and the causes are theorized because the actual cause-and-effect relationships are not observed and are usually unobservable. There are also *lots* of outcomes of interest: disease prevention, firm performance, graduation rates, gross domestic product, income inequality, etc. It shouldn't be surprising that causal inference in one form or another is a critical concern in many fields of study.
+Traditionally about sampling and experimentation. Population. But also underlying data-generating processes.
 
+Often just data summarization, a descriptive model.
 
+Obsessed with the rules of the game.
 
-
-And it's true for data analysis and causal inference. I've found it especially important when you live in an interdisciplinary environment to do the best you can to understand the perspectives of those you speak to, which requires some understanding of their axioms or assumptions that guide their thinking. Philosophy of science -- you can't escape it.
-
-Interdisciplinary work at its best is ecumenical -- a unity among differing perspectives, a search to understand and build upon common ground. Or an analogy of a tree, with disciplines budding off from a common branch and trunk. To really understand, you need to understand the branch or entire tree itself. Data Analytics is the perfect place to learn about Causal Inference because it’s become such an interdisciplinary field of its own.
-
-One the domain of econometrics only, causal inference has blossomed into its own field at the intersection of methods from econometrics, epidemiology, and computer science. In this post I try and lay out the fundamental assumptions that differentiate each approach, including which problems they are especially appropriate to use for each.
+What about Bayes? Where "we can form reasonable beliefs about causes from known effects."
 
 ## Econometrics
 
@@ -51,19 +52,9 @@ Or is it just that they have complex enough observational data that they want to
 
 Random sampling from a population is baked into the idea of OLS and its underlying assumptions.
 
-## Statistics?
-
-Traditionally about sampling and experimentation. Population. But also underlying data-generating processes.
-
-Often just data summarization, a descriptive model.
-
-Obsessed with the rules of the game.
-
-What about Bayes? Where "we can form reasonable beliefs about causes from known effects."
-
-## Epidemiology
-
 ## Computer science
+
+Explain causal identification as a fundamental idea for science and data analysis? How can we know what is causing an effect? Consider an A/B experiment. We assign A to some customers and B to others. If we don't disentangle potential causal effects, then our interepretation is confounded -- we can't tell the causal effects apart from one another.
 
 ## Final thoughts
 
