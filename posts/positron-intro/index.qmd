@@ -1,0 +1,34 @@
+---
+title: "Coding in R and Python with Positron"
+author: "Marc Dotson"
+date: "2024-07-31"
+description: |
+  Not to general, not to specific -- just right?
+categories:
+  - r
+  - python
+# image: figures/flat-regression-contrasts-dummy-01.png
+slug: positron-intro
+---
+
+
+
+## How is Positron more general than RStudio?
+
+- Get the benefit of VS Code extensions (not marketplace though).
+
+## How is Positron more specific than VS Code?
+
+- Both R and Python work natively!
+- Code execution works the same for both R and Python.
+- Has a native Environment and Plot panel.
+
+## How is Positron just right? Goldilocks/Three Bears.
+
+- Still can’t tunnel via SSH to remote servers.
+- Still can’t use Github Copilot.
+
+## Final thoughts
+
+
+
