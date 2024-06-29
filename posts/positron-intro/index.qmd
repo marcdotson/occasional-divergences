@@ -3,27 +3,68 @@ title: "Coding in R and Python with Positron"
 author: "Marc Dotson"
 date: "2024-07-31"
 description: |
-  Not to general, not to specific -- just right?
+  Not too general, not too specific -- just right?
 categories:
   - r
   - python
-# image: figures/flat-regression-contrasts-dummy-01.png
+# image: figures/positron-01.png
 slug: positron-intro
 ---
 
+As usual, this post is largely for me. But hopefully others will find it helpful as well. I'm a long-time RStudio user. I code primarily in R, so I haven't seen a need to use anything else. However, over this past year I've been slowly picking up Python again in preparation for a new position. And in so doing, I've been increasingly exposed to VS Code as an option.
 
+At the same time, I heard rumors that Posit was making the leap to a multi-language IDE. (Posit mission statement?) That alone left me reticent to pick up VS Code if I was about to use a new tool anyway. But Positron is built on VS Code's underlying open source core, which means I need to migrate anyway. I'm usually late to the party, so this is playing catch up.
 
-## How is Positron more general than RStudio?
+References:
 
-- Get the benefit of VS Code extensions (not marketplace though).
+- 
 
-## How is Positron more specific than VS Code?
+## Why use Positron instead of RStudio?
 
+RStudio is great for:
+
+- You're coding primarily in R.
+- Even if you're coding in Python, but only secondarily.
+- Have a visible Environment/Variable Explorer.
+- Built-in File Explorer.
+
+Why use Positron instead of RStudio?
+
+- RStudio is getting dated.
+- Coding in Python is only a secondary activity.
+- Get the benefits of VS Code without the bloat.
+
+## Why use Positron instead of VS Code?
+
+VS Code is great for:
+
+- You're coding primarily in Python (or another, non-R language).
+- You want to use GitHub Copilot, including its chat feature.
+- Arguably a better integration with Git/GitHub?
+- Great general purpose text editor (light-weight in that sense).
+- Remote work options/tunneling?
+- Docker integration.
+- Everyone else on your team is using it (so, same argument as Python).
+
+Why use Positron instead of VS Code?
+
+- Coding in R isn't great with VS Code.
+- Get the benefits of VS Code but with a focus on data science.
 - Both R and Python work natively!
 - Code execution works the same for both R and Python.
-- Has a native Environment and Plot panel.
+- VS Code is a code editor while Positron is an IDE.
+- Has a native Environment/Data Explorer and Plot panel.
+- Get the benefit of VS Code extensions (not marketplace though).
 
 ## How is Positron just right? Goldilocks/Three Bears.
+
+Why use Positron?
+
+
+
+What does Positron lack?
+
+It's early days. The public beta just released.
 
 - Still can’t tunnel via SSH to remote servers.
 - Still can’t use Github Copilot.
