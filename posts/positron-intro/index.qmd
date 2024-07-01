@@ -7,13 +7,16 @@ description: |
 categories:
   - r
   - python
+  - positron
 # image: figures/positron-01.png
 slug: positron-intro
 ---
 
-As usual, this post is largely for me. But hopefully others will find it helpful as well. I'm a long-time RStudio user. I code primarily in R, so I haven't seen a need to use anything else. However, over this past year I've been slowly picking up Python again in preparation for a new position. And in so doing, I've been increasingly exposed to VS Code as an option.
+I've been using RStudio since it was released. I have coded almost exclusively in R, so I personally haven't felt a need to use anything but RStudio. However, I've been picking up Python again, both in preparation for a new position and in recognition of a need to leverage the strengths of multiple programming languages. Using both R and Python has highlighted the need for a tool that can natively handle both.
 
-At the same time, I heard rumors that Posit was making the leap to a multi-language IDE. (Posit mission statement?) That alone left me reticent to pick up VS Code if I was about to use a new tool anyway. But Positron is built on VS Code's underlying open source core, which means I need to migrate anyway. I'm usually late to the party, so this is playing catch up.
+While VS Code is often referenced as the go-to option, I've been reticent to adapt my data science work to a general code editor, in no small part because I heard rumors that Posit was making the leap to launch a multilingual IDE. And at the end of last month, Positron was quietly revealed, Posit's "next-generation data science IDE." Positron is built on VS Code's open source core, which means I finally need to migrate anyway.
+
+This post is for those who are considering Positron as an alternative to RStudio and VS Code, especially for those who code in both R and Python. As usual, this post is for me. But if you, like me, feel like you're perpetually late to the party, hopefully you'll find this helpful as well as we play catch up together.
 
 References:
 
@@ -32,6 +35,7 @@ Why use Positron instead of RStudio?
 
 - RStudio is getting dated.
 - Coding in Python is only a secondary activity.
+- Arguably a better integration with Git/GitHub?
 - Get the benefits of VS Code without the bloat.
 
 ## Why use Positron instead of VS Code?
@@ -40,7 +44,6 @@ VS Code is great for:
 
 - You're coding primarily in Python (or another, non-R language).
 - You want to use GitHub Copilot, including its chat feature.
-- Arguably a better integration with Git/GitHub?
 - Great general purpose text editor (light-weight in that sense).
 - Remote work options/tunneling?
 - Docker integration.
