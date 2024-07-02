@@ -14,13 +14,19 @@ slug: positron-intro
 
 I've been using RStudio since it was released. I have coded almost exclusively in R, so I personally haven't felt a need to use anything but RStudio. However, I've been picking up Python again, both in preparation for a new position and in recognition of a need to leverage the strengths of multiple programming languages. Using both R and Python has highlighted the need for a tool that can natively handle both.
 
-While VS Code is often referenced as the go-to option, I've been reticent to adapt my data science work to a general code editor, in no small part because I heard rumors that Posit was making the leap to launch a multilingual IDE. And at the end of last month, Positron was quietly revealed, Posit's "next-generation data science IDE." Positron is built on VS Code's open source core, which means I finally need to migrate anyway.
+While VS Code is often referenced as the go-to option, I've been reticent to adapt my data science work to a general code editor, in no small part because I heard rumors that Posit was making the leap to launch a multilingual IDE. And at the end of last month, Positron was quietly revealed, Posit's "next-generation data science IDE." Positron is built on VS Code's open source core, which means I finally need to migrate at least part of the way toward VS Code.
 
-This post is for those who are considering Positron as an alternative to RStudio and VS Code, especially for those who code in both R and Python. As usual, this post is for me. But if you, like me, feel like you're perpetually late to the party, hopefully you'll find this helpful as well as we play catch up together.
+This post is for those who are considering Positron as an alternative to RStudio and VS Code, especially for those who code in both R and Python. As usual, this post is for me and is largely a study journal as I migrate to Positron. But if you, like me, feel like you're perpetually late to the party, hopefully you'll find this helpful as well as we play catch up together.
 
 References:
 
-- 
+- [Positron](https://github.com/posit-dev/positron)
+- [James Balamuta](https://bsky.app/profile/coatless.bsky.social)
+- [Josiah Perry](https://bsky.app/profile/josiahparry.bsky.social)
+- [InfoWorld](https://www.infoworld.com/article/3715702/maker-of-rstudio-launches-new-r-and-python-ide.html)
+- [VS Code not being open source](https://ghuntley.com/fracture/)
+- [Code OSS](https://github.com/microsoft/vscode)
+- [OpenVSX](https://open-vsx.org)
 
 ## Why use Positron instead of RStudio?
 
@@ -51,9 +57,11 @@ VS Code is great for:
 
 Why use Positron instead of VS Code?
 
+you use VS Code for data science (Python or R) but wish it included a dedicated console (you'd have to use Radian otherwise to get something like the console), variables pane, data explorer, and other affordances for your data-specific work.
+
 - Coding in R isn't great with VS Code.
 - Get the benefits of VS Code but with a focus on data science.
-- Both R and Python work natively!
+- Both R and Python work natively! No need to install extensions. Impressive new R extension/engine: [ARK](https://github.com/posit-dev/ark).
 - Code execution works the same for both R and Python.
 - VS Code is a code editor while Positron is an IDE.
 - Has a native Environment/Data Explorer and Plot panel.
@@ -61,9 +69,40 @@ Why use Positron instead of VS Code?
 
 ## How is Positron just right? Goldilocks/Three Bears.
 
-Why use Positron?
+From repo:
 
+Positron has first-class, built-in support for R and/or Python via an integrated Console, with extensibility options for other languages in the future. This includes specialized views and panes throughout Positron such as a Data Explorer, Connections Pane, Variables Pane, and more.
+Positron runs the interpreter separately from the IDE, so unlike in RStudio a crash in R/Python will not crash the IDE. It also means that you can swap between versions of your preferred language on the fly without a full reload of the IDE, just the integrated console.
+Positron supports VS Code compatible extensions (.vsix files), allowing for the extensibility of capabilities beyond the core IDE itself. By building on Code OSS, Positron gets rich text editor capabilities and access to 1,000s of community extensions out of the box.
+Positron is deeply focused on native data science workflows; it provides a batteries-included and cohesive experience beyond that of a general-purpose IDE or text editor such as VS Code.
 
+- What's the difference between projects and folders?
+- No need for RStudio Projects? Just Folders? What about here()?
+- Working directory listed in the Console!
+
+- Console *and* Runtime switcher.
+
+- Option to add RStudio keymaps, customize keymapping.
+
+- Cmd + Shift + P (Mac) or Ctrl + Shift + P (Windows) opens the Command Palette.
+- Stacked Layout View.
+= Cmd + K + T opens themes in the Command Palette.
+
+- Console instead of just a Terminal?
+- Variables/Environment natively plus Plots -- stuff specifically for data science.
+
+- In-line help pop-ups, not just code completion.
+
+- Plots from R and Python in the same pane.
+- Plots panel includes a history that we can tab through.
+- Plots panel can handle interactive plots.
+
+Extensions:
+
+- Material Theme (Material Theme Palenight High Contrast?)
+- Toggle Light/Dark Theme
+- Quarto
+- Shiny (one extension for both R and Python)
 
 What does Positron lack?
 
@@ -74,5 +113,5 @@ It's early days. The public beta just released.
 
 ## Final thoughts
 
-
+Still in beta...
 
