@@ -5,11 +5,11 @@ about:
   template: marquee
 ---
 
-Jeff started it. He didn't know what Bayesian inference was, but he was interested in learning. Naturally he shared his excitement with his little brother, Marc, who (as usual) followed in his footsteps. Now they share that interest working together at the intersection of business and data science and, occasionally, writing on this blog.
+Jeff started it. He didn't know what Bayesian inference was, but he was interested in learning. Naturally he shared his excitement with his little brother, Marc, who (as usual) followed in his footsteps. Now they share that interest working together at the intersection of marketing and data science and, occasionally, writing on this blog.
 
 ## Jeff Dotson
 
-Jeff is an assistant professor of marketing at the Max M. Fisher College of Business at The Ohio State University. Prior to joining the faculty at Ohio State, he worked as a marketing professor at both the BYU Marriott School of Business and at the Owen Graduate School of Management at Vanderbilt University. He holds a PhD in Marketing from The Ohio State University and masters degrees in business administration (MBA) and statistics (MS) from the University of Utah. His interests include the development and application of Bayesian methods and the use of generative AI in marketing practice.
+Jeff is an associate professor of marketing at the Max M. Fisher College of Business at The Ohio State University. Prior to joining the faculty at Ohio State, he worked as a marketing professor at both the BYU Marriott School of Business and at the Owen Graduate School of Management at Vanderbilt University. He holds a PhD in Marketing from The Ohio State University and masters degrees in business administration (MBA) and statistics (MS) from the University of Utah. His interests include the development and application of Bayesian methods and the use of generative AI in marketing practice.
 
 ## Marc Dotson
 
