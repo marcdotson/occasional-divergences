@@ -24,6 +24,7 @@ Add References:
 - Andrew's course materials?
 
 - Do I characterize this as Rubin vs. Pearl or as Statistics, Economics, and Computer Science?
+- Or is this an experimental/observational and aggregate/disaggregate four-by-four with economics at aggregate/observational, psychology at aggregate/experimental, statistics at disaggregate/experimental, and an unknown at disaggregate/observational?
 - Is deductive vs. inductive reasoning the same as "estimating effects from known causes" vs. "forming reasonable beliefs about causes from known effects"? Is this related to focusing on avoiding omitted variable bias vs. included variable bias?
 
 ## Statistics
