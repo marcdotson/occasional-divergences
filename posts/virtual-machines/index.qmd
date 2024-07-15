@@ -5,7 +5,7 @@ date: "2024-07-31"
 description: |
   Setting up and using virtual machines for scalable (Bayesian) computation
 categories:
-  - 
+  - bayesian inference
   - positron?
 # image: figures/positron-logo.png
 slug: virtual-machines
@@ -17,11 +17,17 @@ Recently everyone has been talking about how easy it is to tunnel into a remote 
 
 ## Setting up a VM
 
+So I need to figure out Docker Compose in order to set up a VM? Work through Andrew's long DM on Bluesky.
 
+- Old Andrew post https://www.andrewheiss.com/blog/2017/04/27/super-basic-practical-guide-to-docker-and-rstudio/index.html
+- https://www.youtube.com/watch?v=1ZfO149BJvg at 9:50ish for Docker Compose
 
 ## Tunneling with SSH
 
+SSH Tunneling with VS Code:
 
+- https://www.youtube.com/watch?v=cOopQQIL8JU
+- 
 
 ## Final thoughts
 
