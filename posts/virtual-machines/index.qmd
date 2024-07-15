@@ -1,0 +1,29 @@
+---
+title: "Virtual machines for scalable (Bayesian) computation"
+author: "Marc Dotson"
+date: "2024-07-31"
+description: |
+  Setting up and using virtual machines for scalable (Bayesian) computation
+categories:
+  - 
+  - positron?
+# image: figures/positron-logo.png
+slug: virtual-machines
+---
+
+Scalable computing has come a long way. However, nothing can beat the ease of remoting into a server that has (roughly) the same environment that you're used to working in. For most problems I've worked on, this hasn't largely been an issue, and I've approached trying to address this problem in fits and starts (don't talk to me about super computers), but like finally having to learn some VS Code (at least to get up-to-speed with Positron), it's time to nip this particular problem in the bud.
+
+Recently everyone has been talking about how easy it is to tunnel into a remote machine via SSH for remote development. But this is very much a place where I need to **draw the rest of the owl** to get up-to-speed. As usual, this is fairly pedantic and possibly just for me, but if it's helpful for you, great. Thanks to Lizzy and to Andrew.
+
+## Setting up a VM
+
+
+
+## Tunneling with SSH
+
+
+
+## Final thoughts
+
+Is it available yet in Positron?
+
