@@ -1,5 +1,5 @@
 ---
-title: "Virtual machines for scalable (Bayesian) computation"
+title: "Using virtual machines for R and Python with Positron"
 author: "Marc Dotson"
 date: "2024-07-31"
 description: |
@@ -25,11 +25,17 @@ This also reminds me of the saying about RegEx: If you have a problem that requi
 
 Where is it easy to spin up a VM using a docker container?! AWS, Azure, Google Cloud, Digital Ocean, Linode, Posit Workbench, Databricks, Snowflake?
 
-AWS (is it too general)?
+Does scaling the RAM happen automatically?
 
-- Elastic Compute Cloud (EC2) for VM.
+AWS, like Azure and GCP (is it too general)? Can use AWS for *anything*. App hosting, etc. Including using GPU clusters and quantum computing! Cutting a cake with a chainsaw.
+
 - Andrew Brown's AWS Certified Cloud Practitioner Certification Course: https://www.youtube.com/watch?v=SOTamWNgDKc&list=PLWKjhJtqVAbkzvvpY12KkfiIGso9A_Ixs&index=2
+- Elastic Compute Cloud (EC2) for VM or Elastic Constainer Service (ECS) for an EC2 instance with Docker installed.
+- What about higher performance computing services (HPC)? Does it only come in clusters? Would I need to use CloudShell?
+- S3/RDS for storage.
+- Do I need to have two VMs, one for storage and one for compute?
 
+Digital Ocean?
 
 ## Using Docker Compose?
 
@@ -54,5 +60,5 @@ SSH Tunneling with VS Code:
 
 ## Final thoughts
 
-Is it available yet in Positron?
+Is it available yet in Positron? Otherwise available for R and Python?
 
