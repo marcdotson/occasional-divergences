@@ -36,6 +36,8 @@ A virtual machine (VM) is a machine (i.e., computer) that is actually some subse
 
 ### Docker Compose?
 
+To try it, clone the [why donors donate repo](https://github.com/andrewheiss/silent-skywalk) into that folder and rename it to "why-donors-donate".
+
 Containers don't have as much wasted space as a VM -- you can have many containers running on a VM.
 
 - Andrew's old blog post: https://www.andrewheiss.com/blog/2017/04/27/super-basic-practical-guide-to-docker-and-rstudio/index.html
