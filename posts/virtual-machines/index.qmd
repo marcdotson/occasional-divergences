@@ -3,12 +3,12 @@ title: "Spinning up and using virtual machines for R and Python"
 author: "Marc Dotson"
 date: "2024-09-31"
 description: |
-  Setting up and using virtual machines to break through computational bottlenecks can be challenging. This post is designed as a gentle introduction.
+  Spinning up and using virtual machines to break through computational bottlenecks can be challenging. This post is designed as a gentle introduction, though your mileage may vary.
 categories:
   - r
   - python
   - stan
-  - positron
+  # - positron
 image: figures/owl.png
 slug: virtual-machines
 ---
@@ -19,16 +19,33 @@ There are a number of cloud service providers, AWS arguably chief among them. Ho
 
 ![](figures/owl.png){width=50% fig-align="center"}
 
-In this post, I try to fill in the gaps and provide a gentle introduction to spinning up and using virtual machines. Special thanks to Lizzy Nguyen and Andrew Heiss for helping me navigate all of this.
+In this post, I try to fill in the gaps and provide a gentle introduction to spinning up and using virtual machines that can run R and Python. Special thanks to Lizzy Nguyen and Andrew Heiss for helping me navigate all of this.
 
 Questions:
 
+- Do I need to figure out Docker Compose in order to set up a VM?
+- Is it easier to get the container/image set up first or the VM?
 - Does scaling the RAM happen automatically?
 - Do I need to have two VMs, one for storage and one for compute?
 
-## Spinning up virtual machines
+## Spinning up a virtual machine
 
-Where is it easy to spin up a VM using a docker container?! AWS, Azure, Google Cloud, Digital Ocean, Linode, Posit Workbench, Databricks, Snowflake?
+A virtual machine (VM) is a machine (i.e., computer) that is actually some subset of one of many servers in a data center somewhere (i.e., the cloud). In other words, it's not *actually* another computer, but rented time on a server, hence it being a "virtual" machine. But before we can set (or spin) up a VM, we need to prepare the environment we want to run on the VM. Also referred to as a machine image, this is a [reproducible environment](https://occasionaldivergences.com/posts/rep-env/) writ large: the operating system, applications, programming languages, and packages.
+
+
+
+### Docker Compose?
+
+Containers don't have as much wasted space as a VM -- you can have many containers running on a VM.
+
+- Andrew's old blog post: https://www.andrewheiss.com/blog/2017/04/27/super-basic-practical-guide-to-docker-and-rstudio/index.html
+
+Or I can use an existing Docker image:
+
+- Here's an example from Andrew using R, Python, and Quarto: https://github.com/andrewheiss/example-r-python-quarto-docker
+- Here's one for just R and VS Code: https://github.com/RamiKrispin/vscode-r
+
+Andrew likes to mount local folders to the docker container so he knows where everything rather than use official dev envirnoment tools that have more opaque file systems. That said, most of his work is for testing things for package development, not for computational resources.
 
 ### AWS
 
@@ -45,32 +62,17 @@ AWS, like Azure and GCP (is it too general)? Can use AWS for *anything*. App hos
 
 Digital Ocean? From Andrew:
 
-
-
-### Docker Compose?
-
-Do I need to figure out Docker Compose in order to set up a VM?
-
-Containers don't have as much wasted space as a VM -- you can have many containers running on a VM.
-
-- Andrew's old blog post: https://www.andrewheiss.com/blog/2017/04/27/super-basic-practical-guide-to-docker-and-rstudio/index.html
-- VS Code Hype (including Docker Compose, Azure, AWS extensions): https://www.youtube.com/watch?v=1ZfO149BJvg
-
-Or I can use an existing Docker image:
-
-- Here's an example from Andrew using R, Python, and Quarto: https://github.com/andrewheiss/example-r-python-quarto-docker
-- Here's one for just R and VS Code: https://github.com/RamiKrispin/vscode-r
-
-Andrew likes to mount local folders to the docker container so he knows where everything rather than use official dev envirnoment tools that have more opaque file systems. That said, most of his work is for testing things for package development, not for computational resources.
-
-## Using virtual machines
-
-SSH Tunneling with VS Code:
-
-- https://www.youtube.com/watch?v=cOopQQIL8JU
+- Look for a free tier or (initial credit)[https://cloud.digitalocean.com/registrations/new?refcode=f6fcd01aaffb].
+- Like AWS, you'll have a team (root user) and members in that team, which will be your way to access and use the service.
+- Provide links to documentation!
 - 
+
+## Using a virtual machine
+
+- VS Code Hype (including Docker Compose, Azure, AWS extensions): https://www.youtube.com/watch?v=1ZfO149BJvg
+- SSH Tunneling with VS Code: https://www.youtube.com/watch?v=cOopQQIL8JU
 
 ## Final thoughts
 
-Is it available yet in Positron? Otherwise available for R and Python?
+Is it available yet in Positron? Otherwise available for R and Python.
 
