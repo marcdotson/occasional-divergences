@@ -3,19 +3,20 @@ title: "Spinning up and using virtual machines for R and Python"
 author: "Marc Dotson"
 date: "2024-09-31"
 description: |
-  Spinning up and using virtual machines to break through computational bottlenecks can be challenging. This post is designed as a gentle introduction, though your mileage may vary.
+  Breaking through computational bottlenecks can be challenging, but spinning up and using a virtual machine comes with its own set of problems. This post is designed as a gentle introduction.
 categories:
+  - compute
   - r
   - python
   - stan
-  # - positron
+  - positron
 image: figures/owl.png
 slug: virtual-machines
 ---
 
-It's not uncommon to run into computational bottlenecks when running models, Bayesian or otherwise. I've often had access to a dedicated computer or server for such tasks or, in classic academic fashion, I've been comfortable with letting models run for weeks. But these options aren't always available and they might not actually solve the problem. Cloud computing is clearly the solution. However, breaking into using cloud computing can make you feel the need to (with apologies) adapt the adage often applied to needing regular expressions: "If you have a problem that requires cloud computing, congratulations, you now have two problems.""
+It's not uncommon to run into computational bottlenecks when running models, Bayesian or otherwise. I've often had access to a dedicated computer or server for such tasks or, in classic academic fashion, I've been comfortable with letting models run for weeks. But these options aren't always available and they might not actually solve the problem. Cloud computing is clearly the solution. However, breaking into using cloud computing has made me feel the need to (with apologies) adapt the adage often applied to needing regular expressions: "If you have a problem that requires cloud computing, congratulations, you now have two problems.""
 
-There are a number of cloud service providers, AWS arguably chief among them. However, AWS can do *everything* when what I really need is the ability to quickly spin up and temporarily use a virtual machine that can easily run R and/or Python (and often Stan). One of the primary reason VS Code has been so hyped is the use of its SSH extension for easily tunneling into and using such a virtual machine. However, the virtual machine needs to be spun up in the first place. This definitely feels like a *draw the rest of the owl* situation.
+There are a number of cloud service providers, AWS arguably chief among them. However, AWS can do *everything* when what I really need is the ability to quickly spin up and temporarily use a virtual machine that can easily run R, Python, and often Stan. One of the primary reason VS Code has been so hyped is the use of its SSH extension for easily tunneling into and using such a virtual machine. However, the virtual machine needs to be spun up in the first place. Using cloud computing definitely feels like a *draw the rest of the owl* situation.
 
 ![](figures/owl.png){width=50% fig-align="center"}
 
@@ -28,9 +29,17 @@ Questions:
 - Does scaling the RAM happen automatically?
 - Do I need to have two VMs, one for storage and one for compute?
 
-## Spinning up a virtual machine
+## Spinning up virtual machines
 
-A virtual machine (VM) is a machine (i.e., computer) that is actually some subset of one of many servers in a data center somewhere (i.e., the cloud). In other words, it's not *actually* another computer, but rented time on a server, hence it being a "virtual" machine. But before we can set (or spin) up a VM, we need to prepare the environment we want to run on the VM. Also referred to as a machine image, this is a [reproducible environment](https://occasionaldivergences.com/posts/rep-env/) writ large: the operating system, applications, programming languages, and packages.
+A virtual machine (VM) is a machine (i.e., computer) that is actually some subset of one of many servers in a data center somewhere (i.e., the cloud). In other words, it's not *actually* another computer, but rented time on a server, hence it being "virtual." But before we can set (or spin) up a VM, we need to prepare the machine image we want to work with on the VM. This image is really a [reproducible environment](https://occasionaldivergences.com/posts/rep-env/) writ large. It needs to include not only the required programming languages and packages, but also the operating system and necessary applications.
+
+You can think of an image as a *snapshot* of everything you need to run your model. That means once you have an image, it can be used to run models isolated from everything else. These self-contained images are known as *containers*. Designed for development and production well beyond the scope of what we're discussing today, the fact that they have everything they need to run in isolation means you can have multiple containers running on your computer, actual or virtual.
+
+::: {.callout-note title="Images and Containers"}
+
+:::
+
+There are a number of applications for creating images and containers, Docker arguably chief among them.
 
 
 
@@ -69,7 +78,7 @@ Digital Ocean? From Andrew:
 - Provide links to documentation!
 - 
 
-## Using a virtual machine
+## Using virtual machines
 
 - VS Code Hype (including Docker Compose, Azure, AWS extensions): https://www.youtube.com/watch?v=1ZfO149BJvg
 - SSH Tunneling with VS Code: https://www.youtube.com/watch?v=cOopQQIL8JU
