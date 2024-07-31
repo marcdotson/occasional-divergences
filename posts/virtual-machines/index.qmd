@@ -24,10 +24,8 @@ In this post, I try to fill in the gaps and provide a gentle introduction to spi
 
 Questions:
 
-- Do I need to figure out Docker Compose in order to set up a VM?
-- Is it easier to get the container/image set up first or the VM?
+- Do I need to figure out Docker Compose in order to set up a VM? Andrew's old blog post: https://www.andrewheiss.com/blog/2017/04/27/super-basic-practical-guide-to-docker-and-rstudio/index.html
 - Does scaling the RAM happen automatically?
-- Do I need to have two VMs, one for storage and one for compute?
 
 ## Spinning up virtual machines
 
@@ -35,28 +33,32 @@ A virtual machine (VM) is a machine (i.e., computer) that is actually some subse
 
 You can think of an image as a *snapshot* of everything you need to run your model. That means once you have an image, it can be used to run models isolated from everything else. These self-contained images are known as *containers*. Designed for development and production well beyond the scope of what we're discussing today, the fact that they have everything they need to run in isolation means you can have multiple containers running on your computer, actual or virtual.
 
-::: {.callout-note title="Images and Containers"}
+There are a number of applications for creating images and "containerizing" them, Docker arguably chief among them. But, to adapt Jenny Bryan's adage about for loops: "Someone needs to build an image, but it doesn't have to be you." There are a plethora of pre-built images.
+
+1. Get/modify an image using Docker Compose?
+
+
+
+2. Use the image as a container when spinning up the VM?
+
+
+
+::: {.callout-note title="AWS is Too General"}
 
 :::
 
-There are a number of applications for creating images and containers, Docker arguably chief among them.
+3. How do I get data into and out of the container?
+
+Andrew likes to mount local folders to the docker container so he knows where everything rather than use official dev envirnoment tools that have more opaque file systems. That said, most of his work is for testing things for package development, not for computational resources.
+
+4. SSH tunnel in to use the container?
 
 
-
-### Docker Compose?
-
-To try it, clone the [why donors donate repo](https://github.com/andrewheiss/silent-skywalk) into that folder and rename it to "why-donors-donate".
-
-Containers don't have as much wasted space as a VM -- you can have many containers running on a VM.
-
-- Andrew's old blog post: https://www.andrewheiss.com/blog/2017/04/27/super-basic-practical-guide-to-docker-and-rstudio/index.html
 
 Or I can use an existing Docker image:
 
 - Here's an example from Andrew using R, Python, and Quarto: https://github.com/andrewheiss/example-r-python-quarto-docker
 - Here's one for just R and VS Code: https://github.com/RamiKrispin/vscode-r
-
-Andrew likes to mount local folders to the docker container so he knows where everything rather than use official dev envirnoment tools that have more opaque file systems. That said, most of his work is for testing things for package development, not for computational resources.
 
 ### AWS
 
