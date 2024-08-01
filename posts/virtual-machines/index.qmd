@@ -28,21 +28,28 @@ A virtual machine (VM) is a computer that isn't *actually* a computer---it's ren
 
 You can think of an image as a *snapshot* of everything you need to run your model. That means once you have an image, it can be used to run models isolated from everything else. These self-contained images are known as *containers*. Designed for development and production well beyond the scope of what we're discussing, the fact that they have everything they need to run in isolation means you can have multiple containers running on your computer, actual or virtual.
 
-There are a number of applications for creating images and "containerizing" them, Docker arguably chief among them. But, to adapt Jenny Bryan's adage about for loops: "Someone needs to build an image, but it doesn't have to be you." There are a plethora of pre-built images...
+There are a number of applications for creating images and "containerizing" them, Docker arguably chief among them. But, to adapt Jenny Bryan's adage about for loops: "Someone needs to build an image, but it doesn't have to be you." There are a plethora of pre-built images available on Docker Hub. It's like GitHub, but specifically for images.
 
 ### 1. Create/modify an image using Docker Compose?
+
+This isn't a tutorial for creating a Docker image. In the short term, I need a VS Code image that's ready to run Python (bonus for R and Stan). In the long term, once SSH tunneling is a thing in Positron, I'll want to modify my own template, include it as a repo on GitHub, and have it connected to Docker Hub.
 
 - Here's one for just R and VS Code: https://github.com/RamiKrispin/vscode-r
 - Here's an example from Andrew using R, Python, and Quarto: https://github.com/andrewheiss/example-r-python-quarto-docker
 - Andrew's old blog post: https://www.andrewheiss.com/blog/2017/04/27/super-basic-practical-guide-to-docker-and-rstudio/index.html
-- Create/modify an image template as a repo on GitHub so it can be connected to Docker Hub automatically for use in VM?
 
 ### 2. Use the image as a container when spinning up the VM?
 
-- Does scaling the RAM happen automatically?
+- Spin up the container using Docker. Official Digital Ocean documentation to link?
+- Log in using the Droplet's public IPv4 address: `$ ssh root@__.___.__.___`
+- Pull the Docker image you want to use `$ docker pull rocker/tidyverse`
+- Run the image at a specific port `$ docker run -d -p 8787:8787 rocker/tidyverse`
+- Access the remote installation at `__.___.__.___:8787`
 
 ::: {.callout-note title="AWS is Too General"}
-I feel like this is similar to the complaints I make about VS Code. AWS, like Azure and GCP (is it too general)? Can use AWS for *anything*. App hosting, etc. Including using GPU clusters and quantum computing! Cutting a cake with a chainsaw.
+I feel like this is similar to the complaints I make about VS Code. Add some guidelines on how to do this in AWS to the callout note?
+
+AWS, like Azure and GCP (is it too general)? Can use AWS for *anything*. App hosting, etc. Including using GPU clusters and quantum computing! Cutting a cake with a chainsaw.
 
 - Andrew Brown's AWS Certified Cloud Practitioner Certification Course: https://www.youtube.com/watch?v=SOTamWNgDKc&list=PLWKjhJtqVAbkzvvpY12KkfiIGso9A_Ixs&index=2
 - Elastic Compute Cloud (EC2) for VM or Elastic Constainer Service (ECS) for an EC2 instance with Docker installed.
@@ -55,19 +62,19 @@ Digital Ocean? From Andrew:
 
 - Look for a free tier or (initial credit)[https://cloud.digitalocean.com/registrations/new?refcode=f6fcd01aaffb].
 - Like AWS, you'll have a team (root user) and members in that team, which will be your way to access and use the service.
-- Provide links to documentation!
 :::
 
 ## Using virtual machines
 
-### 3. SSH tunnel in to use the container?
+### 1. SSH tunnel in to use the container?
 
 - SSH Tunneling with VS Code: https://www.youtube.com/watch?v=cOopQQIL8JU
 - Is SSH tunneling available yet in Positron?
 
-### 4. How do I get data into and out of the container?
+### 2. How do I get data into and out of the container?
 
-Andrew likes to mount local folders to the docker container so he knows where everything rather than use official dev envirnoment tools that have more opaque file systems. That said, most of his work is for testing things for package development, not for computational resources.
+- Andrew likes to mount local folders to the docker container so he knows where everything rather than use official dev envirnoment tools that have more opaque file systems. That said, most of his work is for testing things for package development, not for computational resources.
+- Note on scaling up the size of the VM.
 
 ## Final thoughts
 
