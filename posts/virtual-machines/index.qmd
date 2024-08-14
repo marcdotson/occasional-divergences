@@ -35,10 +35,17 @@ There are a number of applications for creating images and "containerizing" them
 This isn't a tutorial for creating a Docker image. In the short term, I need a VS Code image that's ready to run Python (bonus for R and Stan). In the long term, once SSH tunneling is a thing in Positron, I'll want to modify my own template, include it as a repo on GitHub, and have it connected to Docker Hub.
 
 - Here's one for just R and VS Code: https://github.com/RamiKrispin/vscode-r
+
+> He's got Dockerfiles in the different example folders (github.com/RamiKrispin/...) and you build them yourself (right click on the Dockerfile in VS Code and choose Build Image…)
+> 
+> I set up docker on the remote computer and then build the Docker container on the remote computer using an SSH-connected VS Code window
+
 - Here's an example from Andrew using R, Python, and Quarto: https://github.com/andrewheiss/example-r-python-quarto-docker
 - Andrew's old blog post: https://www.andrewheiss.com/blog/2017/04/27/super-basic-practical-guide-to-docker-and-rstudio/index.html
 
 ### 2. Use the image as a container when spinning up the VM?
+
+> As far as we know, no one's made a Docker + R + Python + Positron. But you don't really need Positron in the image, just R and Python -- Positron downloads its server component into the remote host as part of establishing a session. -Jonathan @ Posit
 
 - Spin up the container using Docker. Official Digital Ocean documentation to link?
 - Log in using the Droplet's public IPv4 address: `$ ssh root@__.___.__.___`
@@ -78,5 +85,5 @@ Digital Ocean? From Andrew:
 
 ## Final thoughts
 
-
+- Consider using extensions for managing VMs inside Positron?
 
