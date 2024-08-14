@@ -124,7 +124,21 @@ scikitlearn, etc.
 
 In learning Python find something that provides real value quickly. This is the pitch for Shiny for Python. It has programmatic range with a consistent philosophy with reactivity. Streamlit is optimized for simple applications, like a parameterized Quarto document. Dash is built on stateless applications (i.e., independent components), like Shiny without reactive expressions where the different pieces can’t communicate. Django/Flask/FastAPI is great for large apps.
 
-- Quarto.
+- Quarto or/and Jupyter Notebooks.
+
+>One thing I love to share with them is that fast.ai is built:
+>- entirely with Quarto
+>- entirely out of .ipynb files
+>
+>`quarto convert` can be used to go back and forth between .ipynb and .qmd!
+>
+>Yes, that totally works. In addition, quarto render a-notebook.ipynb works out of the box, so you don't even need to convert
+>It works both for notebooks that have been created in a different environment (and so can't be re-executed because the results are only possible to produce in, say, google colab), and for notebook that you want to re-execute at every rendering. (quarto render notebook.ipynb vs quarto render notebook.ipynb --execute) Our documentation has https://quarto.org/docs/tools/jupyter-lab.html.
+>
+>And if your folks really love the JupyterLab authoring experience, we have a JupyterLab extension that makes it a little easier to create ipynb files that work well with Quarto: https://quarto.org/docs/tools/jupyter-lab-extension.html.
+>
+>Is it possible to render an .ipynb using Quarto (after adding a yaml raw block) from a Jupyter Notebook? Or does it have to be within an IDE? I have colleagues who have used nbconvert to create pdfs via latex and they're wondering if it's possible to use Quarto's typst integration to go straight from .ipynb (not viewed in an IDE) to producing a pdf via typst. The workflow here is working in a Jupyter Notebook hosted on a Jupyter Hub.
+
 - Shiny for Python?
 - Walkthrough?
 
