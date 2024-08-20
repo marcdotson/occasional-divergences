@@ -1,22 +1,21 @@
 ---
 title: "An introduction to Python for R users"
 author: "Marc Dotson"
-date: "2024-04-02"
+date: "2024-09-31"
 description: |
-  Most introductions to Python are written for new programmers. But if you already know another language already, it's easier to learn the new language with your known language employed as an analogy. This introduction to Python is written for R users.
+  Most introductions to Python are written for new programmers. But if you already know another language, it's easier to learn Python using your known language as an analogy. This introduction to Python is written for R users.
 categories:
-  - r
   - python
-# image: figures/xkcd_python-env.png
+  - r
+  - positron
+image: figures/python.png
 slug: python-intro
 ---
 
-In classes and workshops over many years, I've taught introductions R. But in my new position, I'll need to be teaching in Python. This introduction to Python is really just a way for me to detail what I've learned about Python as an R user. But hopefully it proves useful to others as well.
+In classes and workshops over many years, I've taught analytics using R. But in my new position, I teach analytics using Python. This introduction to Python is for R users---primarily me. Hopefully it proves useful to others as well.
 
 Resources used:
 
-- [VS Code with Python](https://github.com/RamiKrispin/vscode-python)
-- [VS Code with R](https://github.com/RamiKrispin/vscode-r)
 - Python for Data Analysis
 - Python and R for the Modern Data Scientist
 - Effective Polars?
@@ -28,10 +27,11 @@ Resources used:
 - [Tidy Data Manipulation: dplyr vs polars](https://blog.tidy-intelligence.com/posts/dplyr-vs-polars/)
 - [Tidy Data Visualization: ggplot2 vs seaborn](https://blog.tidy-intelligence.com/posts/ggplot2-vs-seaborn/)
 - [Tidy Data Visualization: ggplot2 vs matplotlib](https://blog.tidy-intelligence.com/posts/ggplot2-vs-matplotlib/)
-- the "Introduction to Data Science with Python" workshop
-- the "Machine Learning and Deep Learning with Python" workshop
+- "Introduction to Data Science with Python" workshop
+- "Machine Learning and Deep Learning with Python" workshop
+- Materials in DATA 5600, 3300, and 3500, including Pedram's YouTube?
 
-<!-- ![](figures/xkcd_python-env.png){width=60% fig-align="center"} -->
+![](figures/python.png){width=60% fig-align="center"}
 
 ## Mindset
 
@@ -65,13 +65,9 @@ Python is:
 - Inconsistent (i.e., no tidyverse)
 - "Pythonistas" and "Pythonic" code
 
-::: {.callout-tip title="Non-Standard Repositories"}
-
-:::
-
-## The CLI?
-
+::: {.callout-tip title="CLI"}
 Learning to be okay with command line for installation.
+:::
 
 ## Installation and environments?
 
