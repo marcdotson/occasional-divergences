@@ -14,10 +14,10 @@ slug: python-intro
 
 In classes and workshops over many years, I've taught analytics using R. But in my new position, I teach analytics using Python. This introduction to Python is for R users---primarily me. Hopefully it proves useful to others as well.
 
-Resources used:
+There are incredible resources in this space, and I've drawn liberally from many of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for their clear espousing of the strengths and weaknesses of both languages. This isn't an either/or situation. I still use R even as I start to use Python.
 
-- Python for Data Analysis
-- Python and R for the Modern Data Scientist
+Additional resources will be provided where relevant in each section.
+
 - Effective Polars?
 - [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/)
 - [Polars’ Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-polars/)
@@ -106,7 +106,7 @@ Polars. A Rust library with Python bindings. A query engine with a data frame AP
 
 ## Visualization
 
-seaborn is a high-level interface to matplotlib. Originally focused on filling gaps in matplotlib’s feature set. Now it’s bringing some tidy philosophy to its plotting. Figure setups via motplotlib, plot function and parameters, axis parameters and decorations. Now seaborn.objects is more based on the underlying grammar of graphics. Start with a .Plot() and then add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
+seaborn is a high-level interface to matplotlib. Originally focused on filling gaps in matplotlib’s feature set. Now it’s bringing some tidy philosophy to its plotting. Figure setups via matplotlib, plot function and parameters, axis parameters and decorations. Now seaborn.objects is more based on the underlying grammar of graphics. Start with a .Plot() and then add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
 
 - Walkthrough?
 
