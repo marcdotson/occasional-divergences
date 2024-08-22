@@ -14,19 +14,8 @@ slug: python-intro
 
 In classes and workshops over many years, I've taught analytics using R. But in my new position, I teach analytics using Python. This introduction to Python is for R users---primarily me. Hopefully it proves useful to others as well.
 
-There are incredible resources in this space, and I've drawn liberally from many of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for their clear espousing of the strengths and weaknesses of both languages. This isn't an either/or situation. I still use R even as I start to use Python.
+There are incredible resources in this space, and I've drawn liberally from a number of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for the authors' clear espousing of the strengths and weaknesses of both languages. This isn't an either/or situation. I still use R even as I use more Python. Am I especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/) and espouse her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also indebted to the instructors from Posit Conf workshops and colleagues in my new position at Utah State University. Additional resources will be provided where relevant in each section.
 
-Additional resources will be provided where relevant in each section.
-
-- Effective Polars?
-- [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/)
-- [Polars’ Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-polars/)
-- [Base Python Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-base/)
-- [A tidyverse R and polars Python side-by-side](https://robertmitchellv.com/blog/2022-07-r-python-side-by-side/r-python-side-by-side.html)
-- [Tidy Data Manipulation: dplyr vs pandas](https://blog.tidy-intelligence.com/posts/dplyr-vs-pandas/)
-- [Tidy Data Manipulation: dplyr vs polars](https://blog.tidy-intelligence.com/posts/dplyr-vs-polars/)
-- [Tidy Data Visualization: ggplot2 vs seaborn](https://blog.tidy-intelligence.com/posts/ggplot2-vs-seaborn/)
-- [Tidy Data Visualization: ggplot2 vs matplotlib](https://blog.tidy-intelligence.com/posts/ggplot2-vs-matplotlib/)
 - "Introduction to Data Science with Python" workshop
 - "Machine Learning and Deep Learning with Python" workshop
 - Materials in DATA 5600, 3300, and 3500, including Pedram's YouTube?
@@ -75,6 +64,19 @@ Learning to be okay with command line for installation.
 - VS Code or Posit's new code editor? Quarto as motivation.
 - Reference my own reproducible environments post, but now just for Python.
 
+## Python basics?
+
+- [Base Python Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-base/)
+- Code relies on white space not braces.
+- Everything is an object, including imported modules (a module is a single file, while a package is a collection of modules in a directory).
+- The assignment (or *binding*) operator is `=`.
+- Attached functions called *methods* use the `.` notation following the object, `obj.some_method(x, y, z)`. Note that CmdStanR adopts this syntax. For example `model$sample()` in CmdStanR is `model.sample()` in CmdStanPy.
+- Lists are the fundamental data class and are created with single square brackets.
+- Objects aren't copied needlessly, they are just bound to the same underlying data structure.
+- Many objects or *mutable*. Their contents can be changed.
+- **Remember that Python is zero-indexed.**
+- `NULL` is referred to as `None`. Other types include `str`, `bytes` (binary), `float`, `bool`, and `int`.
+
 ## The (chosen) PyData stack
 
 The Python data (i.e., PyData) stack refers to the ecosystem of packages that enables data analysis.
@@ -86,29 +88,24 @@ The Python data (i.e., PyData) stack refers to the ecosystem of packages that en
 - seaborn is built on matplotlib and integrates with pandas. seaborn.objects is a more consistent API based on grammar of graphics.
 - scikit-learn is a machine learning library built on NumPy, SciPy, and matplotlib.
 
-## Python basics?
-
-- Code relies on white space not braces.
-- Everything is an object, including imported modules (a module is a single file, while a package is a collection of modules in a directory).
-- The assignment (or *binding*) operator is `=`.
-- Attached functions called *methods* use the `.` notation following the object, `obj.some_method(x, y, z)`. Note that CmdStanR adopts this syntax. For example `model$sample()` in CmdStanR is `model.sample()` in CmdStanPy.
-- Lists are the fundamental data class and are created with single square brackets.
-- Objects aren't copied needlessly, they are just bound to the same underlying data structure.
-- Many objects or *mutable*. Their contents can be changed.
-- **Remember that Python is zero-indexed.**
-- `NULL` is referred to as `None`. Other types include `str`, `bytes` (binary), `float`, `bool`, and `int`.
-
 ## Data wrangling
 
 Polars. A Rust library with Python bindings. A query engine with a data frame API on top. Something of an answer to pandas problems. The backend is in Rust instead of NumPy. Built on chaining expressions inside contexts instead of working on Series. Good with small and medium data. Everything stored in Arrow formats, including improvements for storing strings. No row indices. Lazy instead of eager evaluation, including a benefit for chaining.
 
 - Walkthrough? See the my own introduction to Python workshop with Python/R comparisons.
+- Effective Polars?
+- [Polars’ Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-polars/)
+- [A tidyverse R and polars Python side-by-side](https://robertmitchellv.com/blog/2022-07-r-python-side-by-side/r-python-side-by-side.html)
+- [Tidy Data Manipulation: dplyr vs pandas](https://blog.tidy-intelligence.com/posts/dplyr-vs-pandas/)
+- [Tidy Data Manipulation: dplyr vs polars](https://blog.tidy-intelligence.com/posts/dplyr-vs-polars/)
 
 ## Visualization
 
 seaborn is a high-level interface to matplotlib. Originally focused on filling gaps in matplotlib’s feature set. Now it’s bringing some tidy philosophy to its plotting. Figure setups via matplotlib, plot function and parameters, axis parameters and decorations. Now seaborn.objects is more based on the underlying grammar of graphics. Start with a .Plot() and then add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
 
 - Walkthrough?
+- [Tidy Data Visualization: ggplot2 vs seaborn](https://blog.tidy-intelligence.com/posts/ggplot2-vs-seaborn/)
+- [Tidy Data Visualization: ggplot2 vs matplotlib](https://blog.tidy-intelligence.com/posts/ggplot2-vs-matplotlib/)
 
 ## Modeling
 
