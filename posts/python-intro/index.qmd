@@ -14,13 +14,13 @@ slug: python-intro
 
 In classes and workshops over many years, I've taught analytics using R. But in my new position, I teach analytics using Python. This introduction to Python is for R users---primarily me. Hopefully it proves useful to others as well.
 
+![](figures/python.png){width=60% fig-align="center"}
+
 There are incredible resources in this space, and I've drawn liberally from a number of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for the authors' clear espousing of the strengths and weaknesses of both languages. This isn't an either/or situation. I still use R even as I use more Python. Am I especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/) and espouse her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also indebted to the instructors from Posit Conf workshops and colleagues in my new position at Utah State University. Additional resources will be provided where relevant in each section.
 
 - "Introduction to Data Science with Python" workshop
 - "Machine Learning and Deep Learning with Python" workshop
 - Materials in DATA 5600, 3300, and 3500, including Pedram's YouTube?
-
-![](figures/python.png){width=60% fig-align="center"}
 
 ## Mindset
 
