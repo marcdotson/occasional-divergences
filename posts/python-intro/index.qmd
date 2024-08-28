@@ -60,8 +60,8 @@ Learning to be okay with command line for installation.
 
 ## Installation and environments?
 
-- pyenv and venv or pdm?
-- VS Code or Posit's new code editor? Quarto as motivation.
+- pyenv and venv or pdm or uv?
+- Positron.
 - Reference my own reproducible environments post, but now just for Python.
 
 ## Python basics?
