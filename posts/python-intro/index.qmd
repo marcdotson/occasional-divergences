@@ -14,10 +14,11 @@ slug: python-intro
 
 In classes and workshops over many years, I've taught analytics using R. But in my new position, I teach analytics using Python. This introduction to Python is for R users---primarily me. Hopefully it proves useful to others as well.
 
-![](figures/python.png){width=60% fig-align="center"}
+![](figures/python-r.png){width=60% fig-align="center"}
 
 There are incredible resources in this space, and I've drawn liberally from a number of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for the authors' clear espousing of the strengths and weaknesses of both languages. This isn't an either/or situation. I still use R even as I use more Python. Am I especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/) and espouse her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also indebted to the instructors from Posit Conf workshops and colleagues in my new position at Utah State University. Additional resources will be provided where relevant in each section.
 
+- "An Introduction to Python for R Users"
 - "Introduction to Data Science with Python" workshop
 - "Machine Learning and Deep Learning with Python" workshop
 - Materials in DATA 5600, 3300, and 3500, including Pedram's YouTube?
@@ -62,7 +63,11 @@ Learning to be okay with command line for installation.
 
 - pyenv and venv or pdm or uv?
 - Positron.
-- Reference my own reproducible environments post, but now just for Python.
+- Reference my own reproducible environments post, but expand on the callouts just for Python.
+
+::: {.callout-tip title="Python with VS Code"}
+Alternative directions for setting up how to use Python in VS Code.
+:::
 
 ## Python basics?
 
@@ -118,6 +123,7 @@ scikitlearn, etc.
 In learning Python find something that provides real value quickly. This is the pitch for Shiny for Python. It has programmatic range with a consistent philosophy with reactivity. Streamlit is optimized for simple applications, like a parameterized Quarto document. Dash is built on stateless applications (i.e., independent components), like Shiny without reactive expressions where the different pieces can’t communicate. Django/Flask/FastAPI is great for large apps.
 
 - Quarto or/and Jupyter Notebooks.
+- Can you render Jupyter Notebooks into Word, etc.?
 
 >One thing I love to share with them is that fast.ai is built:
 >- entirely with Quarto
