@@ -9,22 +9,27 @@ categories:
   - python
   - stan
   - compute
-  - positron
 image: figures/owl.png
 slug: virtual-machines
 ---
 
-It's not uncommon to run into computational bottlenecks when running models, Bayesian or otherwise. I've often had access to a dedicated computer or server for such tasks or, in classic academic fashion, I've been comfortable with letting models run for weeks. But these options aren't always available and they might not actually solve the problem. Cloud computing is clearly the solution. However, breaking into using cloud computing has made me feel the need to (with apologies) adapt the adage often applied to needing regular expressions: "If you have a problem that requires cloud computing, congratulations, you now have two problems.""
+It's not uncommon to run into computational bottlenecks when running models, Bayesian or otherwise. I've often had access to a dedicated computer or server for such tasks or, in classic academic fashion, I've been comfortable with letting models run for weeks. But these options aren't always available and they might not actually solve the problem. Cloud computing is clearly the solution. However, breaking into cloud computing has made me feel the need to (with apologies) adapt the adage often applied to using regular expressions: "If you have a problem that requires cloud computing, congratulations, you now have two problems."
 
 There are a number of cloud service providers, AWS arguably chief among them. However, AWS can do *everything* when what I really need is the ability to quickly spin up and temporarily use a virtual machine that can easily run R, Python, and often Stan. One of the primary reason VS Code has been so hyped is the use of its SSH extension for easily tunneling into and using such a virtual machine. However, the virtual machine needs to be spun up in the first place. Using cloud computing definitely feels like a *draw the rest of the owl* situation.
 
 ![](figures/owl.png){width=50% fig-align="center"}
 
-In this post, I try to fill in the gaps and provide a gentle introduction to spinning up and using virtual machines that can run R and Python. Special thanks to Lizzy Nguyen and Andrew Heiss for helping me navigate all of this.
+In this post, I try to fill in the gaps and provide a gentle introduction to spinning up and using virtual machines that can run R and Python. Special thanks to Sharad Jones, Lizzy Nguyen, and Andrew Heiss for helping me navigate all of this.
 
 ## Spinning up virtual machines
 
 A virtual machine (VM) is a computer that isn't *actually* a computer---it's rented time on a server in a data center somewhere, hence it being "virtual." But before we can set (or spin) up a VM, we need to prepare the machine image we want to work with on the VM. This image is really a [reproducible environment](https://occasionaldivergences.com/posts/rep-env/) writ large: It needs to include not only the required programming languages and packages, but also the operating system and necesssary applications.
+
+::: {.callout-note title="Image Requirements?"}
+Do we actually need to specify the operating system and applications for an image? If I SSH into a machine from an IDE, shouldn't that IDE be all that I need, regardless of whatever is installed at the other end? To that end, do I really even need Docker at that point?
+
+I'm loooking for the simplest possible way to get computation started, and certainly having to create an image is a bottleneck for my bottleneck. Hasn't someone else written this blog post for me, please?
+:::
 
 You can think of an image as a *snapshot* of everything you need to run your model. That means once you have an image, it can be used to run models isolated from everything else. These self-contained images are known as *containers*. Designed for development and production well beyond the scope of what we're discussing, the fact that they have everything they need to run in isolation means you can have multiple containers running on your computer, actual or virtual.
 
@@ -53,7 +58,7 @@ This isn't a tutorial for creating a Docker image. In the short term, I need a V
 - Run the image at a specific port `$ docker run -d -p 8787:8787 rocker/tidyverse`
 - Access the remote installation at `__.___.__.___:8787`
 
-::: {.callout-note title="AWS is Too General"}
+::: {.callout-note title="AWS is Too General?"}
 I feel like this is similar to the complaints I make about VS Code. Add some guidelines on how to do this in AWS to the callout note?
 
 AWS, like Azure and GCP (is it too general)? Can use AWS for *anything*. App hosting, etc. Including using GPU clusters and quantum computing! Cutting a cake with a chainsaw.
@@ -64,6 +69,14 @@ AWS, like Azure and GCP (is it too general)? Can use AWS for *anything*. App hos
 - S3/RDS for storage.
 - Have to pick an OS, instance type, add storage...Docker?
 - Memory optimized VMs have large data sets in memory.
+
+Sharad's walkthrough (also see his Cloud Computing class):
+
+- EBS volume on Amazon for external connection
+- AMI as a launch script instead of a Docker image
+- Key pair for SSH connection
+- S3 to transfer quickly to EBS volumes on EC2
+- chmod 400 “keypair.pem” is UNIX-specific (read-only access)
 
 Digital Ocean? From Andrew:
 
@@ -80,6 +93,7 @@ Digital Ocean? From Andrew:
 
 ### 2. How do I get data into and out of the container?
 
+- What about getting an S3 instance?
 - Andrew likes to mount local folders to the docker container so he knows where everything rather than use official dev envirnoment tools that have more opaque file systems. That said, most of his work is for testing things for package development, not for computational resources.
 - Note on scaling up the size of the VM.
 
