@@ -18,7 +18,6 @@ In classes and workshops over many years, I've taught analytics using R. But in 
 
 There are incredible resources in this space, and I've drawn liberally from a number of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for the authors' clear espousing of the strengths and weaknesses of both languages. This isn't an either/or situation. I still use R even as I use more Python. Am I especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/) and espouse her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also indebted to the instructors from Posit Conf workshops and colleagues in my new position at Utah State University. Additional resources will be provided where relevant in each section.
 
-- "An Introduction to Python for R Users"
 - "Introduction to Data Science with Python" workshop
 - "Machine Learning and Deep Learning with Python" workshop
 - Materials in DATA 5600, 3300, and 3500, including Pedram's YouTube?
@@ -61,8 +60,8 @@ Learning to be okay with command line for installation.
 
 ## Installation and environments?
 
-- pyenv and venv or pdm or uv?
-- Positron.
+- pyenv and pip or uv and venv or pdm?
+- Positron or VS Code.
 - Reference my own reproducible environments post, but expand on the callouts just for Python.
 
 ::: {.callout-tip title="Python with VS Code"}
@@ -106,11 +105,17 @@ Polars. A Rust library with Python bindings. A query engine with a data frame AP
 
 ## Visualization
 
-seaborn is a high-level interface to matplotlib. Originally focused on filling gaps in matplotlib’s feature set. Now it’s bringing some tidy philosophy to its plotting. Figure setups via matplotlib, plot function and parameters, axis parameters and decorations. Now seaborn.objects is more based on the underlying grammar of graphics. Start with a .Plot() and then add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
+seaborn is a high-level interface to matplotlib. Originally focused on filling gaps in matplotlib’s feature set. Now seaborn.objects is more based on the underlying grammar of graphics. Start with a .Plot() and then add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
 
 - Walkthrough?
 - [Tidy Data Visualization: ggplot2 vs seaborn](https://blog.tidy-intelligence.com/posts/ggplot2-vs-seaborn/)
 - [Tidy Data Visualization: ggplot2 vs matplotlib](https://blog.tidy-intelligence.com/posts/ggplot2-vs-matplotlib/)
+- [Matplotlib](https://matplotlib.org/stable/users/explain/figure/api_interfaces.html#matplotlib-application-interfaces-apis)
+
+> The code in the blog post referenced uses the implicit interface, where you operate directly on plt.XXXXX, versus the explicit interface where you generate an axis and figure fig, ax = plt.subplots(). While using the implicit interface, Positron allows you to iterate on a single plot, which is the behavior you're seeing. There are a few options to tell matplotlib that you are operating on a different figure:
+> 
+> - add plt.clf() between each plt.show() call. This will not give you the film strip in Positron, since you’re essentially working on the same plot, but it will clear the plot so you don’t have one mega plot 👾
+> - update the code to be in the explicit interface, which would consist of adding fig, ax = plt.subplots() to denote the creation of a new plot. Most anywhere you're doing something like plt.bar(...) would need to be update to ax.bar(...). You should still be able to use plt.show() to show all the figures.
 
 ## Modeling
 
@@ -123,7 +128,11 @@ scikitlearn, etc.
 In learning Python find something that provides real value quickly. This is the pitch for Shiny for Python. It has programmatic range with a consistent philosophy with reactivity. Streamlit is optimized for simple applications, like a parameterized Quarto document. Dash is built on stateless applications (i.e., independent components), like Shiny without reactive expressions where the different pieces can’t communicate. Django/Flask/FastAPI is great for large apps.
 
 - Quarto or/and Jupyter Notebooks.
+- Quarto is plain text while Jupyter has a rich-text format.
 - Can you render Jupyter Notebooks into Word, etc.?
+- Can you somehow run line-by-line inside of cells, or is the RTF messing with the script?
+
+Also, the Great Tables library!
 
 >One thing I love to share with them is that fast.ai is built:
 >- entirely with Quarto
