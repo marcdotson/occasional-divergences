@@ -1,13 +1,12 @@
 ---
 title: "An introduction to Python for R users"
 author: "Marc Dotson"
-date: "2024-09-31"
+date: "2024-10-01"
 description: |
   Most introductions to Python are written for new programmers. But if you already know another language, it's easier to learn Python using your known language as an analogy. This introduction to Python is written for R users.
 categories:
   - python
   - r
-  - positron
 image: figures/python.png
 slug: python-intro
 ---
@@ -16,7 +15,9 @@ In classes and workshops over many years, I've taught analytics using R. But in 
 
 ![](figures/python-r.png){width=60% fig-align="center"}
 
-There are incredible resources in this space, and I've drawn liberally from a number of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for the authors' clear espousing of the strengths and weaknesses of both languages. This isn't an either/or situation. I still use R even as I use more Python. Am I especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/) and espouse her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also indebted to the instructors from Posit Conf workshops and colleagues in my new position at Utah State University. Additional resources will be provided where relevant in each section.
+There are incredible resources in this space, and I've drawn liberally from a number of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for the authors' clear espousing that this isn't an either/or situation---you can (and arguably *should*) use R and Python together.
+
+I am especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/) and agree with her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also grateful to extra help from Posit Conf workshop instructors and colleagues in my new position at Utah State University. Additional resources will be provided where relevant in each section.
 
 - "Introduction to Data Science with Python" workshop
 - "Machine Learning and Deep Learning with Python" workshop
@@ -24,8 +25,14 @@ There are incredible resources in this space, and I've drawn liberally from a nu
 
 ## Mindset
 
-R is:
+When you start working with Python, it's essential that you chance your mindset. R is a specialized language developed by statisticians for data analysis. Python is a *big* tent, a general programming language developed by computer scientists for many things, with only a small portion of it dedicated to data analysis.
 
+:::: {.columns}
+
+::: {.column width="50%"}
+### R
+
+::: {.incremental}
 - Specialized language
 - Developed by statisticians
 - Lazy about efficiency
@@ -38,9 +45,13 @@ R is:
 - R Markdown and Quarto
 - Consistency in the tidyverse
 - "R Users" and "Tidy" code
+:::
+:::
 
-Python is:
+::: {.column width="50%"}
+### Python
 
+::: {.incremental}
 - General language
 - Developed by computer scientists
 - Obsessed with efficiency
@@ -53,6 +64,10 @@ Python is:
 - Jupyter Notebooks
 - Inconsistent (i.e., no tidyverse)
 - "Pythonistas" and "Pythonic" code
+:::
+:::
+
+::::
 
 ::: {.callout-tip title="CLI"}
 Learning to be okay with command line for installation.
@@ -96,12 +111,323 @@ The Python data (i.e., PyData) stack refers to the ecosystem of packages that en
 
 Polars. A Rust library with Python bindings. A query engine with a data frame API on top. Something of an answer to pandas problems. The backend is in Rust instead of NumPy. Built on chaining expressions inside contexts instead of working on Series. Good with small and medium data. Everything stored in Arrow formats, including improvements for storing strings. No row indices. Lazy instead of eager evaluation, including a benefit for chaining.
 
-- Walkthrough? See the my own introduction to Python workshop with Python/R comparisons.
 - Effective Polars?
 - [Polars’ Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-polars/)
 - [A tidyverse R and polars Python side-by-side](https://robertmitchellv.com/blog/2022-07-r-python-side-by-side/r-python-side-by-side.html)
 - [Tidy Data Manipulation: dplyr vs pandas](https://blog.tidy-intelligence.com/posts/dplyr-vs-pandas/)
 - [Tidy Data Manipulation: dplyr vs polars](https://blog.tidy-intelligence.com/posts/dplyr-vs-polars/)
+
+### Load Packages and Data
+
+Packages (i.e., libraries) and modules (i.e., a kind of sub-library) are imported with **aliases**. When you use functions from a package, you reference `package.function()`. This is like `package::function()` in R.
+
+Everything is an object. Depending on the object *type* you have access to their corresponding:
+
+- **attributes** as in `object.attribute`
+- **methods**, which are object-specific functions, as in `object.method()`
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+import polars as pl
+import polars.selectors as cs
+
+customer_data = pl.read_csv('posts/python-intro/data/customer_data.csv')
+customer_data.shape
+customer_data.columns
+```
+
+### R
+
+```{r}
+library(tidyverse)
+
+customer_data <- read_csv("posts/python-intro/data/customer_data.csv")
+
+glimpse(customer_data)
+```
+:::
+
+### Filter Observations
+
+Polars **DataFrames** have methods that are similar to {dplyr} since they're both mirroring SQL. DataFrames are composed of columns called **Series** (i.e., equivalent to vectors). Unlike pandas DataFrames, Polars DataFrames don't have a **row index**.
+
+We would reference column names with `data['column_name']` (like R's `data$column_name` or `data["column_name"]` or just `column_name` with tidyeval), but Polars allows for `pl.col('column_name')`.
+
+We use quotation marks for every column name.
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+customer_data.filter(pl.col('college_degree') == 'Yes')
+customer_data.filter(pl.col('region') != 'West')
+customer_data.filter(pl.col('gender') != 'Female', pl.col('income') > 70000)
+```
+
+### R
+
+```{r}
+filter(customer_data, college_degree == "Yes")
+
+filter(customer_data, region != "West")
+
+filter(customer_data, gender == "Female", income > 70000)
+```
+:::
+
+### Slice Observations
+
+Python is **zero-indexed**. This is probably the most problematic (and very computer science-based) difference and why it's nice to avoid indexing if you can!
+
+The parameters for Polars' `.slice()` are the start index and the length.
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+customer_data.slice(0, 5)
+```
+
+### R
+
+```{r}
+slice(customer_data, 1:5)
+```
+:::
+
+### Arrange Observations
+
+It can be strange at first, but **namespacing** is critical.
+
+- A function is preceded by the package name (e.g., `pl.col()`), unless you import the specific function (e.g., `from polars import col`).
+- A method is preceded by an object name of a certain type (e.g., `customer_data.sort()`).
+- Since object types are tied to packages, the chain back to the corresponding package is always present, explicitly or implicitly.
+
+Note that its `True` and `False`, not `TRUE` and `FALSE` or `true` and `false`.
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+customer_data.sort(pl.col('birth_year'))
+customer_data.sort(pl.col('birth_year'), descending=True)
+```
+
+### R
+
+```{r}
+arrange(customer_data, birth_year)
+
+arrange(customer_data, desc(birth_year))
+```
+:::
+
+### Select Variables
+
+Using single square brackets `[ ]` creates a **list**. This is similar to creating a vector in R with `c()`. A list is a fundamental Python object type and can be turned into a Series.
+
+Function (and method) arguments are also called **parameters**.
+
+- Some parameters are **positional** that have to be specified in the exact position.
+- Others are **keyword or named** (like in R).
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+customer_data.select(pl.col('region'), pl.col('review_text'))
+customer_data.select(pl.col(['region', 'review_text']))
+```
+
+### R
+
+```{r}
+select(customer_data, region, review_text)
+```
+:::
+
+### Mutate Variables
+
+Polars is actually a query language, like SQL. So it's not surprising to see methods with names that more closely mirror queries, like the `.with_columns()` method.
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+customer_data.with_columns(income = pl.col('income') / 1000)
+```
+
+### R
+
+```{r}
+mutate(customer_data, income = income / 1000)
+```
+:::
+
+### Join Data Frames
+
+Missing values are identified as `NaN`. Series types include `str`, `bytes` (binary), `float`, `bool`, and `int`.
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+store_transactions = pl.read_csv('posts/python-intro/data/store_transactions.csv')
+store_transactions.shape
+store_transactions.columns
+
+customer_data.join(store_transactions, on='customer_id', how='left')
+customer_data.join(store_transactions, on='customer_id', how='inner')
+```
+
+### R
+
+```{r}
+store_transactions <- read_csv("posts/python-intro/data/store_transactions.csv")
+
+glimpse(store_transactions)
+
+left_join(customer_data, store_transactions, join_by(customer_id))
+
+inner_join(customer_data, store_transactions, join_by(customer_id))
+```
+:::
+
+### Consecutive Lines of Code
+
+While possible with Python code generally, Polars embraces writing consecutive lines of code using **method chaining**. Note that:
+
+- The entire chain needs to be surrounded with `( )`
+- Each line *starts* with `.`
+- You'll have to select and run the whole thing at once
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+(customer_data
+ .join(store_transactions, on='customer_id', how='left')
+ .filter(pl.col('region') == 'West', pl.col('feb_2005') == pl.col('feb_2005').max())
+ .with_columns(age = 2024 - pl.col('birth_year'))
+ .select(pl.col(['age', 'feb_2005']))
+ .sort(pl.col('age'), descending=True)
+ .slice(0, 1)
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  left_join(store_transactions, join_by(customer_id)) |> 
+  filter(region == "West", feb_2005 == max(feb_2005)) |> 
+  mutate(age = 2024 - birth_year) |> 
+  select(age, feb_2005) |> 
+  arrange(desc(age)) |> 
+  slice(1)
+```
+:::
+
+### Summarize Discrete Data
+
+The `.agg()` method stands for *aggregate*, which is exactly what `summarize()` does in R.
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+(customer_data
+ .group_by(pl.col('region'))
+ .agg(n = pl.len())
+)
+
+(customer_data
+ .group_by(pl.col(['region', 'college_degree']))
+ .agg(n = pl.len())
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  count(region)
+
+customer_data |> 
+  count(region, college_degree)
+```
+:::
+
+### Summarize Continuous Data
+
+This is a good example of where object-oriented programming requires a different mindset.
+
+- You might think that there is a general `mean()` function like in R, but there isn't and you'd have to load a specific package from the PyData stack and reference its namespace to activate such a function.
+- Instead, `.mean()` is a method for Polars Series and DataFrames.
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+(customer_data
+  .select(pl.col('income'))
+  .mean()
+)
+
+(customer_data
+  .select(pl.col(['income', 'credit']))
+  .mean()
+)
+```
+
+### R
+
+```{r}
+customer_data |>
+  summarize(avg_income = mean(income))
+
+customer_data |>
+  summarize(
+    avg_income = mean(income),
+    avg_credit = mean(credit)
+  )
+```
+:::
+
+### Summarize Discrete and Continuous Data
+
+We only use `.agg()` with `.group_by()`.
+
+::: {.panel-tabset .scrollable}
+### Python
+
+```{python}
+(customer_data
+ .group_by(pl.col(['gender', 'region']))
+ .agg(
+   n = pl.len(), 
+   avg_income = pl.col('income').mean(), 
+   avg_credit = pl.col('credit').mean()
+  )
+ .sort(pl.col('avg_income'), descending=True)
+)
+```
+
+### R
+
+```{r}
+customer_data |>
+  group_by(gender, region) |>
+  summarize(
+    n = n(),
+    avg_income = mean(income),
+    avg_credit = mean(credit)
+  ) |> 
+  arrange(desc(avg_income))
+```
+:::
 
 ## Visualization
 
