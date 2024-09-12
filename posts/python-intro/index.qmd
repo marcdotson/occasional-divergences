@@ -79,6 +79,11 @@ Learning to be okay with command line for installation.
 - Positron or VS Code.
 - Reference my own reproducible environments post, but expand on the callouts just for Python.
 
+Positron issues:
+
+- In a Quarto document, running Python line-by-line jumps to the end of a cell. Not an issue in a .py script.
+- Issue with getting Python and R to render in a Quarto document. Requires reticulate? Does Positron effect this?
+
 ::: {.callout-tip title="Python with VS Code"}
 Sidebar with directions for setting up how to use Python in VS Code.
 :::
@@ -453,7 +458,10 @@ customer_data |>
 
 ## Visualization
 
-seaborn is a high-level interface to matplotlib. Originally focused on filling gaps in matplotlib’s feature set. Now seaborn.objects is more based on the underlying grammar of graphics. Start with a .Plot() and then add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
+seaborn is a high-level interface to matplotlib that was originally focused on filling gaps in matplotlib’s feature set, but now seaborn.objects is more based on the underlying grammar of graphics.
+
+- Start with a .Plot().
+- Add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
 
 - Walkthrough?
 - [Tidy Data Visualization: ggplot2 vs seaborn](https://blog.tidy-intelligence.com/posts/ggplot2-vs-seaborn/)
@@ -467,7 +475,7 @@ seaborn is a high-level interface to matplotlib. Originally focused on filling g
 
 ## Modeling
 
-scikitlearn, etc.
+scikitlearn, PyMC, etc.
 
 - Walkthrough?
 
