@@ -9,6 +9,8 @@ categories:
   - r
 image: figures/python.png
 slug: python-intro
+execute:
+  eval: false
 ---
 
 In classes and workshops over many years, I've taught analytics using R. But in my new position, I teach analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
@@ -19,8 +21,6 @@ There are incredible resources in this space, and I've drawn liberally from a nu
 
 I am especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/) and subscribe to her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also grateful to extra help from Posit Conf workshop instructors and colleagues in my new position at Utah State University. Additional resources will be provided where relevant in each section.
 
-- "Introduction to Data Science with Python" workshop
-- "Machine Learning and Deep Learning with Python" workshop
 - Materials in DATA 5600, 3300, and 3500, including Pedram's YouTube?
 
 ## Mindset
@@ -84,9 +84,22 @@ Positron issues:
 - In a Quarto document, running Python line-by-line jumps to the end of a cell. Not an issue in a .py script.
 - Issue with getting Python and R to render in a Quarto document. Requires reticulate? Does Positron effect this?
 
+> When you run Python code, note the reticulate::repl_python() call. REPL means “read-eval-print loop,” which is an interactive coding environment like you’re used to (the opposite would be coding that had to be compiled).
+
+The Console’s >>> indicates you’re operating in Python.
+
 ::: {.callout-tip title="Python with VS Code"}
 Sidebar with directions for setting up how to use Python in VS Code.
 :::
+
+Python uses **reproducible environments** (and R should as well). A reproducible environment is a lot like RStudio projects but where each project has:
+
+- A specific version of Python identified
+- Its own library of installed packages
+
+This helps us make sure that projects work even after certain functionality gets deprecated and makes sure we don't make *big* mistakes (like **using or messing with your operating system's version of Python**).
+
+I wrote a [blog post](https://occasionaldivergences.com/posts/rep-env/) about reproducible environments in R and Python. And here's some helpful [installation instructions](https://chendaniely.github.io/python_setup/210-python_install.html) for Python specifically.
 
 ## Python essentials
 
@@ -511,4 +524,12 @@ Also, the Great Tables library!
 ## Final thoughts
 
 Conclude...and follow-up with advanced ____ for the R user?
+
+- Don't be afraid to use the best of R and Python interchangeably.
+- Maintaining different styles may help you keep separate mindsets.
+- Besides RStudio, VS Code is a great code editor.
+- There are great resources online for [R Users learning Python](https://emilyriederer.netlify.app/post/py-rgo/).
+- [Polars](https://docs.pola.rs) is still under development as is [seaborn.objects](https://seaborn.pydata.org/tutorial/objects_interface.html), but both are worth following.
+- [pandas](https://wesmckinney.com/book/) is still the most popular as a complement to NumPy.
+- Master the basics so you can effectively use Copilot, ChatGPT, etc.
 
