@@ -79,11 +79,6 @@ Learning to be okay with command line for installation.
 - Positron or VS Code.
 - Reference my own reproducible environments post, but expand on the callouts just for Python.
 
-Positron issues:
-
-- In a Quarto document, running Python line-by-line jumps to the end of a cell. Not an issue in a .py script.
-- Issue with getting Python and R to render in a Quarto document. Requires reticulate? Does Positron effect this?
-
 > When you run Python code, note the reticulate::repl_python() call. REPL means “read-eval-print loop,” which is an interactive coding environment like you’re used to (the opposite would be coding that had to be compiled).
 
 The Console’s >>> indicates you’re operating in Python.
