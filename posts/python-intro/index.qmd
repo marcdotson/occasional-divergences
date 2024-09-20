@@ -12,7 +12,7 @@ slug: python-intro
 execute:
   eval: false
 ---
-
+ 
 In classes and workshops over many years, I've taught analytics using R. But in my new position, I teach analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
 
 ![](figures/python-r.png){width=60% fig-align="center"}
@@ -470,6 +470,7 @@ seaborn is a high-level interface to matplotlib that was originally focused on f
 
 - Start with a .Plot().
 - Add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
+- reactable-py?
 
 - Walkthrough?
 - [Tidy Data Visualization: ggplot2 vs seaborn](https://blog.tidy-intelligence.com/posts/ggplot2-vs-seaborn/)
@@ -495,8 +496,10 @@ In learning Python find something that provides real value quickly. This is the 
 - Quarto is plain text while Jupyter has a rich-text format.
 - Can you render Jupyter Notebooks into Word, etc.?
 - Can you somehow run line-by-line inside of cells, or is the RTF messing with the script?
+- In a Quarto document, running Python line-by-line jumps to the end of a cell. Not an issue in a .py script.
+- Issue with getting Python and R to render in a Quarto document. Requires reticulate? Does Positron affect this?
 
-Also, the Great Tables library!
+Also, the gt and Great Tables libraries!
 
 >One thing I love to share with them is that fast.ai is built:
 >- entirely with Quarto
