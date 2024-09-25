@@ -31,17 +31,21 @@ I'm loooking for the simplest possible way to get computation started, and certa
 
 Sharad's AWS/EC2 walkthrough:
 
-- EC2 instance using Ubuntu (not a WSL Linux instance)
-
+- EC2 instance with a selected AMI (Amazon Machine Image)
+- Ubuntu OS (not a WSL Linux image for Positron) plus image specifics
+- Note free tier options, which architecture to select (x86 or Arm)?
+- Instance type appropriate for my work?
+- Create a new key pair for SSH connection using RSA and .pem for OpenSSH.
+- Create or use an existing security group and allow SSH traffic. Maybe from My IP.
+- Configure storage is for the EBS volume. Doesn't need to be tied to the EC2 instance.
+- Port 22 is specific for inbound traffic using SSH.
+- chmod 400 “keypair.pem” is UNIX-specific (read-only access) for SSH connection?
 
 Additional notes:
 
 - EBS volume on Amazon for external connection
 - AMI as a launch script instead of a Docker image
-- Key pair for SSH connection
 - S3 to transfer quickly to EBS volumes on EC2
-- chmod 400 “keypair.pem” is UNIX-specific (read-only access)
-
 
 - 
 :::
@@ -97,7 +101,7 @@ Digital Ocean? From Andrew:
 
 - SSH Tunneling with VS Code: https://www.youtube.com/watch?v=cOopQQIL8JU
 
-SSH tunneling is available experimentally in Positron: https://github.com/posit-dev/positron/pull/4251 using a "lightly modified" version of Open Remote SSH (https://github.com/jeanp413/open-remote-ssh).
+SSH tunneling is available experimentally in Positron: https://github.com/posit-dev/positron/pull/4251 using a "lightly modified" version of Open Remote SSH (https://github.com/jeanp413/open-remote-ssh) that's already bundled into the install.
 
 > When credentials are supplied to a remote host, Positron will connect to the host, download a server binary from Positron's Github Releases page matching the version of Positron being used on the client side, unpack the server into ~/.positron-server, then start it inside the remote host.
 > 
@@ -105,7 +109,16 @@ SSH tunneling is available experimentally in Positron: https://github.com/posit-
 >
 > Only Linux hosts on 64-bit Intel (x86_64) CPU architectures are supported right now.
 
+May also need to install a supported SSH client: https://code.visualstudio.com/docs/remote/troubleshooting#_installing-a-supported-ssh-client. It comes built-in for macOS.
 
+- Bottom left corner shows connection.
+- Open SSH Configuration File:
+
+Host my-server
+    HostName your.server.ip.address
+    User root
+
+- 
 
 ### 2. How do I get data into and out of the container?
 
