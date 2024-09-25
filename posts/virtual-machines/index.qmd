@@ -41,6 +41,11 @@ Sharad's AWS/EC2 walkthrough:
 - Port 22 is specific for inbound traffic using SSH.
 - chmod 400 “keypair.pem” is UNIX-specific (read-only access) for SSH connection?
 
+Questions:
+
+1. Do I still initialize the use of my key pair using chmod 400 “keypair.pem” via the terminal, or is that baked in elswhere in the remote SSH workflow?
+2. What is it that I input when tunneling in VS Code? It's asking for something akin to `user@hostname:port`.
+
 Additional notes:
 
 - EBS volume on Amazon for external connection
