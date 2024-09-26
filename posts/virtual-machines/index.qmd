@@ -29,28 +29,34 @@ Do we actually need to specify the operating system and applications for an imag
 
 I'm loooking for the simplest possible way to get computation started, and certainly having to create an image is just another bottleneck.
 
-Sharad's AWS/EC2 walkthrough:
+Sharad's AWS/EC2 setup walkthrough:
 
 - EC2 instance with a selected AMI (Amazon Machine Image)
 - Ubuntu OS (not a WSL Linux image for Positron) plus image specifics
-- Note free tier options, which architecture to select (x86 or Arm)?
+- Note free tier options, which architecture to select (x86 only)
 - Instance type appropriate for my work?
 - Create a new key pair for SSH connection using RSA and .pem for OpenSSH.
 - Create or use an existing security group and allow SSH traffic. Maybe from My IP.
 - Configure storage is for the EBS volume. Doesn't need to be tied to the EC2 instance.
 - Port 22 is specific for inbound traffic using SSH.
-- chmod 400 “keypair.pem” is UNIX-specific (read-only access) for SSH connection?
 
-Questions:
+```
+Host test-server
+    HostName IP
+    User ubuntu
+    PubKeyAuthentication yes
+    IdentityFile ~/.ssh/keypair.pem
+```
 
-1. Do I still initialize the use of my key pair using chmod 400 “keypair.pem” via the terminal, or is that baked in elswhere in the remote SSH workflow?
-2. What is it that I input when tunneling in VS Code? It's asking for something akin to `user@hostname:port`.
+- Use the Host alias for the server details specified in the Config file.
+- Install...
 
 Additional notes:
 
 - EBS volume on Amazon for external connection
 - AMI as a launch script instead of a Docker image
 - S3 to transfer quickly to EBS volumes on EC2
+- Script for spinning up a machine from local IDE?
 
 - 
 :::
