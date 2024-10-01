@@ -20,6 +20,8 @@ There are a number of cloud service providers, AWS arguably chief among them. Ho
 
 In this post, I try to fill in the gaps and provide a gentle introduction to spinning up and using virtual machines that can run R and Python. Special thanks to Sharad Jones, Lizzy Nguyen, and Andrew Heiss for helping me navigate all of this.
 
+> NOTE that support for remote SSH is still experimental in Positron.
+
 ## Spinning up virtual machines
 
 A virtual machine (VM) is a computer that isn't *actually* a computer---it's rented time on a server in a data center somewhere, hence it being "virtual." But before we can set (or spin) up a VM, we need to prepare the machine image we want to work with on the VM. This image is really a [reproducible environment](https://occasionaldivergences.com/posts/rep-env/) writ large: It needs to include not only the required programming languages and packages, but also the operating system and necesssary applications.
@@ -49,7 +51,29 @@ Host test-server
 ```
 
 - Use the Host alias for the server details specified in the Config file.
-- Install...
+- Python Server installed automataically. Install pyenv with `curl https://pyenv.run | bash` and then setup with:
+
+```
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+
+exec $SHELL
+```
+
+- Confirm pyenv is installed with `pyenv --version`.
+- Install the latest version of Python with `pyenv install 3`.
+- Set version of Python to use...
+
+OR NOT?
+
+- Create a virtual environment.
+- Install pip? And venv?
+
+```
+sudo apt update
+sudo apt install python3-venv python3-pip
+```
 
 Additional notes:
 
