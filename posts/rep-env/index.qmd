@@ -7,13 +7,13 @@ description: |
 categories:
   - r
   - python
-image: figures/xkcd_python-env.png
+image: figures/xkcd_python-env-01.png
 slug: rep-env
 ---
 
 Reproducible environments. If you're primarily a Pythonista, you're likely already familiar with the necessity. And the horror. XKCD said it best:
 
-![](figures/xkcd_python-env.png){width=60% fig-align="center"}
+![](figures/xkcd_python-env-02.png){width=60% fig-align="center"}
 
 If you're primarily an R user, you might not be familiar with either the necessity or the horror of reproducible environments. This post is about facilitating the former and minimizing the latter. I've written this primarily for R users, especially those who, like me, find themselves supplementing their existing R workflows with Python. We'll focus on using [{renv}](https://rstudio.github.io/renv/index.html) to create reproducible environments for R and Python, along with [pyenv](https://github.com/pyenv/pyenv) and some [venv](https://docs.python.org/3/library/venv.html).
 
