@@ -20,20 +20,10 @@ website:
         file: index.qmd
       - text: "About"
         file: about.qmd
-      - icon: github
+      - text: "{{< fa brands github size=large >}}"
         url: https://github.com/marcdotson
-        # menu:
-        #   - text: "Marc's GitHub"
-        #     url: https://github.com/marcdotson
-        #   - text: "Jeff's GitHub"
-        #     url: https://github.com/jeff-dotson
-      - icon: chat-left-text
+      - text: "{{< fa brands bluesky size=large >}}"
         url: https://bsky.app/profile/marcdotson.com
-        # menu:
-        #   - text: "Marc's Twitter"
-        #     url: https://twitter.com/marcdotson
-        #   - text: "Jeff's Twitter"
-        #     url: https://twitter.com/jdotson77
   page-footer:
     left:
       - href: https://www.quarto.org
@@ -44,8 +34,8 @@ website:
 format:
   html:
     theme: 
-      light: [flatly, styles-light.scss]
-      dark: [darkly, styles-dark.scss]
+      - flatly
+      - styles-light.scss
     highlight-style: breeze
     
 execute:
