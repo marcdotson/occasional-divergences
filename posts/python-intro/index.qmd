@@ -96,7 +96,7 @@ This helps us make sure that projects work even after certain functionality gets
 
 I wrote a [blog post](https://occasionaldivergences.com/posts/rep-env/) about reproducible environments in R and Python. And here's some helpful [installation instructions](https://chendaniely.github.io/python_setup/210-python_install.html) for Python specifically.
 
-## Python essentials
+## Python essentials?
 
 - [Base Python Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-base/)
 - Code relies on white space not braces.
@@ -484,7 +484,13 @@ seaborn is a high-level interface to matplotlib that was originally focused on f
 
 ## Modeling
 
-scikitlearn, PyMC, etc.
+scikit-learn, PyMC, etc.
+
+Why are we using statsmodels? For all of the assumption checking I guess?
+
+What are the modeling packages we might use for simulation-based inference? Something like R's {infer} package?
+
+What could we use in-place of bambi? Does PyMC allow for a {brms} high-level use of Bayesian computation?
 
 - Walkthrough?
 
@@ -494,7 +500,7 @@ In learning Python find something that provides real value quickly. This is the 
 
 - Quarto or/and Jupyter Notebooks.
 - Quarto is plain text while Jupyter has a rich-text format.
-- Can you render Jupyter Notebooks into Word, etc.?
+- Can you render Jupyter Notebooks into Word, etc.? Yes-ish. Quarto extends this functionality via Pandoc.
 - Can you somehow run line-by-line inside of cells, or is the RTF messing with the script?
 - In a Quarto document, running Python line-by-line jumps to the end of a cell. Not an issue in a .py script.
 - Issue with getting Python and R to render in a Quarto document. Requires reticulate? Does Positron affect this?
