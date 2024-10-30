@@ -19,6 +19,8 @@ When we connect using Open Remote SSH, Positron Server is automatically installe
 - If I can't provide an image, can I provide the script needed to get the machine set up? This is technically a bash script, but without the super computing machine limitations we were facing previously.
 - Or is this where an image would actually be useful and not needleslly complicated?
 
+Now with a "Remote Explorer" icon on the left.
+
 ------------
 
 It's not uncommon to run into computational bottlenecks when running models, Bayesian or otherwise. I've often had access to a dedicated computer or server for such tasks or, in classic academic fashion, I've been comfortable with letting models run for weeks. But these options aren't always available and they might not actually solve the problem. Cloud computing is clearly the solution. However, breaking into cloud computing has made me feel the need to (with apologies) adapt the adage often applied to using regular expressions: "If you have a problem that requires cloud computing, congratulations, you now have two problems."
