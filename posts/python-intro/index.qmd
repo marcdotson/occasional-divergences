@@ -479,6 +479,7 @@ seaborn is a high-level interface to matplotlib that was originally focused on f
 - [Tidy Data Visualization: ggplot2 vs seaborn](https://blog.tidy-intelligence.com/posts/ggplot2-vs-seaborn/)
 - [Tidy Data Visualization: ggplot2 vs matplotlib](https://blog.tidy-intelligence.com/posts/ggplot2-vs-matplotlib/)
 - [Matplotlib](https://matplotlib.org/stable/users/explain/figure/api_interfaces.html#matplotlib-application-interfaces-apis)
+- What about plotnine or plotly?
 
 > The code in the blog post referenced uses the implicit interface, where you operate directly on plt.XXXXX, versus the explicit interface where you generate an axis and figure fig, ax = plt.subplots(). While using the implicit interface, Positron allows you to iterate on a single plot, which is the behavior you're seeing. There are a few options to tell matplotlib that you are operating on a different figure:
 > 
