@@ -125,9 +125,9 @@ The Python data (i.e., PyData) stack refers to the ecosystem of packages that en
 Polars. A Rust library with Python bindings. A query engine with a data frame API on top. Something of an answer to pandas problems. The backend is in Rust instead of NumPy. Built on chaining expressions inside contexts instead of working on Series. Good with small and medium data. Everything stored in Arrow formats, including improvements for storing strings. No row indices. Lazy instead of eager evaluation, including a benefit for chaining.
 
 - Effective Polars?
-- https://www.youtube.com/watch?v=5V_MvnwTVwc
+- [Understanding Polars Expressions when you're used to pandas](https://www.youtube.com/watch?v=BgnPgssga90)
+- [Polars for Data Analysis in Python](https://www.youtube.com/watch?v=5V_MvnwTVwc)
 - https://github.com/ddotta/awesome-polars
-- https://www.youtube.com/watch?v=BgnPgssga90
 - [Polars’ Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-polars/)
 - [A tidyverse R and polars Python side-by-side](https://robertmitchellv.com/blog/2022-07-r-python-side-by-side/r-python-side-by-side.html)
 - [Tidy Data Manipulation: dplyr vs pandas](https://blog.tidy-intelligence.com/posts/dplyr-vs-pandas/)
