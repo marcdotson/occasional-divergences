@@ -11,10 +11,12 @@ image: figures/positron-logo.png
 slug: begin-with-bayes
 ---
 
-Introduction to the idea of facilitating statistical literacy by beginning with Bayesian inference. Collect resources and links. A teaching philosophy. The beginnings of a pedagogical
+Introduction to the idea of facilitating statistical literacy by beginning with Bayesian inference. Collect resources and links. A teaching philosophy. The beginnings of a pedagogical paper.
 
 Can I compare frequentism to Trinitarian ideas? Not intuitive but hard to let go of once they take root.
 
+-   Reference the \[blog post\](<http://varianceexplained.org/r/teach-tidyverse/>) that first inspired this idea.
+-   Transfer notes and reference from \[this old issue\](<https://github.com/marcdotson/old-blog/issues/20>) and what I have in Notes.
 -   A need to build intuition for non-technical students.
 -   The necessity of intuition having a "unifying principle" to build on.
 -   Who said that Bayesian inference is what happens when you take probability seriously?
@@ -27,18 +29,18 @@ Can I compare frequentism to Trinitarian ideas? Not intuitive but hard to let go
 
 Illustrating the difference. Frequentist inference always feels like backing into a problem, but how to illustrate this idea in a way that is intuitive?
 
-| Bayesian Inference | Frequentist Inference  |
-|--------------------|------------------------|
-|                    | Sampling distributions |
-|                    |                        |
-|                    |                        |
-|                    |                        |
-|                    |                        |
-|                    |                        |
-|                    |                        |
-|                    |                        |
-|                    |                        |
-|                    |                        |
+| Bayesian Inference | Frequentist Inference |
+|----|----|
+| All unknowns (parameters, missing data, etc.) are random variables | Data is a random variable |
+|  | Sampling distributions |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
 
 ## Final thoughts
 
