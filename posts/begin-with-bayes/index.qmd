@@ -1,0 +1,45 @@
+---
+title: "Begin with Bayes"
+author: "Marc Dotson"
+date: "2024-12-31"
+description: |
+  Begin with Bayes.
+categories:
+  - bayesian inference
+  - pml
+image: figures/positron-logo.png
+slug: begin-with-bayes
+---
+
+Introduction to the idea of facilitating statistical literacy by beginning with Bayesian inference. Collect resources and links. A teaching philosophy. The beginnings of a pedagogical
+
+Can I compare frequentism to Trinitarian ideas? Not intuitive but hard to let go of once they take root.
+
+-   A need to build intuition for non-technical students.
+-   The necessity of intuition having a "unifying principle" to build on.
+-   Who said that Bayesian inference is what happens when you take probability seriously?
+-   How to introduce Bayes without using frequentist language (McElreath).
+-   Not treating Bayesian inference as an advanced topic that comes after frequentist inference.
+
+## Bayes is dead. Long live Bayes.
+
+## Frequentism as a special case
+
+Illustrating the difference. Frequentist inference always feels like backing into a problem, but how to illustrate this idea in a way that is intuitive?
+
+| Bayesian Inference | Frequentist Inference  |
+|--------------------|------------------------|
+|                    | Sampling distributions |
+|                    |                        |
+|                    |                        |
+|                    |                        |
+|                    |                        |
+|                    |                        |
+|                    |                        |
+|                    |                        |
+|                    |                        |
+|                    |                        |
+
+## Final thoughts
+
+Final thoughts.
