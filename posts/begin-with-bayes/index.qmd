@@ -29,18 +29,18 @@ Can I compare frequentism to Trinitarian ideas? Not intuitive but hard to let go
 
 Illustrating the difference. Frequentist inference always feels like backing into a problem, but how to illustrate this idea in a way that is intuitive?
 
-| Bayesian Inference | Frequentist Inference |
-|----|----|
-| All unknowns (parameters, missing data, etc.) are random variables | Data is a random variable |
-|  | Sampling distributions |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
+| Concepts | Bayesian Inference | Frequentist Inference |
+|------------------------|------------------------|------------------------|
+| Random variables vs. constants/fixed variables | All unknowns (parameters, missing data, etc.) are random variables, data is fixed | Data is a random variable, parameters are fixed |
+| Probability distributions | Posterior distributions | Sampling distributions |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
 
 ## Final thoughts
 
