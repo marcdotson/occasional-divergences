@@ -11,7 +11,13 @@ image: figures/positron-logo.png
 slug: begin-with-bayes
 ---
 
-Introduction to the idea of facilitating statistical literacy by beginning with Bayesian inference. Collect resources and links. A teaching philosophy. The beginnings of a pedagogical paper.
+https://www.the100.ci/2024/08/27/lets-do-statistics-the-other-way-around/
+
+https://elevanth.org/blog/2021/06/15/regression-fire-and-dangerous-things-1-3/
+
+https://www.tandfonline.com/doi/full/10.1080/29932955.2024.2370620
+
+Introduction to the idea of facilitating statistical literacy by beginning with a unifying probabilistic lense that leads into Bayesian inference. Collect resources and links. A teaching philosophy. The beginnings of a pedagogical paper.
 
 Can I compare frequentism to Trinitarian ideas? Not intuitive but hard to let go of once they take root.
 
