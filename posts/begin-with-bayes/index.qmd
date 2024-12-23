@@ -31,6 +31,12 @@ Can I compare frequentism to Trinitarian ideas? Not intuitive but hard to let go
 
 ## Bayes is dead. Long live Bayes.
 
+*Regression and Other Stories* is frustrating. It employs Bayesian concepts early, but presents them using the language of frequentist inference. This is likely applicable to a certain audience already well versed in frequentist language, like using Catholic terminology to explain the Restoration. However, it conflates the probabilistic foundations that give rise to Bayesian inference as a natural extension.
+
+*Probabilistic Machine Learning* provides a genuinely unifying principle by incorporating all of statistics and machine learning within the language and probability. Only from a probabilistic perspective can we see Bayesian inference as a natural extension, without the baggage of making the Bayesian approach fit into frequentist terminology, as if frequentist terminology were the truth. This is for a difference audience, once that isn't committed to or have an understanding of the frequentist approach.
+
+I'm assuming *An Introduction to Statistical Learning* takes another tack, and tries to unify statistical and machine learning concepts from a decidedly ML perspective.
+
 ## Frequentism as a special case
 
 Illustrating the difference. Frequentist inference always feels like backing into a problem, but how to illustrate this idea in a way that is intuitive?
