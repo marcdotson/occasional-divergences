@@ -1,7 +1,7 @@
 ---
 title: "An introduction to Python for R users"
 author: "Marc Dotson"
-date: "2024-10-01"
+date: "2025-01-31"
 description: |
   Most introductions to Python are written for new programmers. But if you already know another language, it's easier to learn Python using your known language as an analogy. This introduction to Python is written for R users.
 categories:
@@ -12,7 +12,7 @@ slug: python-intro
 execute:
   eval: false
 ---
- 
+
 In classes and workshops over many years, I've taught analytics using R. But in my new position, I teach analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
 
 ![](figures/python-r.png){width=60% fig-align="center"}
