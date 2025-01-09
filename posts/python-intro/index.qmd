@@ -504,6 +504,7 @@ In learning Python find something that provides real value quickly. This is the 
 
 - Quarto or/and Jupyter Notebooks.
 - Quarto is plain text while Jupyter has a rich-text format.
+- Jupyter Notebooks are what happen when you don't have a great IDE to work with: Functionality gets absorbed into the document type itself (e.g., an embedded kernel selector).
 - Can you render Jupyter Notebooks into Word, etc.? Yes-ish. Quarto extends this functionality via Pandoc.
 - Can you somehow run line-by-line inside of cells, or is the RTF messing with the script?
 - In a Quarto document, running Python line-by-line jumps to the end of a cell. Not an issue in a .py script.
