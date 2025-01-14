@@ -1,5 +1,5 @@
 ---
-title: "Probabilistic Machine Learning"
+title: "Begin with Bayes"
 author: "Marc Dotson"
 date: "2025-05-30"
 description: |
@@ -15,8 +15,6 @@ Introduction to the idea of facilitating statistical literacy by beginning with 
 
 Can I compare frequentism to Trinitarian ideas? Not intuitive but hard to let go of once they take root.
 
--   Reference the \[blog post\](<http://varianceexplained.org/r/teach-tidyverse/>) that first inspired this idea.
--   Transfer notes and reference from \[this old issue\](<https://github.com/marcdotson/old-blog/issues/20>) and what I have in Notes.
 -   See https://www.the100.ci/2024/08/27/lets-do-statistics-the-other-way-around/
 -   See https://elevanth.org/blog/2021/06/15/regression-fire-and-dangerous-things-1-3/
 -   See https://www.tandfonline.com/doi/full/10.1080/29932955.2024.2370620
@@ -27,6 +25,8 @@ Can I compare frequentism to Trinitarian ideas? Not intuitive but hard to let go
 -   Not treating Bayesian inference as an advanced topic that comes after frequentist inference.
 
 ## Bayes is dead. Long live Bayes.
+
+This is a deliberate homage to David Robinson's [Teach the tidyverse to beginners](http://varianceexplained.org/r/teach-tidyverse/) blog post. Even if it's more computational burdensome, Bayesian inference is more intuitive. Even if you do teach frequentist inference, most students don’t get it anyway. Especially for applied students, we need to teach everything from scratch at a “self-contained conceptual level.” Motivate with connecting probability for quantifying uncertainty to decision making; a need to understand epistemology -- how we even know things.
 
 *Regression and Other Stories* is frustrating. It employs Bayesian concepts early, but presents them using the language of frequentist inference. This is likely applicable to a certain audience already well versed in frequentist language, like using Catholic terminology to explain the Restoration. However, it conflates the probabilistic foundations that give rise to Bayesian inference as a natural extension.
 
@@ -50,6 +50,50 @@ Illustrating the difference. Frequentist inference always feels like backing int
 |  |  |  |
 |  |  |  |
 |  |  |  |
+
+## Probability
+
+> “Counting the number of ways things can happen, according to our assumptions.” (p. 11, Statistical Rethinking)
+
+Start with counting (connect with data summarization of discrete variables)...
+
+Probability is a formal way to quantify uncertainty. A probability for a possible outcome needs to be nonnegative (i.e., zero or a positive number) and the sum of the probabilities for all possible outcomes needs to sum to 1. A probability distribution is a list of all possible outcomes together with the associated probabilities. Not surprisingly, this might be easiest to see with a visualization. Note how the width or variance in a probability distribution is an expression of uncertainty. The more variance in the probability distribution, the more uncertain we are. The greatest expression of uncertainty is that every outcome is equally possible (i.e., a uniform distribution).
+
+Example here to solidify the intuition, introduce formal probability notation.
+
+## Statistical Inference
+
+But how do we actually use data to inform decision-making? Sometimes how we use the data is obvious, but oftentimes we want to learn not just about the data (which we observe) but what generated the data (which we don’t observe). We can observe data from a sample of respondents, but how can we use that to learn something about the entire population of respondents? We can observe the choices that people make, but how can we use that to learn something about the process that leads them to make those choices? To understand this unobserved, data-generating process, we need a model (i.e., a likelihood).
+
+Prior to observing data, we have beliefs, a probability distribution over all possible outcomes. Data tells us something about how likely those possible outcomes are. The combination of our prior beliefs and the data (more explicitly, the likelihood of what we observe) results in a posterior probability distribution over the possible outcomes. Note that this is still a probability distribution — again, we have not removed uncertainty — but one that has now been informed by data. We can use this posterior distribution to help us make decisions in the presence of uncertainty.
+
+While the language is new, the process should be intuitive:
+
+1. We have beliefs about the probability of certain outcomes.
+2. We observe outcomes.
+3. We update our beliefs about the probability of these outcomes.
+
+This updating process is learning! This is how we learn. And that’s all statistical inference is – a formal way to update our beliefs/learn/quantity uncertainty.
+
+Example here to solidify the intuition, introduce Bayes’ theorem.
+
+### Models and parameters
+
+Now we need to get into the details about these three components: the prior, the likelihood, and the posterior.
+
+The prior is a probability distribution. If we don’t know anything, we can assume a uniform distribution (or, more generally, something uninformative). However, we usually know something (even if we aren’t really certain about it), and the prior provides us with a formal way to include that knowledge. To connect this to learning, the prior could be the posterior from a previous analysis. Thus, we can see statistical inference as a way to formalize learning not just once but as it really occurs: in sequence, over time.
+
+The likelihood is a story that describes where the data come from. This begins conceptually and then is formalized into a model that tell us the probability of any possible observation. This conceptual model often lives within a literature of model building, motivated by theory, and at its most basic may simply be a consideration of how to relax assumptions in an existing model. In short, the model needs to be consistent with our domain expertise. How do we know we have the right model? The truth is, we don’t. We don’t observe the data generating process. The best we can do is to create new models and compare them. This is science – the endless process of developing and refining theory. The truth is, for most things, simple models work well and there are standard models we’ll start with. However, there are common models that we work with that are best for many situations.
+
+Example of a likelihood and counting (see Statistical Rethinking p. 27, 32); introduce motivations for using normal distributions.
+
+The posterior is the prior distribution, updated according to how likely the data we observe are given our model.
+
+Show how data can overwhelm the prior.
+
+## Decision Making in the Presence of Uncertainty
+
+We live in a world filled with uncertainty. Will I pass a test? Will it rain tomorrow? Especially as we make decisions, we want to use data to reduce uncertainty. In other words, we use data to make informed decisions. Note that data reduces rather than removes uncertainty. How I perform on the practice test doesn’t guarantee how I’ll perform on the actual exam. The weather this morning tells me something about what I might expect this afternoon, but it’s not a perfect prediction. Even when I use data to inform my decision-making, I will still be making decisions in the presence of uncertainty.
 
 ## Final thoughts
 
