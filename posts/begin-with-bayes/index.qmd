@@ -23,6 +23,13 @@ Introduction to the idea of facilitating statistical literacy by beginning with 
 - Not treating Bayesian inference as an advanced topic that comes after frequentist inference.
 - Can I compare frequentism to Trinitarian ideas? Not intuitive but hard to let go of once they take root. Does that make Bayesianism the Restoration? Bringing back the original.
 
+## DATA 5600 Revamp Outline
+
+- Overview of course: ...
+- Probability and epistemology
+- Statistical modeling
+- Decision theory
+
 ## Bayes is dead. Long live Bayes.
 
 > "Bayesian inference is what happens when you take probability seriously." -Steve or Richard? Unknown.
