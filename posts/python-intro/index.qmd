@@ -37,7 +37,7 @@ When you start working with Python, it's essential that you approach it with the
 - Developed by computer scientists
 - Obsessed with efficiency
 - Obsessed with namespacing
-- Object-oriented programming
+- Object-oriented programming (encapsulation, inheritance and composition, polymorphism)
 - Small, medium, and large data
 - Machine learning and deep learning
 - Spacing is part of the syntax
