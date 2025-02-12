@@ -116,13 +116,18 @@ The Python data (i.e., PyData) stack refers to the ecosystem of packages that en
 - NumPy is short for "Numerical Python." It includes arrays and efficient computation across arrays.
 - pandas is short for "panel data." It is built on NumPy and adds data frames for tabular or "heterogeneous" data and is the most popular package for data wrangling.
 - Polars is a newer package for data wrangling. It's name is an anagram of the query engine it uses (OLAP) and the language it's built in (Rust or rs).
-- matplotlib provides a foundation for plotting.
+- matplotlib provides a foundation for plotting.[o[]]
 - seaborn is built on matplotlib and integrates with pandas. seaborn.objects is a more consistent API based on grammar of graphics.
 - scikit-learn is a machine learning library built on NumPy, SciPy, and matplotlib.
 
 ## Data wrangling
 
 Polars. A Rust library with Python bindings. A query engine with a data frame API on top. Something of an answer to pandas problems. The backend is in Rust instead of NumPy. Built on chaining expressions inside contexts instead of working on Series. Good with small and medium data. Everything stored in Arrow formats, including improvements for storing strings. No row indices. Lazy instead of eager evaluation, including a benefit for chaining.
+
+Tyson:
+
+- What language you know influences the way you think about data?
+- Lazy evaluation by tagging a data frame with `.lazy()`.
 
 - Effective Polars?
 - [Understanding Polars Expressions when you're used to pandas](https://www.youtube.com/watch?v=BgnPgssga90)
