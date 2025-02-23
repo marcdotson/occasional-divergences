@@ -55,32 +55,42 @@ Functions in Python and R are equivalent, although functions in Python are typic
 
 Attributes are object-specific features and are, like methods, namespaced with an object name of the give type as in `object.attribute`, but without any parentheses. For example, the dimensions of a numpy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
 
-::: {.callout-tip title="CLI"}
-Learning to be okay with command line for installation.
+## Installation and reproducible environments
+
+The first (and perhaps the biggest) hurdle as we work to apply our new mindset is simply getting Python and our reproducible environment installed. This is a big departure from what we're used to in R, where there is one way to install R and we usually ignore our environment, let alone [make our R environments reproducible](https://occasionaldivergences.com/posts/rep-env/). Remember, Python is a *big* tent with lots of uses and, unsurprisingly, lots of ways to do everything I'm covering. However, from the perspective of someone coming from R and with a focus on data analytics, I recommend the following. 
+
+### pyenv
+
+Unlike your experience with R, Python comes pre-installed on some operating systems. This version *should not be used* by anyone except the OS itself. For this and other reasons, you'll need the ability to maintain multiple versions of Python on the same computer. I recommend using [pyenv](https://github.com/pyenv/pyenv), a Python version management tool that is designed to be as *simple* as possible, though what constitutes "simple" is a matter of experience and your mileage may vary.
+
+::: {.callout-tip title="The Command Line"}
+Using pyenv will require you to use the command line (i.e., terminal or shell). Be patient and *take your time* walking carefully through the [installation instructions](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation). Daniel Chen, who introduced me to pyenv, also has a [great write-up](https://chendaniely.github.io/python_setup/210-python_install.html) of the installation instructions that may be a bit easier to follow. A few things to help as you install:
+
+- The command line is the programming interface into your OS itself. You don't have to know everything about it to follow instructions.
+- When you get to the section [Set up your shell environment for pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#b-set-up-your-shell-environment-for-pyenv), the instructions are different based on the *type* of command line. If you're on a Mac that's running macOS Catalina 10.15.7 or later, the terminal is Zsh. If you're using Linux, the shell is Bash (and you probably already know that). And if you're using Windows, you'll be using the [pyenv-win](https://github.com/pyenv-win/pyenv-win) fork with PowerShell.
 :::
 
-## Installation, IDEs, and virtual environments
+Now that you have pyenv installed, you can install and manage all the versions of Python on your computer. To see what versions you already have installed, on the command line, run `pyenv versions`. At first this is probably just the OS version. Note that if you've installed Python before pyenv, it won't be listed: `pyenv versions` will only list the OS version and any additional versions you install using pyenv. To see all the available versions of Python that you can install, run `pyenv install --list`. This can be overwhelming, but a good place to start is the latest version of Python that has a stable release (i.e., doesn't have a `-dev` tag). For example, to install Python 3.12.4, run `pyenv install 3.12.4`.
 
-- pyenv and pip or [uv](https://docs.astral.sh/uv/) and venv or pdm?
-- Positron or VS Code.
-- Reference my own reproducible environments post, but expand on the callouts just for Python.
+Remember how you shouldn't use the OS version of Python? Set the global default version of Python that you'll use (leaving the OS to do it's own thing). For example, to set Python 3.12.4 as the global default version, run `pyenv global 3.12.4`. If you run `pyenv versions` again you should see an asterisk by the global default you specified.
 
-> When you run Python code, note the reticulate::repl_python() call. REPL means “read-eval-print loop,” which is an interactive coding environment like you’re used to (the opposite would be coding that had to be compiled).
+::: {.callout-tip title="Positron IDE"}
+As you well know, an integrated development environment (IDE), outside of an open source language, is arguably your most important tool as a data analyst. There are many options, but I recommend [Positron](https://positron.posit.co), a next-generation data science IDE. Built by Posit on VS Code's [open source core](https://github.com/microsoft/vscode), Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs.
 
-The Console’s >>> indicates you’re operating in Python.
-
-::: {.callout-tip title="Python with VS Code"}
-Sidebar with directions for setting up how to use Python in VS Code.
+If RStudio is too specific and VS Code is too general, you may find that Positron is [just right](https://occasionaldivergences.com/posts/positron-intro/) and becomes your only IDE for both Python and R.
 :::
 
-Python uses **reproducible environments** (and R should as well). A reproducible environment is a lot like RStudio projects but where each project has:
+There's a lot more that [pyenv can do](https://realpython.com/intro-to-pyenv/). After navigating to a project working directory, you can go to the terminal and run `pyenv local 3.12.4`, assuming you want Python 3.12.4 to be set as the default. This would create a `.python-version` file in that directory that specifies the version of Python to use for that project.
 
-- A specific version of Python identified
-- Its own library of installed packages
+### venv
 
-This helps us make sure that projects work even after certain functionality gets deprecated and makes sure we don't make *big* mistakes (like **using or messing with your operating system's version of Python**).
+If an environment is composed of the open source language(s) and libraries (including the library dependencies) used for a given project, what makes an environment reproducible is keeping track of which *version* of the open source language(s) and the libraries we're using for a given project. While "keeping track" could happen in many different ways, ideally we want to keep track of our environment such that it can be easily *reproduced* on another machine, by you (including future you) or someone else. You've already seen how to use pyenv to keep track of the Python version by creating a `.python-version` file, and I recommend using [venv](https://docs.python.org/3/library/venv.html) to keep track of library versions.
 
-I wrote a [blog post](https://occasionaldivergences.com/posts/rep-env/) about reproducible environments in R and Python. And here's some helpful [installation instructions](https://chendaniely.github.io/python_setup/210-python_install.html) for Python specifically.
+Just like with R, all Python libraries are installed in a single, global library on your computer known as the *system library*. What we need is a *project library*. This helps highlight an important feature of reproducible environments: Each project will have its own project library and thus be *isolated*. If two projects use different versions of the same package, they won't conflict with each other because they'll each have their own project library. (Well, not *exactly*. Python employs a global cache to avoid having to install the same version of a given library more than once. The project library will reference the global cache. Note that if you've installed Python prior to using pyenv, you may have a global cache that is borked. You can run `pip cache purge` in the command line to start fresh.)
+
+The venv library comes pre-installed with Python as the default reproducible (or *virtual*, hence the "v" in venv) environment management tool. It works in two steps. First, we must create a project library. Second, we keep track of the versions of the libraries we use. After navigating to a project working directory, you can go to the terminal and run `python -m venv .venv`. This would create a `/.venv` folder in the working directory that contained the project library or *virtual environment*. Whenever you install new libraries or decide to update the versions of libraries you use, run `pip freeze > requirements.txt` to update `requirements.txt`.
+
+It might seem like a lot (and it honestly is), but it's something [we should be doing in R](https://occasionaldivergences.com/posts/rep-env/) as well. Along with a project's code, all someone would need is the `.python-version` and `requirements.txt` files to reproduce your code, including the environment it was designed to run in.
 
 ## Python essentials?
 
