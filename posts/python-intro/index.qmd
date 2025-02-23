@@ -1,7 +1,7 @@
 ---
 title: "An introduction to Python for R users"
 author: "Marc Dotson"
-date: "2025-02-28"
+date: "2025-02-24"
 description: |
   Most introductions to Python are written for new programmers. This introduction to Python assumes you know R, which is used as an analogy within the domain of data analytics.
 categories:
@@ -17,61 +17,39 @@ execute:
 
 In classes and workshops over many years, I've taught data analytics using R. But in my new position, I teach data analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
 
+![](figures/python-r.png){width=60% fig-align="center"}
+
 There are incredible resources in this space, and I've drawn liberally from a number of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for the authors' clear espousing that this isn't an either/or situation---you can (and arguably *should*) use Python and R as complements.
 
 I am especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo-2025/) and subscribe to her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also grateful to extra help from [posit::conf](https://posit.co/conference/) workshop instructors and colleagues in my new position at [Utah State University](https://huntsman.usu.edu/dais/). Additional resources will be provided where relevant in each section.
 
-![](figures/python-r.png){width=60% fig-align="center"}
+## Different mindsets
 
-When you start working with Python, it's essential that you approach it with the right mindset. R is a specialized language developed by statisticians for data analysis. Python is a *big* tent, a general programming language developed by computer scientists for many things, with only a small portion of it dedicated to data analysis. To summarize some key differences:
+When you start working with Python, it's essential that you approach it with the right mindset. R is a specialized language developed by statisticians for data analysis. Python is a *big* tent, a general programming language developed by computer scientists for many things, with only a small portion of it dedicated to data analysis.
 
-:::: {.columns}
+To summarize some key differences:
 
-::: {.column width="50%"}
-### Python
+| Python | R | 
+| --- | --- | 
+| General language | Specialized language | 
+| Developed by computer scientists | Developed by statisticians | 
+| Object-oriented programming | Functional programming | 
+| Obsessed with efficiency | Lazy about efficiency | 
+| Obsessed with namespacing | Lazy about namespacing | 
+| Small, medium, and large data | Small and medium data | 
+| Machine learning and deep learning | Data wrangling and visualization | 
+| Spacing is part of the syntax | Spacing is for convenience | 
+| Indices start with 0 | Indices start with 1 | 
+| No single authority | Dominated by Posit | 
+| Jupyter Notebooks | R Markdown and Quarto | 
+| Inconsistent (i.e., no tidyverse) | Consistency in the tidyverse | 
+| "Pythonistas" and "Pythonic" code | "R Users" and "Tidy" code |
 
-::: {.incremental}
-- General language
-- Developed by computer scientists
-- Object-oriented programming
-- Obsessed with efficiency
-- Obsessed with namespacing
-- Small, medium, and large data
-- Machine learning and deep learning
-- Spacing is part of the syntax
-- Indices start with 0
-- No single authority
-- Jupyter Notebooks
-- Inconsistent (i.e., no tidyverse)
-- "Pythonistas" and "Pythonic" code
-:::
-:::
+While these are broad strokes, they help provide some context for how the two languages deviate in their approaches to common problems.
 
-::: {.column width="50%"}
-### R
+## Functions, methods, and attributes
 
-::: {.incremental}
-- Specialized language
-- Developed by statisticians
-- Functional programming
-- Lazy about efficiency
-- Lazy about namespacing
-- Small and medium data
-- Data wrangling and visualization
-- Spacing is for convenience
-- Indices start with 1
-- Dominated by Posit
-- R Markdown and Quarto
-- Consistency in the tidyverse
-- "R Users" and "Tidy" code
-:::
-:::
-
-::::
-
-## Functions, Methods, and Attributes
-
-With the right mindset, it's easier to understand some of the things that Python is obsessed with that R simply isn't. However, the most important difference is that Python is an object-oriented programming language while R is all about functional programming. While *everything* in R is a function (for a typical user), using Python requires frequently keeping track of the difference between functions, methods, and attributes.
+ With the right mindset, it's easier to understand some of the things that Python is obsessed with that R simply isn't. The most important difference is that Python is an object-oriented programming language while R is all about functional programming. While *everything* in R is a function (for a typical user), using Python requires frequently keeping track of the difference between functions, methods, and attributes.
 
 Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or an alias like `alias.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. That means it's possible to import a specific function such that we can call it without referencing it's library name or an alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R, but we will always see a `.method()` like so.
 
