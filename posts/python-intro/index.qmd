@@ -101,7 +101,7 @@ My take is that Polars provides a far more self-consistent data wrangling experi
 
 ### Import data
 
-Libraries and modules (a kind of sub-library) are imported with commonly accepted aliases in order to shorten the namespace reference. For example, the typical Polars alias is `pl` and the typical Polars Selectors module alias is `cs`.
+Libraries and modules (a kind of sub-library) are imported with commonly accepted aliases in order to shorten the namespace reference. For example, the typical Polars alias is `pl`.
 
 We also see the difference between the `pl.read_csv()` function and the `.shape` and `.columns` attributes.
 
@@ -110,7 +110,6 @@ We also see the difference between the `pl.read_csv()` function and the `.shape`
 
 ```{python}
 import polars as pl
-import polars.selectors as cs
 
 customer_data = pl.read_csv('posts/python-intro/data/customer_data.csv')
 customer_data.shape
@@ -434,27 +433,68 @@ data_db
 ```
 :::
 
-## Visualization
+## Visualizing data
 
-- matplotlib provides a foundation for plotting.[o[]]
-- seaborn is built on matplotlib and integrates with pandas. seaborn.objects is a more consistent API based on grammar of graphics.
+There's no way around this---visualizing data is where {ggplot2} simply reigns supreme, so much so that Posit has been investing in [plotnine](https://plotnine.org), a {ggplot2} port for Python. Maybe Posit will eventually facilitate a kind of polyglot grammar of graphics, however in the spirit of this post, let's consider a genuinely "Pythonic" tool.
 
-seaborn is a high-level interface to matplotlib that was originally focused on filling gaps in matplotlib’s feature set, but now seaborn.objects is more based on the underlying grammar of graphics.
+If NumPy is base R, [matplotlib](https://matplotlib.org) is plotting in base R. If that analogy holds, matplotlib is an acquired taste, so much so that [seaborn](https://seaborn.pydata.org) was developed to supplement matplotlib, much like pandas was developed to supplement NumPy. While we don't have a Polars-like replacement (come on Hadley, a polygplot {ggvis} is written in the stars!) we do have seaborn.objects, a module deliberately built with the consistency of a grammar of graphics in mind that also attempts to eliminate the need to drop down to matplotlib for fine-tuning. Let's illustrate some common visualizations using seaborn.objects and {ggplot2} and gain some intuition for the differences.
 
-- Start with a .Plot().
+### Grammar of graphics
+
+{ggplot2} provides a consistent **grammar of graphics** built with **layers**.
+
+1. Data – Data to visualize.
+2. Aesthetics – Mapping graphical elements to data.
+3. Geometry – Or "geom," the graphic representing the data.
+4. Facets, Labels, Scales, etc.
+
+Starting with a familiar-looking `so.Plot()` function which instantiates a Plot object. With a consistency that isn't present with {ggplot2} (I'm looking at you `|>` vs. `+`), there are a set of methods applicable to a Plot object, starting with `.add()`.
+
+- Start with a .Plot() object.
 - Add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
-- reactable-py?
 
-- Walkthrough?
-- [Tidy Data Visualization: ggplot2 vs seaborn](https://blog.tidy-intelligence.com/posts/ggplot2-vs-seaborn/)
-- [Tidy Data Visualization: ggplot2 vs matplotlib](https://blog.tidy-intelligence.com/posts/ggplot2-vs-matplotlib/)
-- [Matplotlib](https://matplotlib.org/stable/users/explain/figure/api_interfaces.html#matplotlib-application-interfaces-apis)
-- What about plotnine or plotly?
+### Column plots
 
-> The code in the blog post referenced uses the implicit interface, where you operate directly on plt.XXXXX, versus the explicit interface where you generate an axis and figure fig, ax = plt.subplots(). While using the implicit interface, Positron allows you to iterate on a single plot, which is the behavior you're seeing. There are a few options to tell matplotlib that you are operating on a different figure:
-> 
-> - add plt.clf() between each plt.show() call. This will not give you the film strip in Positron, since you’re essentially working on the same plot, but it will clear the plot so you don’t have one mega plot 👾
-> - update the code to be in the explicit interface, which would consist of adding fig, ax = plt.subplots() to denote the creation of a new plot. Most anywhere you're doing something like plt.bar(...) would need to be update to ax.bar(...). You should still be able to use plt.show() to show all the figures.
+Once again, we see the use of an alias to shorten the namespace reference. Here, the typical alias for the seaborn.objects module is `so`. We also see one of the limitations of method chaining (and thus object-oriented programming): Methods are specific to libraries meaning we can't pass data wrangled in one library to be visualized in another like we can using the function-like pipe in R.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+import seaborn.objects as so
+
+region_count = (customer_data
+  .group_by(pl.col('region'))
+  .agg(n = pl.len())
+)
+
+(so.Plot(region_count, x = 'region', y = 'n')
+  .add(so.Bar(), so.Agg())
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  count(region) |> 
+  ggplot(aes(x = region, y = n)) +
+  geom_col()
+```
+:::
+
+### Histograms
+
+### Scatterplots
+
+### Line plots
+
+### Density plots
+
+
+### Facets
+
+### Labels, scales, and colors
 
 ## Modeling
 
