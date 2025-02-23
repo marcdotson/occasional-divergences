@@ -1,31 +1,29 @@
 ---
 title: "An introduction to Python for R users"
 author: "Marc Dotson"
-date: "2025-01-31"
+date: "2025-02-28"
 description: |
-  Most introductions to Python are written for new programmers. But if you already know another language, it's easier to learn Python using your known language as an analogy. This introduction to Python is written for R users.
+  Most introductions to Python are written for new programmers. This introduction to Python assumes you know R, which is used as an analogy within the domain of data analytics.
 categories:
   - python
   - r
+  - positron
+  - quarto
 image: figures/python.png
 slug: python-intro
 execute:
   eval: false
 ---
 
-In classes and workshops over many years, I've taught analytics using R. But in my new position, I teach analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
-
-![](figures/python-r.png){width=60% fig-align="center"}
+In classes and workshops over many years, I've taught data analytics using R. But in my new position, I teach data analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
 
 There are incredible resources in this space, and I've drawn liberally from a number of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for the authors' clear espousing that this isn't an either/or situation---you can (and arguably *should*) use Python and R as complements.
 
-I am especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo/) and subscribe to her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also grateful to extra help from Posit Conf workshop instructors and colleagues in my new position at Utah State University. Additional resources will be provided where relevant in each section.
+I am especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo-2025/) and subscribe to her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also grateful to extra help from [posit::conf](https://posit.co/conference/) workshop instructors and colleagues in my new position at [Utah State University](https://huntsman.usu.edu/dais/). Additional resources will be provided where relevant in each section.
 
-- Materials in DATA 5600, 3300, and 3500, including Pedram's YouTube?
+![](figures/python-r.png){width=60% fig-align="center"}
 
-## Mindset
-
-When you start working with Python, it's essential that you approach it with the right mindset. R is a specialized language developed by statisticians for data analysis. Python is a *big* tent, a general programming language developed by computer scientists for many things, with only a small portion of it dedicated to data analysis.
+When you start working with Python, it's essential that you approach it with the right mindset. R is a specialized language developed by statisticians for data analysis. Python is a *big* tent, a general programming language developed by computer scientists for many things, with only a small portion of it dedicated to data analysis. To summarize some key differences:
 
 :::: {.columns}
 
@@ -35,12 +33,13 @@ When you start working with Python, it's essential that you approach it with the
 ::: {.incremental}
 - General language
 - Developed by computer scientists
+- Object-oriented programming
 - Obsessed with efficiency
 - Obsessed with namespacing
-- Object-oriented programming (encapsulation, inheritance and composition, polymorphism)
 - Small, medium, and large data
 - Machine learning and deep learning
 - Spacing is part of the syntax
+- Indices start with 0
 - No single authority
 - Jupyter Notebooks
 - Inconsistent (i.e., no tidyverse)
@@ -54,12 +53,13 @@ When you start working with Python, it's essential that you approach it with the
 ::: {.incremental}
 - Specialized language
 - Developed by statisticians
+- Functional programming
 - Lazy about efficiency
 - Lazy about namespacing
-- Functional programming
 - Small and medium data
 - Data wrangling and visualization
 - Spacing is for convenience
+- Indices start with 1
 - Dominated by Posit
 - R Markdown and Quarto
 - Consistency in the tidyverse
@@ -69,13 +69,21 @@ When you start working with Python, it's essential that you approach it with the
 
 ::::
 
+## Functions, Methods, and Attributes
+
+With the right mindset, it's easier to understand some of the things that Python is obsessed with that R simply isn't. However, the most important difference is that Python is an object-oriented programming language while R is all about functional programming. While *everything* in R is a function (for a typical user), using Python requires frequently keeping track of the difference between functions, methods, and attributes.
+
+Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or an alias like `alias.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. That means it's possible to import a specific function such that we can call it without referencing it's library name or an alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R, but we will always see a `.method()` like so.
+
+Attributes are object-specific features and are, like methods, namespaced with an object name of the give type as in `object.attribute`, but without any parentheses. For example, the dimensions of a numpy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
+
 ::: {.callout-tip title="CLI"}
 Learning to be okay with command line for installation.
 :::
 
 ## Installation, IDEs, and virtual environments
 
-- pyenv and pip or uv and venv or pdm?
+- pyenv and pip or [uv](https://docs.astral.sh/uv/) and venv or pdm?
 - Positron or VS Code.
 - Reference my own reproducible environments post, but expand on the callouts just for Python.
 
