@@ -11,6 +11,7 @@ categories:
   - quarto
 image: figures/python.png
 slug: python-intro
+highlight-style: arrow
 execute:
   eval: false
 ---
@@ -53,7 +54,7 @@ While these are broad strokes, they help provide some context for how the two la
 
 Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or an alias like `alias.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. That means it's possible to import a specific function such that we can call it without referencing it's library name or an alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R, but we will always see a `.method()` like so.
 
-Attributes are object-specific features and are, like methods, namespaced with an object name of the give type as in `object.attribute`, but without any parentheses. For example, the dimensions of a numpy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
+Attributes are object-specific features and are, like methods, namespaced with an object name of the give type as in `object.attribute`, but without any parentheses. For example, the dimensions of a NumPy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
 
 ## Installation and reproducible environments
 
@@ -74,7 +75,7 @@ Now that you have pyenv installed, you can install and manage all the versions o
 
 Remember how you shouldn't use the OS version of Python? Set the global default version of Python that you'll use (leaving the OS to do it's own thing). For example, to set Python 3.12.4 as the global default version, run `pyenv global 3.12.4`. If you run `pyenv versions` again you should see an asterisk by the global default you specified.
 
-::: {.callout-tip title="Positron IDE"}
+::: {.callout-important title="Positron IDE"}
 As you well know, an integrated development environment (IDE), outside of an open source language, is arguably your most important tool as a data analyst. There are many options, but I recommend [Positron](https://positron.posit.co), a next-generation data science IDE. Built by Posit on VS Code's [open source core](https://github.com/microsoft/vscode), Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs.
 
 If RStudio is too specific and VS Code is too general, you may find that Positron is [just right](https://occasionaldivergences.com/posts/positron-intro/) and becomes your only IDE for both Python and R.
@@ -92,62 +93,22 @@ The venv library comes pre-installed with Python as the default reproducible (or
 
 It might seem like a lot (and it honestly is), but it's something [we should be doing in R](https://occasionaldivergences.com/posts/rep-env/) as well. Along with a project's code, all someone would need is the `.python-version` and `requirements.txt` files to reproduce your code, including the environment it was designed to run in.
 
-## Python essentials?
-
-- [Base Python Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-base/)
-- Code relies on white space not braces.
-- Everything is an object, including imported modules (a module is a single file, while a package is a collection of modules in a directory).
-- The assignment (or *binding*) operator is `=`.
-- Attached functions called *methods* use the `.` notation following the object, `obj.some_method(x, y, z)`. Note that CmdStanR adopts this syntax. For example `model$sample()` in CmdStanR is `model.sample()` in CmdStanPy.
-- Lists are the fundamental data class and are created with single square brackets.
-- Objects aren't copied needlessly, they are just bound to the same underlying data structure.
-- Many objects or *mutable*. Their contents can be changed.
-- **Remember that Python is zero-indexed.**
-- `NULL` is referred to as `None`. Other types include `str`, `bytes` (binary), `float`, `bool`, and `int`.
-
-## The PyData stack
-
-The Python data (i.e., PyData) stack refers to the ecosystem of packages that enables data analysis.
-
-- NumPy is short for "Numerical Python." It includes arrays and efficient computation across arrays.
-- pandas is short for "panel data." It is built on NumPy and adds data frames for tabular or "heterogeneous" data and is the most popular package for data wrangling.
-- Polars is a newer package for data wrangling. It's name is an anagram of the query engine it uses (OLAP) and the language it's built in (Rust or rs).
-- matplotlib provides a foundation for plotting.[o[]]
-- seaborn is built on matplotlib and integrates with pandas. seaborn.objects is a more consistent API based on grammar of graphics.
-- scikit-learn is a machine learning library built on NumPy, SciPy, and matplotlib.
-
 ## Data wrangling
 
-Polars. A Rust library with Python bindings. A query engine with a data frame API on top. Something of an answer to pandas problems. The backend is in Rust instead of NumPy. Built on chaining expressions inside contexts instead of working on Series. Good with small and medium data. Everything stored in Arrow formats, including improvements for storing strings. No row indices. Lazy instead of eager evaluation, including a benefit for chaining.
+Whatever the language, the most common task we have for any data analysis is data wrangling (i.e., cleaning, munging, etc.). The [NumPy](https://numpy.org) library is more or less equivalent to what we see in base R, introducing arrays and efficient computation across arrays---but, perhaps surprisingly, not data frames. Data frames (or DataFrames as they are referred to in Python) came later with [pandas](https://pandas.pydata.org) (short for "panel data"). Still the most popular library for data wrangling in Python, pandas is built to supplement NumPy, with all of the syntax baggage. However, growing in popularity is [Polars](https://pola.rs) (an anagram of the query language it uses, OLAP, and the language it's built in, Rust or rs). Polars is something of an answer to pandas problems. Actually, free from any Python code at all (yes, you can [use it in R](https://github.com/pola-rs/r-polars)), it offers a glimpse at what the polyglot future might look like.
 
-Tyson:
+My take is that Polars provides a far more self-consistent data wrangling experience than pandas, reversing the trend that many experience when they come to Polars for the speed and stay for the syntax. To illustrate the tidyverse spiritual connections, if not the deeper roots in SQL syntax, there are a number of great side-by-side comparisons of [Polars and {dplyr}](https://blog.tidy-intelligence.com/posts/dplyr-vs-polars/). I'll illustrate a few common tasks in both Polars and {dplyr} and point out the differences to be mindful of.
 
-- What language you know influences the way you think about data?
-- Lazy evaluation by tagging a data frame with `.lazy()`.
+### Import data
 
-- Effective Polars?
-- [Understanding Polars Expressions when you're used to pandas](https://www.youtube.com/watch?v=BgnPgssga90)
-- [Polars for Data Analysis in Python](https://www.youtube.com/watch?v=5V_MvnwTVwc)
-- https://github.com/ddotta/awesome-polars
-- [Polars’ Rgonomic Patterns](https://emilyriederer.netlify.app/post/py-rgo-polars/)
-- [A tidyverse R and polars Python side-by-side](https://robertmitchellv.com/blog/2022-07-r-python-side-by-side/r-python-side-by-side.html)
-- [Tidy Data Manipulation: dplyr vs pandas](https://blog.tidy-intelligence.com/posts/dplyr-vs-pandas/)
-- [Tidy Data Manipulation: dplyr vs polars](https://blog.tidy-intelligence.com/posts/dplyr-vs-polars/)
+Libraries and modules (a kind of sub-library) are imported with commonly accepted aliases in order to shorten the namespace reference. For example, the typical Polars alias is `pl` and the typical Polars Selectors module alias is `cs`.
 
-### Load libraries and data
+We also see the difference between the `pl.read_csv()` function and the `.shape` and `.columns` attributes.
 
-Packages (i.e., libraries) and modules (i.e., a kind of sub-library) are imported with **aliases**. When you use functions from a package, you reference `package.function()`. This is like `package::function()` in R.
-
-Everything is an object. Depending on the object *type* you have access to their corresponding:
-
-- **attributes** as in `object.attribute`
-- **methods**, which are object-specific functions, as in `object.method()`
-
-::: {.panel-tabset .scrollable}
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 import polars as pl
 import polars.selectors as cs
 
@@ -159,28 +120,23 @@ customer_data.columns
 ### R
 
 ```{r}
-#| eval: false
 library(tidyverse)
 
 customer_data <- read_csv("posts/python-intro/data/customer_data.csv")
-
 glimpse(customer_data)
 ```
 :::
 
 ### Filter observations
 
-Polars **DataFrames** have methods that are similar to {dplyr} since they're both mirroring SQL. DataFrames are composed of columns called **Series** (i.e., equivalent to vectors). Unlike pandas DataFrames, Polars DataFrames don't have a **row index**.
+Polars DataFrames have methods that are similar to {dplyr} (e.g., `.filter()` and `filter()`). DataFrames are composed of columns called Series (equivalent to R's vectors). Note that unlike pandas DataFrames, Polars DataFrames don't have a row index.
 
-We would reference column names with `data['column_name']` (like R's `data$column_name` or `data["column_name"]` or just `column_name` with tidyeval), but Polars allows for `pl.col('column_name')`.
+In pandas, we would need to reference column names with `data['column_name']` (like base R's `data$column_name` or `data["column_name"]`), but Polars allows for `pl.col('column_name')`. Yes, we use quotation marks for every column name. The `pl.col()` expression offers a helper-function-like consistency.
 
-We use quotation marks for every column name.
-
-::: {.panel-tabset .scrollable}
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 customer_data.filter(pl.col('college_degree') == 'Yes')
 customer_data.filter(pl.col('region') != 'West')
 customer_data.filter(pl.col('gender') != 'Female', pl.col('income') > 70000)
@@ -189,80 +145,64 @@ customer_data.filter(pl.col('gender') != 'Female', pl.col('income') > 70000)
 ### R
 
 ```{r}
-#| eval: false
 filter(customer_data, college_degree == "Yes")
-
 filter(customer_data, region != "West")
-
 filter(customer_data, gender == "Female", income > 70000)
 ```
 :::
 
 ### Slice observations
 
-Python is **zero-indexed**. This is probably the most problematic (and very computer science-based) difference and why it's nice to avoid indexing if you can!
+Remember that Python is zero-indexed. This is probably the most problematic (and very computer science-based) difference and why it's nice to avoid indexing if you can!
 
-The parameters for Polars' `.slice()` are the start index and the length.
+Function (and method) arguments are called parameters. Some parameters are positional that have to be specified in an *exact* position. Others are keyword or named parameters, which is most common in R.
 
-::: {.panel-tabset .scrollable}
+The positional parameters for Polars' `.slice()` method are the start index and the slice length.
+
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 customer_data.slice(0, 5)
 ```
 
 ### R
 
 ```{r}
-#| eval: false
 slice(customer_data, 1:5)
 ```
 :::
 
 ### Sort observations
 
-It can be strange at first, but **namespacing** is critical.
-
-- A function is preceded by the package name (e.g., `pl.col()`), unless you import the specific function (e.g., `from polars import col`).
-- A method is preceded by an object name of a certain type (e.g., `customer_data.sort()`).
-- Since object types are tied to packages, the chain back to the corresponding package is always present, explicitly or implicitly.
+It can be strange at first, but namespacing is critical. Remember that a function is preceded by the library name or alias (e.g., `pl.col()`), unless you've imported the specific function (e.g., `from polars import col`), while a method is preceded by an object name of a certain type (e.g., `customer_data.sort()`). Since object types are tied to libraries, the chain back to its corresponding library is always present, explicitly for functions and implicitly for methods.
 
 Note that its `True` and `False`, not `TRUE` and `FALSE` or `true` and `false`.
 
-::: {.panel-tabset .scrollable}
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 customer_data.sort(pl.col('birth_year'))
-customer_data.sort(pl.col('birth_year'), descending=True)
+customer_data.sort(pl.col('birth_year'), descending = True)
 ```
 
 ### R
 
 ```{r}
-#| eval: false
 arrange(customer_data, birth_year)
-
 arrange(customer_data, desc(birth_year))
 ```
 :::
 
 ### Select variables
 
-Using single square brackets `[ ]` creates a **list**. This is similar to creating a vector in R with `c()`. A list is a fundamental Python object type and can be turned into a Series.
+Using single square brackets `[ ]` creates a list. This is similar to creating a vector in R with `c()`. A list is a fundamental Python object type and can be turned into a Series.
 
-Function (and method) arguments are also called **parameters**.
-
-- Some parameters are **positional** that have to be specified in the exact position.
-- Others are **keyword or named** (like in R).
-
-::: {.panel-tabset .scrollable}
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 customer_data.select(pl.col('region'), pl.col('review_text'))
 customer_data.select(pl.col(['region', 'review_text']))
 ```
@@ -270,7 +210,6 @@ customer_data.select(pl.col(['region', 'review_text']))
 ### R
 
 ```{r}
-#| eval: false
 select(customer_data, region, review_text)
 ```
 :::
@@ -279,18 +218,16 @@ select(customer_data, region, review_text)
 
 Polars is actually a query language, like SQL. So it's not surprising to see methods with names that more closely mirror queries, like the `.with_columns()` method.
 
-::: {.panel-tabset .scrollable}
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 customer_data.with_columns(income = pl.col('income') / 1000)
 ```
 
 ### R
 
 ```{r}
-#| eval: false
 mutate(customer_data, income = income / 1000)
 ```
 :::
@@ -299,11 +236,10 @@ mutate(customer_data, income = income / 1000)
 
 Missing values are identified as `NaN`. Series types include `str`, `bytes` (binary), `float`, `bool`, and `int`.
 
-::: {.panel-tabset .scrollable}
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 store_transactions = pl.read_csv('posts/python-intro/data/store_transactions.csv')
 store_transactions.shape
 store_transactions.columns
@@ -315,44 +251,38 @@ customer_data.join(store_transactions, on='customer_id', how='inner')
 ### R
 
 ```{r}
-#| eval: false
 store_transactions <- read_csv("posts/python-intro/data/store_transactions.csv")
-
 glimpse(store_transactions)
 
 left_join(customer_data, store_transactions, join_by(customer_id))
-
 inner_join(customer_data, store_transactions, join_by(customer_id))
 ```
 :::
 
 ### Consecutive lines of code
 
-While possible with Python code generally, Polars embraces writing consecutive lines of code using **method chaining**. Note that:
+While possible with Python code generally, Polars embraces writing consecutive lines of code using *method chaining*. Note that:
 
 - The entire chain needs to be surrounded with `( )`
 - Each line *starts* with `.`
-- You'll have to select and run the whole thing at once
 
-::: {.panel-tabset .scrollable}
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 (customer_data
- .join(store_transactions, on='customer_id', how='left')
- .filter(pl.col('region') == 'West', pl.col('feb_2005') == pl.col('feb_2005').max())
- .with_columns(age = 2024 - pl.col('birth_year'))
- .select(pl.col(['age', 'feb_2005']))
- .sort(pl.col('age'), descending=True)
- .slice(0, 1)
+  .join(store_transactions, on='customer_id', how='left')
+  .filter(pl.col('region') == 'West', pl.col('feb_2005') == pl.col('feb_2005').max())
+  .with_columns(age = 2024 - pl.col('birth_year'))
+  .select(pl.col(['age', 'feb_2005']))
+  .sort(pl.col('age'), descending=True)
+  .slice(0, 1)
 )
 ```
 
 ### R
 
 ```{r}
-#| eval: false
 customer_data |> 
   left_join(store_transactions, join_by(customer_id)) |> 
   filter(region == "West", feb_2005 == max(feb_2005)) |> 
@@ -367,19 +297,18 @@ customer_data |>
 
 The `.agg()` method stands for *aggregate*, which is exactly what `summarize()` does in R.
 
-::: {.panel-tabset .scrollable}
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 (customer_data
- .group_by(pl.col('region'))
- .agg(n = pl.len())
+  .group_by(pl.col('region'))
+  .agg(n = pl.len())
 )
 
 (customer_data
- .group_by(pl.col(['region', 'college_degree']))
- .agg(n = pl.len())
+  .group_by(pl.col(['region', 'college_degree']))
+  .agg(n = pl.len())
 )
 ```
 
@@ -397,16 +326,12 @@ customer_data |>
 
 ### Summarize continuous data
 
-This is a good example of where object-oriented programming requires a different mindset.
+This is a good example of where object-oriented programming requires a different mindset. You might think that there is a general `mean()` function like in R, but there isn't and you'd have to load a specific library and reference its namespace to use such a function. Instead, `.mean()` is a method for Polars Series and DataFrames.
 
-- You might think that there is a general `mean()` function like in R, but there isn't and you'd have to load a specific package from the PyData stack and reference its namespace to activate such a function.
-- Instead, `.mean()` is a method for Polars Series and DataFrames.
-
-::: {.panel-tabset .scrollable}
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 (customer_data
   .select(pl.col('income'))
   .mean()
@@ -421,7 +346,6 @@ This is a good example of where object-oriented programming requires a different
 ### R
 
 ```{r}
-#| eval: false
 customer_data |>
   summarize(avg_income = mean(income))
 
@@ -433,30 +357,28 @@ customer_data |>
 ```
 :::
 
-### Summarize discrete and continuous Data
+### Summarize discrete and continuous data
 
-We only use `.agg()` with `.group_by()`.
+Combining `.agg()` with `.group_by()` is similarly powerful as in {dplyr}.
 
-::: {.panel-tabset .scrollable}
+::: {.panel-tabset}
 ### Python
 
 ```{python}
-#| eval: false
 (customer_data
- .group_by(pl.col(['gender', 'region']))
- .agg(
-   n = pl.len(), 
-   avg_income = pl.col('income').mean(), 
-   avg_credit = pl.col('credit').mean()
+  .group_by(pl.col(['gender', 'region']))
+  .agg(
+    n = pl.len(), 
+    avg_income = pl.col('income').mean(), 
+    avg_credit = pl.col('credit').mean()
   )
- .sort(pl.col('avg_income'), descending=True)
+  .sort(pl.col('avg_income'), descending=True)
 )
 ```
 
 ### R
 
 ```{r}
-#| eval: false
 customer_data |>
   group_by(gender, region) |>
   summarize(
@@ -468,7 +390,54 @@ customer_data |>
 ```
 :::
 
+### Lazy evaluation
+
+By tagging a data frame with `.lazy()`, we are asking Polars to not evaluate the code until triggered. We are also asking Polars to optimize the query for us in the underlying query engine. Before the code is triggered with something like `.collect()`, you can even see the underlying optimized query using `.explain()`.
+
+While there isn't a {dplyr} equivalent to share here, this is exactly what {dbplyr} does whenever writing SQL code, save for the underlying query optimization.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+df = (customer_data
+  .group_by(pl.col(['gender', 'region']))
+  .agg(
+    n = pl.len(), 
+    avg_income = pl.col('income').mean(), 
+    avg_credit = pl.col('credit').mean()
+  )
+  .sort(pl.col('avg_income'), descending=True)
+).lazy()
+
+df.explain()
+
+df.collect()
+```
+
+### R
+
+```{r}
+data_db <- customer_data |>
+  group_by(gender, region) |>
+  summarize(
+    n = n(),
+    avg_income = mean(income),
+    avg_credit = mean(credit)
+  ) |> 
+  arrange(desc(avg_income))
+
+data_db |>
+  show_query()
+
+data_db
+```
+:::
+
 ## Visualization
+
+- matplotlib provides a foundation for plotting.[o[]]
+- seaborn is built on matplotlib and integrates with pandas. seaborn.objects is a more consistent API based on grammar of graphics.
 
 seaborn is a high-level interface to matplotlib that was originally focused on filling gaps in matplotlib’s feature set, but now seaborn.objects is more based on the underlying grammar of graphics.
 
@@ -488,6 +457,8 @@ seaborn is a high-level interface to matplotlib that was originally focused on f
 > - update the code to be in the explicit interface, which would consist of adding fig, ax = plt.subplots() to denote the creation of a new plot. Most anywhere you're doing something like plt.bar(...) would need to be update to ax.bar(...). You should still be able to use plt.show() to show all the figures.
 
 ## Modeling
+
+- scikit-learn is a machine learning library built on NumPy, SciPy, and matplotlib.
 
 scikit-learn, PyMC, etc.
 
@@ -543,3 +514,4 @@ Conclude...and follow-up with advanced ____ for the R user?
 - [pandas](https://wesmckinney.com/book/) is still the most popular as a complement to NumPy.
 - Master the basics so you can effectively use Copilot, ChatGPT, etc.
 
+Less snake references, more Monty Python jokes -- let's get releases named that way like R has Peanuts references.
