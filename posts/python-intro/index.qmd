@@ -214,7 +214,7 @@ select(customer_data, region, review_text)
 ```
 :::
 
-### Mutate variables
+### Creating new variables
 
 Polars is actually a query language, like SQL. So it's not surprising to see methods with names that more closely mirror queries, like the `.with_columns()` method.
 
@@ -500,6 +500,31 @@ customer_data |>
 ```
 :::
 
+Show more mappings and Stat options with column plots.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+
+```
+
+### R
+
+```{r}
+customer_data |> 
+  count(region, college_degree) |> 
+  ggplot(aes(x = region, y = n, fill = college_degree)) +
+  geom_col()
+
+customer_data |> 
+  count(region, college_degree) |> 
+  ggplot(aes(x = region, y = n, fill = college_degree)) +
+  geom_col(position = "fill")
+```
+:::
+
+
 ### Histograms
 
 Accepting `so.Hist()` as a Stat and not a Mark, like it is in {ggplot2}, may seem awkward for the R user. However, what results in many specific geometries in {ggplot2} is reduced by the composibility of Mark and Stat in seaborn.objects. For example, a histogram also uses the `so.Hist()` Stat to bin data but uses the `so.Bars()` instead of `so.Bar()` to produce an actual histogram.
@@ -592,37 +617,106 @@ Even if we can't method chain between different object classes (including those 
 ### Python
 
 ```{python}
-test = pl.read_csv(os.path.join('posts', 'python-intro', 'data', 'test.csv'))
-
-test
-
-test.drop_nulls(pl.col('star_rating')).select(pl.col(['review_time', 'star_rating']))
-
-(test
+rating_data = (customer_data
   .drop_nulls(pl.col('star_rating'))
   .select(pl.col(['review_time', 'star_rating']))
-  .with_column(pl.col('review_time')
-    .str.strptime(pl.Datetime, fmt="%m/%d/%Y")
+  .with_columns(
+    pl.col('review_time').str.to_date(format='%m %d, %Y').alias('review_time')
   )
+  .with_columns(
+    pl.col('review_time').dt.year().alias('review_year')
+  )
+  .group_by('review_year')
+  .agg(pl.mean('star_rating').alias('avg_star_rating'))
+)
+
+(so.Plot(rating_data, x = 'review_year', y = 'avg_star_rating')
+  .add(so.Line())
 )
 ```
 
 ### R
 
 ```{r}
-rating_data <- customer_data |> 
+customer_data |> 
   drop_na(star_rating) |> 
   select(review_time, star_rating) |> 
-  mutate(review_time = mdy(review_time))
+  mutate(
+    review_time = mdy(review_time),
+    review_year = year(review_time)
+  ) |> 
+  group_by(review_year) |> 
+  summarize(avg_star_rating = mean(star_rating)) |>
+  ggplot(aes(x = review_year, y = avg_star_rating)) +
+  geom_line()
 ```
 :::
 
 ### Density plots
 
+::: {.panel-tabset}
+### Python
+
+```{python}
+(so.Plot(customer_data, x = 'income', color = 'gender')
+  .add(so.Area(), so.Hist())
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = income, fill = gender)) +
+  geom_density(alpha = 0.5)
+```
+:::
 
 ### Facets
 
+::: {.panel-tabset}
+### Python
+
+```{python}
+
+```
+
+### R
+
+```{r}
+customer_data |> 
+  count(region, college_degree, gender) |> 
+  ggplot(aes(x = region, y = n, fill = college_degree)) +
+  geom_col(position = "fill") +
+  facet_wrap(~ gender)
+```
+:::
+
 ### Labels, scales, and colors
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+
+```
+
+### R
+
+```{r}
+customer_data |> 
+  count(region, college_degree, gender) |> 
+  ggplot(aes(x = region, y = n, fill = college_degree)) +
+  geom_col(position = "fill") +
+  facet_wrap(~ gender) +
+  labs(
+    title = "Proportion of Customers with College Degrees by Region and Gender",
+    subtitle = "Based on 10,531 Customers in the CRM Database",
+    x = "Region",
+    y = "Proportion"
+  )
+```
+:::
 
 ## Modeling
 
