@@ -122,7 +122,7 @@ customer_data.columns
 ```{r}
 library(tidyverse)
 
-customer_data <- read_csv("posts/python-intro/data/customer_data.csv")
+customer_data <- read_csv(here::here("posts", "python-intro", "data", "customer_data.csv"))
 glimpse(customer_data)
 ```
 :::
@@ -240,7 +240,7 @@ Missing values are identified as `NaN`. Series types include `str`, `bytes` (bin
 ### Python
 
 ```{python}
-store_transactions = pl.read_csv('posts/python-intro/data/store_transactions.csv')
+store_transactions = pl.read_csv(os.path.join('posts', 'python-intro', 'data', 'store_transactions.csv'))
 store_transactions.shape
 store_transactions.columns
 
@@ -251,7 +251,7 @@ customer_data.join(store_transactions, on='customer_id', how='inner')
 ### R
 
 ```{r}
-store_transactions <- read_csv("posts/python-intro/data/store_transactions.csv")
+store_transactions <- read_csv(here::here("posts", "python-intro", "data", "store_transactions.csv"))
 glimpse(store_transactions)
 
 left_join(customer_data, store_transactions, join_by(customer_id))
@@ -457,9 +457,16 @@ Starting with a familiar-looking `so.Plot()` function which instantiates a Plot 
 - Start with a .Plot() object.
 - Add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
 
+
+
+
 ### Column plots
 
-Once again, we see the use of an alias to shorten the namespace reference. Here, the alias convention for the seaborn.objects module is `so`. We also see one of the limitations of method chaining (and thus object-oriented programming): Methods are specific to libraries meaning we can't pass data wrangled in one library to be visualized in another like we can using the function-like pipe in R.
+Once again, we see the use of an alias to shorten the namespace reference. Here, the alias convention for the seaborn.objects module is `so`.
+
+We also see one of the limitations of method chaining (and thus object-oriented programming): Methods are specific to libraries, meaning we can't pass data wrangled in one library to be visualized in another like we can using the functional pipe in R.
+
+
 
 ::: {.panel-tabset}
 ### Python
