@@ -52,7 +52,7 @@ While these are broad strokes, they help provide some context for how the two la
 
  With the right mindset, it's easier to understand some of the things that Python is obsessed with that R simply isn't. The most important difference is that Python is an object-oriented programming language while R is all about functional programming. While *everything* in R is a function (for a typical user), using Python requires frequently keeping track of the difference between functions, methods, and attributes.
 
-Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or an alias like `alias.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. That means it's possible to import a specific function such that we can call it without referencing it's library name or an alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R, but we will always see a `.method()` like so.
+Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or an alias like `alias.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. That means it's possible to import a specific function such that we can call it without referencing it's library name or an alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R, but we will always see a `.method()` like so. One more bit of language -- just like packages in Python are referred to as libraries, function (and method) arguments are referred to as parameters.
 
 Attributes are object-specific features and are, like methods, namespaced with an object name of the give type as in `object.attribute`, but without any parentheses. For example, the dimensions of a NumPy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
 
@@ -315,7 +315,6 @@ The `.agg()` method stands for *aggregate*, which is exactly what `summarize()` 
 ### R
 
 ```{r}
-#| eval: false
 customer_data |> 
   count(region)
 
@@ -449,24 +448,11 @@ As a reminder, the grammar of graphics is a philosophical approach to visualizin
 
 Having this principled approach to guide the development and consistency of a plotting approach is what distinguishes {ggplot2} and seaborn.objects. (I have often made the argument that SQL itself transcends languages and provides a kind of grammar of data manipulation.) Let's illustrate some common visualizations using seaborn.objects and {ggplot2} and gain some intuition for how they are related and divergent.
 
-
-
-
-Starting with a familiar-looking `so.Plot()` function which instantiates a Plot object. With a consistency that isn't present with {ggplot2} (I'm looking at you `|>` vs. `+`), there are a set of methods applicable to a Plot object, starting with `.add()`.
-
-- Start with a .Plot() object.
-- Add layers from the four families of methods: .Mark(), .Stat(), .Move(), .Scale().
-
-
-
-
 ### Column plots
 
-Once again, we see the use of an alias to shorten the namespace reference. Here, the alias convention for the seaborn.objects module is `so`.
+Once again, we see the use of an alias to shorten the namespace reference. Here, the alias convention for the seaborn.objects module is `so`. We also see one of the limitations of method chaining (and thus object-oriented programming): Methods are specific to objects defined by libraries. Thus we can't directly method chain data wrangled using Polars objects to be visualized by seaborn.objects like we can pipe data from {dplyr} to {ggplot2} in R.
 
-We also see one of the limitations of method chaining (and thus object-oriented programming): Methods are specific to libraries, meaning we can't pass data wrangled in one library to be visualized in another like we can using the functional pipe in R.
-
-
+However, the plot itself starts with a familiar-looking `so.Plot()` function (seaborn-objects' version of `ggplot()`) which instantiates a Plot object and specifies (1) our data and (2) the mapping between that data and graphical elements. Then with a consistency that isn't present with {ggplot2} (I'm looking at you `|>` vs. `+`), there are a set of methods applicable to the Plot object, starting with `.add()`, that can be method chained. Finally the (3) specific graphic is created with another familiar-looking `so.Bar()`, which is a specific example of an object called a Mark (seaborn-objects' version of `geom_*()`).
 
 ::: {.panel-tabset}
 ### Python
@@ -480,7 +466,7 @@ region_count = (customer_data
 )
 
 (so.Plot(region_count, x = 'region', y = 'n')
-  .add(so.Bar(), so.Agg())
+  .add(so.Bar())
 )
 ```
 
@@ -494,11 +480,142 @@ customer_data |>
 ```
 :::
 
+In certain instances we can have the necessary data wrangling done as part of the visualization. For example, in {ggplot2} we can call `geom_bar()` instead of `geom_col()` to produce the same plot while in seaborn.objects we still use the same Mark `so.Bar()` but add another object called a Stat -- in this instance `so.Hist()` to produce the sum for us.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+(so.Plot(customer_data, x = 'region')
+  .add(so.Bar(), so.Hist())
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = region)) +
+  geom_bar()
+```
+:::
+
 ### Histograms
+
+Accepting `so.Hist()` as a Stat and not a Mark, like it is in {ggplot2}, may seem awkward for the R user. However, what results in many specific geometries in {ggplot2} is reduced by the composibility of Mark and Stat in seaborn.objects. For example, a histogram also uses the `so.Hist()` Stat to bin data but uses the `so.Bars()` instead of `so.Bar()` to produce an actual histogram.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+(so.Plot(customer_data, x = 'income')
+  .add(so.Bars(), so.Hist())
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = income)) +
+  geom_histogram()
+```
+:::
 
 ### Scatterplots
 
+Again we see the one-to-one correspondence of Mark objects and geometries, `so.Dot()` and `geom_point()`.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+(so.Plot(customer_data, x = 'income', y = 'credit')
+  .add(so.Dot())
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = income, y = credit)) +
+  geom_point()
+```
+:::
+
+We also see again that a specialized geometry in {ggplot2} is a combination of Mark and Stat objects in seaborn.objects, where there are arguments that can be modified within each function call.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+(so.Plot(customer_data, x = 'star_rating', y = 'income')
+  .add(so.Dot(pointsize = 10, alpha = 0.5), so.Jitter(0.75))
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = star_rating, y = income)) +
+  geom_jitter(size = 3, alpha = 0.5)
+```
+:::
+
 ### Line plots
+
+It's comforting to know that working with dates is just as problematic in Python as it is in R.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+(so.Plot(customer_data, x = 'review_time', y = 'star_rating')
+  .add(so.Line())
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = review_time, y = star_rating)) +
+  geom_line()
+```
+:::
+
+Even if we can't method chain between different object classes (including those from different libraries), we still need to rely on the back-and-forth between data wrangling and visualizing data.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+test = pl.read_csv(os.path.join('posts', 'python-intro', 'data', 'test.csv'))
+
+test
+
+test.drop_nulls(pl.col('star_rating')).select(pl.col(['review_time', 'star_rating']))
+
+(test
+  .drop_nulls(pl.col('star_rating'))
+  .select(pl.col(['review_time', 'star_rating']))
+  .with_column(pl.col('review_time')
+    .str.strptime(pl.Datetime, fmt="%m/%d/%Y")
+  )
+)
+```
+
+### R
+
+```{r}
+rating_data <- customer_data |> 
+  drop_na(star_rating) |> 
+  select(review_time, star_rating) |> 
+  mutate(review_time = mdy(review_time))
+```
+:::
 
 ### Density plots
 
