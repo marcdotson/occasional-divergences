@@ -14,6 +14,6 @@
 
 # Posts-specific.
 posts/*/Code/Compiled/
-posts/*/Data/
+# posts/*/Data/
 posts/*/Output/
 
