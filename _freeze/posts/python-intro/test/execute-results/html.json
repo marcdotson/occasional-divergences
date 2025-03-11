@@ -1,0 +1,12 @@
+{
+  "hash": "413e8823b4f747177372002f90277615",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"Untitled\"\nformat: html\n---\n\n::: {#92a50354 .cell execution_count=1}\n``` {.python .cell-code}\nimport polars as pl\nimport os\n\nos.getcwd()\n```\n\n::: {.cell-output .cell-output-display execution_count=1}\n```\n'/Users/a00714634/Documents/01_occasional-divergences/posts/python-intro'\n```\n:::\n:::\n\n\n",
+    "supporting": [
+      "test_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

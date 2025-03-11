@@ -117,6 +117,23 @@ customer_data.shape
 customer_data.columns
 ```
 
+```
+(10531, 13)
+['customer_id',
+ 'birth_year',
+ 'gender',
+ 'income',
+ 'credit',
+ 'married',
+ 'college_degree',
+ 'region',
+ 'state',
+ 'star_rating',
+ 'review_time',
+ 'review_title',
+ 'review_text']
+```
+
 ### R
 
 ```{r}
@@ -124,6 +141,24 @@ library(tidyverse)
 
 customer_data <- read_csv(here::here("posts", "python-intro", "data", "customer_data.csv"))
 glimpse(customer_data)
+```
+
+```
+Rows: 10,531
+Columns: 13
+$ customer_id    <dbl> 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, …
+$ birth_year     <dbl> 1971, 1970, 1988, 1984, 1987, 1994, 1968, 1994, 1958, …
+$ gender         <chr> "Female", "Female", "Male", "Other", "Male", "Male", "…
+$ income         <dbl> 73000, 31000, 35000, 64000, 58000, 164000, 39000, 6900…
+$ credit         <dbl> 742.0827, 749.3514, 542.2399, 573.9358, 644.2439, 553.…
+$ married        <chr> "No", "Yes", "No", "Yes", "No", "Yes", "No", "No", "No…
+$ college_degree <chr> "No", "No", "No", "Yes", "Yes", "Yes", "No", "No", "No…
+$ region         <chr> "South", "West", "South", "Midwest", "West", "Midwest"…
+$ state          <chr> "DC", "WA", "AR", "MN", "HI", "MN", "MN", "KY", "NM", …
+$ star_rating    <dbl> 4, NA, NA, NA, 5, 2, NA, 5, NA, 5, NA, 5, NA, NA, NA, …
+$ review_time    <chr> "06 11, 2015", NA, NA, NA, "03 25, 2008", "06 7, 2013"…
+$ review_title   <chr> "Four Stars", NA, NA, NA, "Great Product!!", "Not at a…
+$ review_text    <chr> "everything's fine", NA, NA, NA, "I looked all over th…
 ```
 :::
 
@@ -214,7 +249,7 @@ select(customer_data, region, review_text)
 ```
 :::
 
-### Creating new variables
+### Create new variables
 
 Polars is actually a query language, like SQL. So it's not surprising to see methods with names that more closely mirror queries, like the `.with_columns()` method.
 
@@ -470,6 +505,8 @@ region_count = (customer_data
 )
 ```
 
+![](figures/plot01a.png){fig-align="center"}
+
 ### R
 
 ```{r}
@@ -720,17 +757,53 @@ customer_data |>
 
 ## Modeling
 
+If the adage is true that Python is "the second best language for everything," it's machine learning that is arguably where it shines. If it's still true that new statistical models first appear in R, then it can be said that the latest and greatest in machine learning (and deep learning) is incubated in Python and Python-adjacent libraries. At a high level, this should make sense. If R is tied closely to statistics, the big tent that is Python should naturally lend itself to the learning algorithms developed in computer science.
+
+- Simulate data.
+- Word on feature engineering? Recipes vs. scikit-learn?
+
+### scikit-learn
+
 - scikit-learn is a machine learning library built on NumPy, SciPy, and matplotlib.
+- Why are we using statsmodels? For all of the assumption checking I guess?
 
-scikit-learn, PyMC, etc. Or Bambi?
-
-Why are we using statsmodels? For all of the assumption checking I guess?
+> However, the full name scikit-learn comes from its origin as a “scikit”, which is short for “SciPy Toolkit.” Scikits are extensions built on top of SciPy to provide specialized functionality. Since scikit-learn is one of these toolkits, its official name follows this convention.
 
 What are the modeling packages we might use for simulation-based inference? Something like R's {infer} package?
 
-What could we use in-place of bambi? Does PyMC allow for a {brms} high-level use of Bayesian computation?
+When it comes to modeling, R is equally diverse in its approaches. However, I am partial to the consistency of the tidymodels suite of packages.
 
-- Walkthrough?
+::: {.panel-tabset}
+### Python
+
+```{python}
+
+```
+
+### R
+
+```{r}
+
+```
+:::
+
+### Bambi
+
+Answer to {brms}.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+
+```
+
+### R
+
+```{r}
+
+```
+:::
 
 ## Communication
 
