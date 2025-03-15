@@ -1,14 +1,12 @@
 ---
 title: "An introduction to Python for R users"
 author: "Marc Dotson"
-date: "2025-02-28"
+date: "2025-03-14"
 description: |
-  Most introductions to Python are written for new programmers. This introduction to Python assumes you know R, which is used as an analogy within the domain of data analytics.
+  This introduction to Python assumes you know R, which is used as an analogy to explain the language within the domain of data analytics.
 categories:
   - python
   - r
-  - positron
-  - quarto
 image: figures/python.png
 slug: python-intro
 highlight-style: arrow
@@ -18,9 +16,9 @@ execute:
 
 In classes and workshops over many years, I've taught data analytics using R. But in my new position, I teach data analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
 
-![](figures/python-r.png){width=60% fig-align="center"}
-
 There are incredible resources in this space, and I've drawn liberally from a number of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for the authors' clear espousing that this isn't an either/or situation---you can (and arguably *should*) use Python and R as complements.
+
+![](figures/python-r.png){width=60% fig-align="center"}
 
 I am especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo-2025/) and subscribe to her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also grateful to extra help from [posit::conf](https://posit.co/conference/) workshop instructors and colleagues in my new position at [Utah State University](https://huntsman.usu.edu/dais/). Additional resources will be provided where relevant in each section.
 
@@ -50,9 +48,9 @@ While these are broad strokes, they help provide some context for how the two la
 
 ## Functions, methods, and attributes
 
- With the right mindset, it's easier to understand some of the things that Python is obsessed with that R simply isn't. The most important difference is that Python is an object-oriented programming language while R is all about functional programming. While *everything* in R is a function (for a typical user), using Python requires frequently keeping track of the difference between functions, methods, and attributes.
+With the right mindset, it's easier to understand some of the things that Python is obsessed with that R simply isn't. The most important difference is that Python is an object-oriented programming language while R is all about functional programming. While *everything* in R is a function (for a typical user), using Python requires frequently keeping track of the difference between functions, methods, and attributes.
 
-Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or an alias like `alias.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. That means it's possible to import a specific function such that we can call it without referencing it's library name or an alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R, but we will always see a `.method()` like so. One more bit of language -- just like packages in Python are referred to as libraries, function (and method) arguments are referred to as parameters.
+Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or alias like `library.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. While it's possible to import a specific function such that we can call it without referencing it's library name or alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R but we will always see a `.method()` with an object. One more bit of language -- just like packages in Python are typically referred to as libraries, function (and method) arguments are referred to as parameters.
 
 Attributes are object-specific features and are, like methods, namespaced with an object name of the give type as in `object.attribute`, but without any parentheses. For example, the dimensions of a NumPy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
 
@@ -92,6 +90,10 @@ Just like with R, all Python libraries are installed in a single, global library
 The venv library comes pre-installed with Python as the default reproducible (or *virtual*, hence the "v" in venv) environment management tool. It works in two steps. First, we must create a project library. Second, we keep track of the versions of the libraries we use. After navigating to a project working directory, you can go to the terminal and run `python -m venv .venv`. This would create a `/.venv` folder in the working directory that contained the project library or *virtual environment*. Whenever you install new libraries or decide to update the versions of libraries you use, run `pip freeze > requirements.txt` to update `requirements.txt`.
 
 It might seem like a lot (and it honestly is), but it's something [we should be doing in R](https://occasionaldivergences.com/posts/rep-env/) as well. Along with a project's code, all someone would need is the `.python-version` and `requirements.txt` files to reproduce your code, including the environment it was designed to run in.
+
+::: {.callout-caution title="uv"}
+There's a new(er) kid on the block that has been receiving lots of attention: [uv](https://docs.astral.sh/uv/). It promises to serve as a replacement for pyenv for Python version management, venv for managing reproducible environments, and even pip for installing libraries. (As a bellweather, the newest release of [{reticulate}](https://posit.co/blog/reticulate-1-41/) employs uv in the background.) I'll likely migrate to it, but it doesn't yet appear to seamlessly interact with Positron, and the IDE comes first for me.
+:::
 
 ## Data wrangling
 
@@ -759,13 +761,17 @@ customer_data |>
 
 If the adage is true that Python is "the second best language for everything," it's machine learning that is arguably where it shines. If it's still true that new statistical models first appear in R, then it can be said that the latest and greatest in machine learning (and deep learning) is incubated in Python and Python-adjacent libraries. At a high level, this should make sense. If R is tied closely to statistics, the big tent that is Python should naturally lend itself to the learning algorithms developed in computer science.
 
+- Note on importing library functions and it being the inverse of R.
 - Simulate data.
-- Word on feature engineering? Recipes vs. scikit-learn?
+- Word on feature engineering? Workflows vs. Pipelines?
 
 ### scikit-learn
 
 - scikit-learn is a machine learning library built on NumPy, SciPy, and matplotlib.
 - Why are we using statsmodels? For all of the assumption checking I guess?
+- `.fit()` to specify the data to train on.
+- `.predict()` to predict outcomes.
+- `.score()` to evaluate model fit.
 
 > However, the full name scikit-learn comes from its origin as a “scikit”, which is short for “SciPy Toolkit.” Scikits are extensions built on top of SciPy to provide specialized functionality. Since scikit-learn is one of these toolkits, its official name follows this convention.
 
