@@ -12,6 +12,9 @@
 # RDS Data.
 *.rds
 
+# Folders.
+study/*
+
 # Posts-specific.
 posts/*/Code/Compiled/
 # posts/*/Data/
