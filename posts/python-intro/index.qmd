@@ -1,12 +1,14 @@
 ---
 title: "An introduction to Python for R users"
 author: "Marc Dotson"
-date: "2025-03-14"
+date: "2025-06-12"
 description: |
-  This introduction to Python assumes you know R, which is used as an analogy to explain the language within the domain of data analytics.
+  This introduction to Python assumes you know R, which is used as an analogy to explain Python for data analysis.
 categories:
   - python
   - r
+  - quarto
+  - pymc
 image: figures/python.png
 slug: python-intro
 highlight-style: arrow
@@ -44,56 +46,52 @@ To summarize some key differences:
 | Inconsistent (i.e., no tidyverse) | Consistency in the tidyverse | 
 | "Pythonistas" and "Pythonic" code | "R Users" and "Tidy" code |
 
-While these are broad strokes, they help provide some context for how the two languages deviate in their approaches to common problems.
+While these are broad strokes and not 100% accurate in every case, they help provide some high-level context for how the two languages deviate in their approaches to common problems.
 
 ## Functions, methods, and attributes
 
 With the right mindset, it's easier to understand some of the things that Python is obsessed with that R simply isn't. The most important difference is that Python is an object-oriented programming language while R is all about functional programming. While *everything* in R is a function (for a typical user), using Python requires frequently keeping track of the difference between functions, methods, and attributes.
 
-Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or alias like `library.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. While it's possible to import a specific function such that we can call it without referencing it's library name or alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R but we will always see a `.method()` with an object. One more bit of language -- just like packages in Python are typically referred to as libraries, function (and method) arguments are referred to as parameters.
+Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or alias like `library.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. While it's possible to import a specific function such that we can call it without referencing it's library name or alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R but we will always see a `.method()` with an object. One more set of definitions---just like packages in Python are typically referred to as libraries, function (and method) arguments are referred to as parameters.
 
 Attributes are object-specific features and are, like methods, namespaced with an object name of the give type as in `object.attribute`, but without any parentheses. For example, the dimensions of a NumPy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
 
-## Installation and reproducible environments
+## Getting started
 
-The first (and perhaps the biggest) hurdle as we work to apply our new mindset is simply getting Python and our reproducible environment installed. This is a big departure from what we're used to in R, where there is one way to install R and we usually ignore our environment, let alone [make our R environments reproducible](https://occasionaldivergences.com/posts/rep-env/). Remember, Python is a *big* tent with lots of uses and, unsurprisingly, lots of ways to do everything I'm covering. However, from the perspective of someone coming from R and with a focus on data analytics, I recommend the following. 
+The first hurdle as we work to apply our new mindset is simply getting Python and our project environment installed. This is a big departure from what we're used to in R, where there is one way to install R and we usually ignore our project environment, let alone [make it reproducible](https://occasionaldivergences.com/posts/rep-env/). Remember, Python is a *big* tent with lots of uses and, unsurprisingly, lots of ways to do everything I'm covering. However, from the perspective of someone coming from R and with a focus on data analytics, I recommend the following.
 
-### pyenv
+While I started using [pyenv](https://github.com/pyenv/pyenv) and [venv](https://docs.python.org/3/library/venv.html) for managing Python versions and libraries, respectively, there's a new(er) kid on the block that has been receiving lots of attention: [uv](https://docs.astral.sh/uv/), a single unified tool for managing Python project environments. (As a bellweather, [{reticulate}](https://posit.co/blog/reticulate-1-41/) and [Positron](https://positron.posit.co) now use uv.) Get started by [installing uv](https://docs.astral.sh/uv/getting-started/installation/) via the command line.
 
-Unlike your experience with R, Python comes pre-installed on some operating systems. This version *should not be used* by anyone except the OS itself. For this and other reasons, you'll need the ability to maintain multiple versions of Python on the same computer. I recommend using [pyenv](https://github.com/pyenv/pyenv), a Python version management tool that is designed to be as *simple* as possible, though what constitutes "simple" is a matter of experience and your mileage may vary.
-
-::: {.callout-tip title="The Command Line"}
-Using pyenv will require you to use the command line (i.e., terminal or shell). Be patient and *take your time* walking carefully through the [installation instructions](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation). Daniel Chen, who introduced me to pyenv, also has a [great write-up](https://chendaniely.github.io/python_setup/210-python_install.html) of the installation instructions that may be a bit easier to follow. A few things to help as you install:
+::: {.callout-note title="The Command Line"}
+Using the command line (i.e., terminal or shell) isn't as common for R users who are comfortable with a dedicated console for running code. Be patient, take your time, and follow any instructions from a trusted source closely. A few things to help:
 
 - The command line is the programming interface into your OS itself. You don't have to know everything about it to follow instructions.
-- When you get to the section [Set up your shell environment for pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#b-set-up-your-shell-environment-for-pyenv), the instructions are different based on the *type* of command line. If you're on a Mac that's running macOS Catalina 10.15.7 or later, the terminal is Zsh. If you're using Linux, the shell is Bash (and you probably already know that). And if you're using Windows, you'll be using the [pyenv-win](https://github.com/pyenv-win/pyenv-win) fork with PowerShell.
+- Instructions can be different based on the *type* of command line. If you're on a Mac that's running macOS Catalina 10.15.7 or later, the terminal is Zsh. If you're using Linux, the shell is Bash (and you probably already know that). And if you're using Windows you're working with PowerShell.
 :::
 
-Now that you have pyenv installed, you can install and manage all the versions of Python on your computer. To see what versions you already have installed, on the command line, run `pyenv versions`. At first this is probably just the OS version. Note that if you've installed Python before pyenv, it won't be listed: `pyenv versions` will only list the OS version and any additional versions you install using pyenv. To see all the available versions of Python that you can install, run `pyenv install --list`. This can be overwhelming, but a good place to start is the latest version of Python that has a stable release (i.e., doesn't have a `-dev` tag). For example, to install Python 3.12.4, run `pyenv install 3.12.4`.
+### Installing Python
 
-Remember how you shouldn't use the OS version of Python? Set the global default version of Python that you'll use (leaving the OS to do it's own thing). For example, to set Python 3.12.4 as the global default version, run `pyenv global 3.12.4`. If you run `pyenv versions` again you should see an asterisk by the global default you specified.
+Unlike your experience with R, Python comes pre-installed on some operating systems. This version *should not be used* by anyone except the OS itself. For this and other reasons, you'll need the ability to maintain multiple versions of Python on the same computer. Once you have uv installed, it's easy to install and manage Python versions.
 
-::: {.callout-important title="Positron IDE"}
+- To install the latest stable release of Python, on the command line, run `uv python install`. To see which versions of Python you have installed, run `uv python find`; none of these will be the off-limits OS version.
+- You can also install specific versions of Python, such as `uv python install 3.13.4` to install Python 3.13.4. To view Python versions that are available to install, run `uv python list`.
+
+::: {.callout-tip title="Positron IDE"}
 As you well know, an integrated development environment (IDE), outside of an open source language, is arguably your most important tool as a data analyst. There are many options, but I recommend [Positron](https://positron.posit.co), a next-generation data science IDE. Built by Posit on VS Code's [open source core](https://github.com/microsoft/vscode), Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs.
 
-If RStudio is too specific and VS Code is too general, you may find that Positron is [just right](https://occasionaldivergences.com/posts/positron-intro/) and becomes your only IDE for both Python and R.
+If RStudio is too specific and VS Code is too general, you may find that [Positron is just right](https://occasionaldivergences.com/posts/positron-intro/) and becomes your only IDE for both Python and R. And unless you're comfortable navigating between directories using the command line, Positron's built-in terminal will be tied to the working directory you have opened in the IDE.
 :::
 
-There's a lot more that [pyenv can do](https://realpython.com/intro-to-pyenv/). After navigating to a project working directory, you can go to the terminal and run `pyenv local 3.12.4`, assuming you want Python 3.12.4 to be set as the default. This would create a `.python-version` file in that directory that specifies the version of Python to use for that project.
+### Initializing a project environment
 
-### venv
+A project environment is composed of the language(s) and libraries (including the dependencies) used for a given project. What makes a project environment reproducible is keeping track of which *version* of the language(s) and the libraries we're using for a given project so that it can be easily reproduced on another machine by you (including future you) or someone else.
 
-If an environment is composed of the open source language(s) and libraries (including the library dependencies) used for a given project, what makes an environment reproducible is keeping track of which *version* of the open source language(s) and the libraries we're using for a given project. While "keeping track" could happen in many different ways, ideally we want to keep track of our environment such that it can be easily *reproduced* on another machine, by you (including future you) or someone else. You've already seen how to use pyenv to keep track of the Python version by creating a `.python-version` file, and I recommend using [venv](https://docs.python.org/3/library/venv.html) to keep track of library versions.
+- After navigating to a project working directory, run `uv init` to initialize a project environment. This creates a `pyproject.toml` file with metadata about the project and a hidden `.python-version` file that specifies the default version of Python for the project. (It also creates `main.py` and `README.md` files that you can use or delete.)
+- With the project environment initialized, you can install libraries. For example, to install the Polars library, run `uv add polars`. This installs Polars, and any dependencies, and creates both a `uv.lock` file that keeps track of the versions of the libraries you've installed and a hidden `.venv` reproducible (or *virtual*, hence the "v" in venv) environment folder that serves as the project library.
 
-Just like with R, all Python libraries are installed in a single, global library on your computer known as the *system library*. What we need is a *project library*. This helps highlight an important feature of reproducible environments: Each project will have its own project library and thus be *isolated*. If two projects use different versions of the same package, they won't conflict with each other because they'll each have their own project library. (Well, not *exactly*. Python employs a global cache to avoid having to install the same version of a given library more than once. The project library will reference the global cache. Note that if you've installed Python prior to using pyenv, you may have a global cache that is borked. You can run `pip cache purge` in the command line to start fresh.)
+Just like with R, all Python libraries are installed in a single, global library on your computer known as the *system library*. The fact that we have a *project library* highlights an important feature of making project environments reproducible: Each project will have its own project library and thus be *isolated*. If two projects use different versions of the same package, they won't conflict with each other because they'll each have their own project library. (Well, not *exactly*. Python employs a global cache to avoid having to install the same version of a given library more than once. The project library will reference the global cache.) Whenever you install new libraries, the `uv.lock` file is automatically updated. And if you're starting with an existing project, run `uv run` for the libraries included in `uv.lock` to be automatically installed.
 
-The venv library comes pre-installed with Python as the default reproducible (or *virtual*, hence the "v" in venv) environment management tool. It works in two steps. First, we must create a project library. Second, we keep track of the versions of the libraries we use. After navigating to a project working directory, you can go to the terminal and run `python -m venv .venv`. This would create a `/.venv` folder in the working directory that contained the project library or *virtual environment*. Whenever you install new libraries or decide to update the versions of libraries you use, run `pip freeze > requirements.txt` to update `requirements.txt`.
-
-It might seem like a lot (and it honestly is), but it's something [we should be doing in R](https://occasionaldivergences.com/posts/rep-env/) as well. Along with a project's code, all someone would need is the `.python-version` and `requirements.txt` files to reproduce your code, including the environment it was designed to run in.
-
-::: {.callout-caution title="uv"}
-There's a new(er) kid on the block that has been receiving lots of attention: [uv](https://docs.astral.sh/uv/). It promises to serve as a replacement for pyenv for Python version management, venv for managing reproducible environments, and even pip for installing libraries. (As a bellweather, the newest release of [{reticulate}](https://posit.co/blog/reticulate-1-41/) employs uv in the background.) I'll likely migrate to it, but it doesn't yet appear to seamlessly interact with Positron, and the IDE comes first for me.
-:::
+It might seem like a lot just to get started, but it's something [we should be doing in R](https://occasionaldivergences.com/posts/rep-env/) as well. Along with a project's code, all someone would need is the `pyproject.toml`, `.python-version`, and `uv.lock` files to reproduce your code, including the project environment. Well, assuming they're also using uv to manage their project environments. If they're using another tool to install libraries instead (yes, there are *many* ways to install libraries in Python), they will likely need a `requirements.txt` file or a `pylock.toml` file to reproduce the project environment, which you can create with `uv export --format requirements-txt` or `uv export -o pylock.toml`, respectively.
 
 ## Data wrangling
 
@@ -519,7 +517,7 @@ customer_data |>
 ```
 :::
 
-In certain instances we can have the necessary data wrangling done as part of the visualization. For example, in {ggplot2} we can call `geom_bar()` instead of `geom_col()` to produce the same plot while in seaborn.objects we still use the same Mark `so.Bar()` but add another object called a Stat -- in this instance `so.Hist()` to produce the sum for us.
+In certain instances we can have the necessary data wrangling done as part of the visualization. For example, in {ggplot2} we can call `geom_bar()` instead of `geom_col()` to produce the same plot while in seaborn.objects we still use the same Mark `so.Bar()` but add another object called a Stat---in this instance `so.Hist()` to produce the sum for us.
 
 ::: {.panel-tabset}
 ### Python
@@ -855,4 +853,4 @@ Conclude...and follow-up with advanced ____ for the R user?
 - [pandas](https://wesmckinney.com/book/) is still the most popular as a complement to NumPy.
 - Master the basics so you can effectively use Copilot, ChatGPT, etc.
 
-Less snake references, more Monty Python jokes -- let's get releases named that way like R has Peanuts references.
+Less snake references, more Monty Python jokes---let's get releases named that way like R has Peanuts references.
