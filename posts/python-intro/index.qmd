@@ -12,8 +12,8 @@ categories:
 image: figures/python.png
 slug: python-intro
 highlight-style: arrow
-execute:
-  eval: false
+# execute:
+#   eval: false
 ---
 
 In classes and workshops over many years, I've taught data analytics using R. But in my new position, I teach data analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
@@ -105,6 +105,19 @@ Libraries and modules (a kind of sub-library) are imported with commonly accepte
 
 We also see the difference between the `pl.read_csv()` function and the `.shape` and `.columns` attributes.
 
+```{r}
+library(reticulate)
+py_require("pandas")
+py_require("polars")
+py_require("pyarrow")
+py_require("seaborn")
+
+pandas <- import("pandas")
+polars <- import("polars")
+pyarrow <- import("pyarrow")
+seaborn <- import("seaborn")
+```
+
 ::: {.panel-tabset}
 ### Python
 
@@ -112,7 +125,8 @@ We also see the difference between the `pl.read_csv()` function and the `.shape`
 import polars as pl
 import os
 
-customer_data = pl.read_csv(os.path.join('posts', 'python-intro', 'data', 'customer_data.csv'))
+customer_data = pl.read_csv(os.path.join('data', 'customer_data.csv'))
+# customer_data = pl.read_csv(os.path.join('posts', 'python-intro', 'data', 'customer_data.csv'))
 customer_data.shape
 customer_data.columns
 ```
@@ -139,6 +153,7 @@ customer_data.columns
 ```{r}
 library(tidyverse)
 
+# customer_data <- read_csv(here::here("data", "customer_data.csv"))
 customer_data <- read_csv(here::here("posts", "python-intro", "data", "customer_data.csv"))
 glimpse(customer_data)
 ```
@@ -174,7 +189,7 @@ In pandas, we would need to reference column names with `data['column_name']` (l
 ```{python}
 customer_data.filter(pl.col('college_degree') == 'Yes')
 customer_data.filter(pl.col('region') != 'West')
-customer_data.filter(pl.col('gender') != 'Female', pl.col('income') > 70000)
+customer_data.filter(pl.col('gender') == 'Female', pl.col('income') > 70000)
 ```
 
 ### R
@@ -188,11 +203,7 @@ filter(customer_data, gender == "Female", income > 70000)
 
 ### Slice observations
 
-Remember that Python is zero-indexed. This is probably the most problematic (and very computer science-based) difference and why it's nice to avoid indexing if you can!
-
-Function (and method) arguments are called parameters. Some parameters are positional that have to be specified in an *exact* position. Others are keyword or named parameters, which is most common in R.
-
-The positional parameters for Polars' `.slice()` method are the start index and the slice length.
+Remember that Python is zero-indexed. This is probably the most problematic (and very computer science-based) difference and why it's nice to avoid indexing if you can! Also, remember that function (and method) arguments are called parameters. Some parameters are positional that have to be specified in an *exact* position. Others are keyword or named parameters, which is commonplace in R. The positional parameters for Polars' `.slice()` method are the start index and the slice length.
 
 ::: {.panel-tabset}
 ### Python
@@ -238,7 +249,6 @@ Using single square brackets `[ ]` creates a list. This is similar to creating a
 ### Python
 
 ```{python}
-customer_data.select(pl.col('region'), pl.col('review_text'))
 customer_data.select(pl.col(['region', 'review_text']))
 ```
 
@@ -275,7 +285,8 @@ Missing values are identified as `NaN`. Series types include `str`, `bytes` (bin
 ### Python
 
 ```{python}
-store_transactions = pl.read_csv(os.path.join('posts', 'python-intro', 'data', 'store_transactions.csv'))
+store_transactions = pl.read_csv(os.path.join('data', 'store_transactions.csv'))
+# store_transactions = pl.read_csv(os.path.join('posts', 'python-intro', 'data', 'store_transactions.csv'))
 store_transactions.shape
 store_transactions.columns
 
@@ -286,6 +297,7 @@ customer_data.join(store_transactions, on='customer_id', how='inner')
 ### R
 
 ```{r}
+# store_transactions <- read_csv(here::here("data", "store_transactions.csv"))
 store_transactions <- read_csv(here::here("posts", "python-intro", "data", "store_transactions.csv"))
 glimpse(store_transactions)
 
@@ -452,6 +464,8 @@ df.collect()
 ### R
 
 ```{r}
+#| eval: false
+
 data_db <- customer_data |>
   group_by(gender, region) |>
   summarize(
@@ -462,7 +476,7 @@ data_db <- customer_data |>
   arrange(desc(avg_income))
 
 data_db |>
-  show_query()
+  dbplyr::show_query()
 
 data_db
 ```
