@@ -1,7 +1,7 @@
 ---
 title: "An introduction to Python for R users"
 author: "Marc Dotson"
-date: "2025-06-12"
+date: "2025-06-13"
 description: |
   This introduction to Python assumes you know R, which is used as an analogy to explain Python for data analysis.
 categories:
@@ -12,9 +12,21 @@ categories:
 image: figures/python.png
 slug: python-intro
 highlight-style: arrow
-# execute:
-#   eval: false
 ---
+
+```{r}
+#| echo: false
+library(reticulate)
+py_require("pandas")
+py_require("polars")
+py_require("pyarrow")
+py_require("seaborn")
+
+pandas <- import("pandas")
+polars <- import("polars")
+pyarrow <- import("pyarrow")
+seaborn <- import("seaborn")
+```
 
 In classes and workshops over many years, I've taught data analytics using R. But in my new position, I teach data analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
 
@@ -97,26 +109,13 @@ It might seem like a lot just to get started, but it's something [we should be d
 
 Whatever the language, the most common task we have for any data analysis is data wrangling (i.e., cleaning, munging, etc.). The [NumPy](https://numpy.org) library is more or less equivalent to what we see in base R, introducing arrays and efficient computation across arrays---but, perhaps surprisingly, not data frames. Data frames (or DataFrames as they are referred to in Python) came later with [pandas](https://pandas.pydata.org) (short for "panel data"). Still the most popular library for data wrangling in Python, pandas is built to supplement NumPy, with all of the syntax baggage. However, growing in popularity is [Polars](https://pola.rs) (an anagram of the query language it uses, OLAP, and the language it's built in, Rust or rs). Polars is something of an answer to pandas problems. Actually, free from any Python code at all (yes, you can [use it in R](https://github.com/pola-rs/r-polars)), it offers a glimpse at what the polyglot future might look like.
 
-My take is that Polars provides a far more self-consistent data wrangling experience than pandas, reversing the trend that many experience when they come to Polars for the speed and stay for the syntax. To illustrate the tidyverse spiritual connections, if not the deeper roots in SQL syntax, there are a number of great side-by-side comparisons of [Polars and {dplyr}](https://blog.tidy-intelligence.com/posts/dplyr-vs-polars/). I'll illustrate a few common tasks in both Polars and {dplyr} and point out the differences to be mindful of.
+My take is that Polars provides a more self-consistent data wrangling experience than pandas, reversing the trend that many experience when they come to Polars for the speed and stay for the syntax. To illustrate the tidyverse spiritual connections, if not the deeper roots in SQL syntax, there are a number of great side-by-side comparisons of [Polars and {dplyr}](https://blog.tidy-intelligence.com/posts/dplyr-vs-polars/). I'll illustrate a few common tasks in both Polars and {dplyr} and point out the differences to be mindful of.
 
 ### Import data
 
-Libraries and modules (a kind of sub-library) are imported with commonly accepted aliases in order to shorten the namespace reference. For example, the Polars alias convention is `pl`. We're also importing the os library, which needs no alias, to write out a relative file path that will work for any user or operating system that has the same relative directory structure.
+Libraries and modules (a kind of sub-library) are imported with commonly accepted aliases in order to shorten the namespace reference. For example, the Polars alias convention is `pl`. We're also importing the os library, which needs no alias, to write out a relative file path that will work for any user or operating system that has the same relative directory structure; a "Pythonic" version of {here}.
 
-We also see the difference between the `pl.read_csv()` function and the `.shape` and `.columns` attributes.
-
-```{r}
-library(reticulate)
-py_require("pandas")
-py_require("polars")
-py_require("pyarrow")
-py_require("seaborn")
-
-pandas <- import("pandas")
-polars <- import("polars")
-pyarrow <- import("pyarrow")
-seaborn <- import("seaborn")
-```
+Note the difference between the `pl.read_csv()` function and the `.shape` and `.columns` attributes.
 
 ::: {.panel-tabset}
 ### Python
@@ -126,54 +125,18 @@ import polars as pl
 import os
 
 customer_data = pl.read_csv(os.path.join('data', 'customer_data.csv'))
-# customer_data = pl.read_csv(os.path.join('posts', 'python-intro', 'data', 'customer_data.csv'))
 customer_data.shape
 customer_data.columns
-```
-
-```
-(10531, 13)
-['customer_id',
- 'birth_year',
- 'gender',
- 'income',
- 'credit',
- 'married',
- 'college_degree',
- 'region',
- 'state',
- 'star_rating',
- 'review_time',
- 'review_title',
- 'review_text']
 ```
 
 ### R
 
 ```{r}
+#| warning: false
 library(tidyverse)
 
-# customer_data <- read_csv(here::here("data", "customer_data.csv"))
 customer_data <- read_csv(here::here("posts", "python-intro", "data", "customer_data.csv"))
 glimpse(customer_data)
-```
-
-```
-Rows: 10,531
-Columns: 13
-$ customer_id    <dbl> 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, …
-$ birth_year     <dbl> 1971, 1970, 1988, 1984, 1987, 1994, 1968, 1994, 1958, …
-$ gender         <chr> "Female", "Female", "Male", "Other", "Male", "Male", "…
-$ income         <dbl> 73000, 31000, 35000, 64000, 58000, 164000, 39000, 6900…
-$ credit         <dbl> 742.0827, 749.3514, 542.2399, 573.9358, 644.2439, 553.…
-$ married        <chr> "No", "Yes", "No", "Yes", "No", "Yes", "No", "No", "No…
-$ college_degree <chr> "No", "No", "No", "Yes", "Yes", "Yes", "No", "No", "No…
-$ region         <chr> "South", "West", "South", "Midwest", "West", "Midwest"…
-$ state          <chr> "DC", "WA", "AR", "MN", "HI", "MN", "MN", "KY", "NM", …
-$ star_rating    <dbl> 4, NA, NA, NA, 5, 2, NA, 5, NA, 5, NA, 5, NA, NA, NA, …
-$ review_time    <chr> "06 11, 2015", NA, NA, NA, "03 25, 2008", "06 7, 2013"…
-$ review_title   <chr> "Four Stars", NA, NA, NA, "Great Product!!", "Not at a…
-$ review_text    <chr> "everything's fine", NA, NA, NA, "I looked all over th…
 ```
 :::
 
@@ -187,23 +150,21 @@ In pandas, we would need to reference column names with `data['column_name']` (l
 ### Python
 
 ```{python}
-customer_data.filter(pl.col('college_degree') == 'Yes')
-customer_data.filter(pl.col('region') != 'West')
 customer_data.filter(pl.col('gender') == 'Female', pl.col('income') > 70000)
 ```
 
 ### R
 
 ```{r}
-filter(customer_data, college_degree == "Yes")
-filter(customer_data, region != "West")
 filter(customer_data, gender == "Female", income > 70000)
 ```
 :::
 
 ### Slice observations
 
-Remember that Python is zero-indexed. This is probably the most problematic (and very computer science-based) difference and why it's nice to avoid indexing if you can! Also, remember that function (and method) arguments are called parameters. Some parameters are positional that have to be specified in an *exact* position. Others are keyword or named parameters, which is commonplace in R. The positional parameters for Polars' `.slice()` method are the start index and the slice length.
+Note that Python is zero-indexed. This is probably the most problematic (and very computer science-based) difference and why it's nice to avoid indexing if you can!
+
+Remember that function (and method) arguments are called parameters. Some parameters are positional that have to be, as the name suggests, specified in an *exact* position. Others are keyword or named parameters, which is commonplace in R. The positional parameters for Polars' `.slice()` method are the start index and the slice length.
 
 ::: {.panel-tabset}
 ### Python
@@ -229,14 +190,12 @@ Note that its `True` and `False`, not `TRUE` and `FALSE` or `true` and `false`.
 ### Python
 
 ```{python}
-customer_data.sort(pl.col('birth_year'))
 customer_data.sort(pl.col('birth_year'), descending = True)
 ```
 
 ### R
 
 ```{r}
-arrange(customer_data, birth_year)
 arrange(customer_data, desc(birth_year))
 ```
 :::
@@ -279,39 +238,30 @@ mutate(customer_data, income = income / 1000)
 
 ### Join data frames
 
-Missing values are identified as `NaN`. Series types include `str`, `bytes` (binary), `float`, `bool`, and `int`.
+Note that missing values are identified as `NaN` or `null`. Series types include `str`, `bytes` (binary), `i64` (num), `bool`, and `int`.
 
 ::: {.panel-tabset}
 ### Python
 
 ```{python}
 store_transactions = pl.read_csv(os.path.join('data', 'store_transactions.csv'))
-# store_transactions = pl.read_csv(os.path.join('posts', 'python-intro', 'data', 'store_transactions.csv'))
-store_transactions.shape
-store_transactions.columns
 
 customer_data.join(store_transactions, on='customer_id', how='left')
-customer_data.join(store_transactions, on='customer_id', how='inner')
 ```
 
 ### R
 
 ```{r}
-# store_transactions <- read_csv(here::here("data", "store_transactions.csv"))
+#| warning: false
 store_transactions <- read_csv(here::here("posts", "python-intro", "data", "store_transactions.csv"))
-glimpse(store_transactions)
 
 left_join(customer_data, store_transactions, join_by(customer_id))
-inner_join(customer_data, store_transactions, join_by(customer_id))
 ```
 :::
 
 ### Consecutive lines of code
 
-While possible with Python code generally, Polars embraces writing consecutive lines of code using *method chaining*. Note that:
-
-- The entire chain needs to be surrounded with `( )`
-- Each line *starts* with `.`
+While possible with Python code generally, Polars embraces writing consecutive lines of code using *method chaining*, which is clearly akin to piping in R. Note that each line *starts* with `.` (rather than ending with `|>`) and the entire chain needs to be surrounded with `( )`.
 
 ::: {.panel-tabset}
 ### Python
@@ -349,11 +299,6 @@ The `.agg()` method stands for *aggregate*, which is exactly what `summarize()` 
 
 ```{python}
 (customer_data
-  .group_by(pl.col('region'))
-  .agg(n = pl.len())
-)
-
-(customer_data
   .group_by(pl.col(['region', 'college_degree']))
   .agg(n = pl.len())
 )
@@ -363,26 +308,18 @@ The `.agg()` method stands for *aggregate*, which is exactly what `summarize()` 
 
 ```{r}
 customer_data |> 
-  count(region)
-
-customer_data |> 
   count(region, college_degree)
 ```
 :::
 
 ### Summarize continuous data
 
-This is a good example of where object-oriented programming requires a different mindset. You might think that there is a general `mean()` function like in R, but there isn't and you'd have to load a specific library and reference its namespace to use such a function. Instead, `.mean()` is a method for Polars Series and DataFrames.
+This is a good example of where object-oriented programming requires a different mindset. You might think that there is a general `mean()` function like in R, but there isn't and you'd have to load a specific library and reference its namespace to use such a function. Instead, `.mean()` here is a method for Polars Series and DataFrames.
 
 ::: {.panel-tabset}
 ### Python
 
 ```{python}
-(customer_data
-  .select(pl.col('income'))
-  .mean()
-)
-
 (customer_data
   .select(pl.col(['income', 'credit']))
   .mean()
@@ -392,9 +329,6 @@ This is a good example of where object-oriented programming requires a different
 ### R
 
 ```{r}
-customer_data |>
-  summarize(avg_income = mean(income))
-
 customer_data |>
   summarize(
     avg_income = mean(income),
@@ -438,9 +372,9 @@ customer_data |>
 
 ### Lazy evaluation
 
-By tagging a data frame with `.lazy()`, we are asking Polars to not evaluate the code until triggered. We are also asking Polars to optimize the query for us in the underlying query engine. Before the code is triggered with something like `.collect()`, you can even see the underlying optimized query using `.explain()`.
+Remember how Polars is incredibly fast? By tagging a data frame with `.lazy()`, we are asking Polars to not evaluate the code until triggered and to optimize the code for us in the underlying query engine. Before the code is triggered with something like `.collect()`, you can even see the underlying optimized query using `.explain()`.
 
-While there isn't a {dplyr} equivalent to share here, this is exactly what {dbplyr} does whenever writing SQL code, save for the underlying query optimization.
+This is exactly what happens when you use {dplyr} to connect to and communicate with a database using SQL code (except for the underlying query optimization).
 
 ::: {.panel-tabset}
 ### Python
@@ -465,7 +399,6 @@ df.collect()
 
 ```{r}
 #| eval: false
-
 data_db <- customer_data |>
   group_by(gender, region) |>
   summarize(
@@ -475,11 +408,52 @@ data_db <- customer_data |>
   ) |> 
   arrange(desc(avg_income))
 
-data_db |>
-  dbplyr::show_query()
-
-data_db
+data_db |> show_query()
 ```
+
+```
+<SQL>
+SELECT
+    gender,
+    region,
+    COUNT(*) AS n,
+    AVG(income) AS avg_income,
+    AVG(credit) AS avg_credit
+FROM
+    customer_data
+GROUP BY
+    gender,
+    region
+ORDER BY
+    avg_income DESC;
+```
+
+```{r}
+#| eval: false
+data_db |> collect()
+```
+
+```
+`summarise()` has grouped output by 'gender'. You can override using the
+`.groups` argument.
+# A tibble: 12 × 5
+# Groups:   gender [3]
+   gender region        n avg_income avg_credit
+   <chr>  <chr>     <int>      <dbl>      <dbl>
+ 1 Other  Midwest     124    154637.       663.
+ 2 Male   Midwest     420    152467.       666.
+ 3 Other  Northeast   337    150564.       665.
+ 4 Male   Northeast  1285    150498.       665.
+ 5 Male   West       2079    149453.       667.
+ 6 Other  West        519    144420.       667.
+ 7 Female Midwest     557    134083.       671.
+ 8 Female West       2497    133819.       668.
+ 9 Female Northeast  1602    133333.       669.
+10 Other  South       118    119068.       660.
+11 Male   South       430    117988.       669.
+12 Female South       563    105888.       664.
+```
+
 :::
 
 ## Visualizing data
@@ -495,7 +469,7 @@ As a reminder, the grammar of graphics is a philosophical approach to visualizin
 3. A specific graphic representing the data and mappings
 4. Additional fine-tuning via facets, labels, scales, etc.
 
-Having this principled approach to guide the development and consistency of a plotting approach is what distinguishes {ggplot2} and seaborn.objects. (I have often made the argument that SQL itself transcends languages and provides a kind of grammar of data manipulation.) Let's illustrate some common visualizations using seaborn.objects and {ggplot2} and gain some intuition for how they are related and divergent.
+Having this principled approach to guide the development and consistency of a plotting approach is what distinguishes {ggplot2} and seaborn.objects. (I have often made the argument that SQL does something similar in providing a kind of grammar of data manipulation.) Let's illustrate some common visualizations using seaborn.objects and {ggplot2} and gain some intuition for how they are related and divergent.
 
 ### Column plots
 
@@ -507,6 +481,7 @@ However, the plot itself starts with a familiar-looking `so.Plot()` function (se
 ### Python
 
 ```{python}
+#| eval: false
 import seaborn.objects as so
 
 region_count = (customer_data
@@ -519,7 +494,20 @@ region_count = (customer_data
 )
 ```
 
-![](figures/plot01a.png){fig-align="center"}
+```{python}
+#| echo: false
+import seaborn.objects as so
+
+region_count = (customer_data
+  .group_by(pl.col('region'))
+  .agg(n = pl.len())
+)
+
+(so.Plot(region_count, x = 'region', y = 'n')
+  .add(so.Bar())
+  .show()
+)
+```
 
 ### R
 
@@ -537,8 +525,17 @@ In certain instances we can have the necessary data wrangling done as part of th
 ### Python
 
 ```{python}
+#| eval: false
 (so.Plot(customer_data, x = 'region')
   .add(so.Bar(), so.Hist())
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'region')
+  .add(so.Bar(), so.Hist())
+  .show()
 )
 ```
 
@@ -551,13 +548,34 @@ customer_data |>
 ```
 :::
 
-Show more mappings and Stat options with column plots.
+Another Stat object is `so.Agg()`. We can join this with an object type called a Move to further customize our visualization---for example, using the Move object `so.Dodge()` to create a dodged column plot.
 
 ::: {.panel-tabset}
 ### Python
 
 ```{python}
+#| eval: false
+region_count = (customer_data
+  .group_by(pl.col(['region', 'college_degree']))
+  .agg(n = pl.len())
+)
 
+(so.Plot(region_count, x = 'region', y = 'n', color = 'college_degree')
+  .add(so.Bar(), so.Agg(), so.Dodge())
+)
+```
+
+```{python}
+#| echo: false
+region_count = (customer_data
+  .group_by(pl.col(['region', 'college_degree']))
+  .agg(n = pl.len())
+)
+
+(so.Plot(region_count, x = 'region', y = 'n', color = 'college_degree')
+  .add(so.Bar(), so.Agg(), so.Dodge())
+  .show()
+)
 ```
 
 ### R
@@ -566,26 +584,29 @@ Show more mappings and Stat options with column plots.
 customer_data |> 
   count(region, college_degree) |> 
   ggplot(aes(x = region, y = n, fill = college_degree)) +
-  geom_col()
-
-customer_data |> 
-  count(region, college_degree) |> 
-  ggplot(aes(x = region, y = n, fill = college_degree)) +
-  geom_col(position = "fill")
+  geom_col(position = "dodge")
 ```
 :::
 
-
 ### Histograms
 
-Accepting `so.Hist()` as a Stat and not a Mark, like it is in {ggplot2}, may seem awkward for the R user. However, what results in many specific geometries in {ggplot2} is reduced by the composibility of Mark and Stat in seaborn.objects. For example, a histogram also uses the `so.Hist()` Stat to bin data but uses the `so.Bars()` instead of `so.Bar()` to produce an actual histogram.
+Accepting `so.Hist()` as a Stat and not a Mark, like it is in {ggplot2}, may seem awkward for the R user. However, what results in many specific geometries in {ggplot2} is reduced by the composibility of Mark, Stat, and Move objects in seaborn.objects. For example, a histogram also uses the `so.Hist()` Stat to bin data but uses the `so.Bars()` instead of `so.Bar()` to produce an actual histogram.
 
 ::: {.panel-tabset}
 ### Python
 
 ```{python}
+#| eval: false
+(so.Plot(customer_data, x = 'income', color = 'region')
+  .add(so.Bars(), so.Hist())
+)
+```
+
+```{python}
+#| echo: false
 (so.Plot(customer_data, x = 'income')
   .add(so.Bars(), so.Hist())
+  .show()
 )
 ```
 
@@ -606,8 +627,17 @@ Again we see the one-to-one correspondence of Mark objects and geometries, `so.D
 ### Python
 
 ```{python}
+#| eval: false
 (so.Plot(customer_data, x = 'income', y = 'credit')
   .add(so.Dot())
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'income', y = 'credit')
+  .add(so.Dot())
+  .show()
 )
 ```
 
@@ -620,14 +650,23 @@ customer_data |>
 ```
 :::
 
-We also see again that a specialized geometry in {ggplot2} is a combination of Mark and Stat objects in seaborn.objects, where there are arguments that can be modified within each function call.
+We see again that a specialized geometry in {ggplot2} is composed of some combination of Mark, Stat, and Move (`so.Jitter()` is another Move object like `so.Dodge()`) objects in seaborn.objects, where there are parameters that can be further modified within each function call.
 
 ::: {.panel-tabset}
 ### Python
 
 ```{python}
+#| eval: false
 (so.Plot(customer_data, x = 'star_rating', y = 'income')
   .add(so.Dot(pointsize = 10, alpha = 0.5), so.Jitter(0.75))
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'star_rating', y = 'income')
+  .add(so.Dot(pointsize = 10, alpha = 0.5), so.Jitter(0.75))
+  .show()
 )
 ```
 
@@ -648,8 +687,17 @@ It's comforting to know that working with dates is just as problematic in Python
 ### Python
 
 ```{python}
+#| eval: false
 (so.Plot(customer_data, x = 'review_time', y = 'star_rating')
   .add(so.Line())
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'review_time', y = 'star_rating')
+  .add(so.Line())
+  .show()
 )
 ```
 
@@ -668,6 +716,7 @@ Even if we can't method chain between different object classes (including those 
 ### Python
 
 ```{python}
+#| eval: false
 rating_data = (customer_data
   .drop_nulls(pl.col('star_rating'))
   .select(pl.col(['review_time', 'star_rating']))
@@ -683,6 +732,27 @@ rating_data = (customer_data
 
 (so.Plot(rating_data, x = 'review_year', y = 'avg_star_rating')
   .add(so.Line())
+)
+```
+
+```{python}
+#| echo: false
+rating_data = (customer_data
+  .drop_nulls(pl.col('star_rating'))
+  .select(pl.col(['review_time', 'star_rating']))
+  .with_columns(
+    pl.col('review_time').str.to_date(format='%m %d, %Y').alias('review_time')
+  )
+  .with_columns(
+    pl.col('review_time').dt.year().alias('review_year')
+  )
+  .group_by('review_year')
+  .agg(pl.mean('star_rating').alias('avg_star_rating'))
+)
+
+(so.Plot(rating_data, x = 'review_year', y = 'avg_star_rating')
+  .add(so.Line())
+  .show()
 )
 ```
 
@@ -705,12 +775,23 @@ customer_data |>
 
 ### Density plots
 
+Instead of a specific `geom_density()`, we compose it by combining `so.Area()` and `so.Hist()`.
+
 ::: {.panel-tabset}
 ### Python
 
 ```{python}
+#| eval: false
 (so.Plot(customer_data, x = 'income', color = 'gender')
   .add(so.Area(), so.Hist())
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'income', color = 'gender')
+  .add(so.Area(), so.Hist())
+  .show()
 )
 ```
 
@@ -725,11 +806,36 @@ customer_data |>
 
 ### Facets
 
+Finall, facets, like `.add()`, are a method for the Plot object.
+
 ::: {.panel-tabset}
 ### Python
 
 ```{python}
+#| eval: false
+region_count = (customer_data
+  .group_by(pl.col(['region', 'college_degree', 'gender']))
+  .agg(n = pl.len())
+)
 
+(so.Plot(region_count, x = 'region', y = 'n', color = 'college_degree')
+  .facet('gender')
+  .add(so.Bar(), so.Agg(), so.Dodge())
+)
+```
+
+```{python}
+#| echo: false
+region_count = (customer_data
+  .group_by(pl.col(['region', 'college_degree', 'gender']))
+  .agg(n = pl.len())
+)
+
+(so.Plot(region_count, x = 'region', y = 'n', color = 'college_degree')
+  .facet('gender')
+  .add(so.Bar(), so.Agg(), so.Dodge())
+  .show()
+)
 ```
 
 ### R
@@ -738,34 +844,8 @@ customer_data |>
 customer_data |> 
   count(region, college_degree, gender) |> 
   ggplot(aes(x = region, y = n, fill = college_degree)) +
-  geom_col(position = "fill") +
+  geom_col(position = "dodge") +
   facet_wrap(~ gender)
-```
-:::
-
-### Labels, scales, and colors
-
-::: {.panel-tabset}
-### Python
-
-```{python}
-
-```
-
-### R
-
-```{r}
-customer_data |> 
-  count(region, college_degree, gender) |> 
-  ggplot(aes(x = region, y = n, fill = college_degree)) +
-  geom_col(position = "fill") +
-  facet_wrap(~ gender) +
-  labs(
-    title = "Proportion of Customers with College Degrees by Region and Gender",
-    subtitle = "Based on 10,531 Customers in the CRM Database",
-    x = "Region",
-    y = "Proportion"
-  )
 ```
 :::
 
@@ -776,8 +856,6 @@ If the adage is true that Python is "the second best language for everything," i
 - Note on importing library functions and it being the inverse of R.
 - Simulate data.
 - Word on feature engineering? Workflows vs. Pipelines?
-
-### scikit-learn
 
 - scikit-learn is a machine learning library built on NumPy, SciPy, and matplotlib.
 - Why are we using statsmodels? For all of the assumption checking I guess?
@@ -804,8 +882,6 @@ When it comes to modeling, R is equally diverse in its approaches. However, I am
 
 ```
 :::
-
-### Bambi
 
 Answer to {brms}.
 
