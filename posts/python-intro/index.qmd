@@ -1047,46 +1047,13 @@ sim_lm_fit |>
 
 ## Communication
 
-In learning Python find something that provides real value quickly. This is the pitch for Shiny for Python. It has programmatic range with a consistent philosophy with reactivity. Streamlit is optimized for simple applications, like a parameterized Quarto document. Dash is built on stateless applications (i.e., independent components), like Shiny without reactive expressions where the different pieces can’t communicate. Django/Flask/FastAPI is great for large apps.
+When it comes to communication, the elephant in the room is Jupyter notebooks. Even though Jupyter was designed to be polyglot (Julia, Python, and R), it really is the domain of Python. As an R user, Jupyter is *weird*. It appears that Jupyter is what happens when you don't have a great IDE to work with---IDE functionality gets absorbed into the document type itself (e.g., an embedded kernel selector). But just because you *can* use Jupyter notebooks doesn't mean you *should*.
 
-- Quarto or/and Jupyter Notebooks.
-- Quarto is plain text while Jupyter has a rich-text format.
-- Jupyter Notebooks are what happen when you don't have a great IDE to work with: Functionality gets absorbed into the document type itself (e.g., an embedded kernel selector).
-- Can you render Jupyter Notebooks into Word, etc.? Yes-ish. Quarto extends this functionality via Pandoc.
-- Can you somehow run line-by-line inside of cells, or is the RTF messing with the script?
-- In a Quarto document, running Python line-by-line jumps to the end of a cell. Not an issue in a .py script.
-- Issue with getting Python and R to render in a Quarto document. Requires reticulate? Does Positron affect this?
-
-Also, the gt and Great Tables libraries!
-
->One thing I love to share with them is that fast.ai is built:
->- entirely with Quarto
->- entirely out of .ipynb files
->
->`quarto convert` can be used to go back and forth between .ipynb and .qmd!
->
->Yes, that totally works. In addition, quarto render a-notebook.ipynb works out of the box, so you don't even need to convert
->It works both for notebooks that have been created in a different environment (and so can't be re-executed because the results are only possible to produce in, say, google colab), and for notebook that you want to re-execute at every rendering. (quarto render notebook.ipynb vs quarto render notebook.ipynb --execute) Our documentation has https://quarto.org/docs/tools/jupyter-lab.html.
->
->And if your folks really love the JupyterLab authoring experience, we have a JupyterLab extension that makes it a little easier to create ipynb files that work well with Quarto: https://quarto.org/docs/tools/jupyter-lab-extension.html.
->
->Is it possible to render an .ipynb using Quarto (after adding a yaml raw block) from a Jupyter Notebook? Or does it have to be within an IDE? I have colleagues who have used nbconvert to create pdfs via latex and they're wondering if it's possible to use Quarto's typst integration to go straight from .ipynb (not viewed in an IDE) to producing a pdf via typst. The workflow here is working in a Jupyter Notebook hosted on a Jupyter Hub.
->
->yes - that should be totally possible. quarto render nb.ipynb should just work.
-
-- Shiny for Python?
-- Walkthrough?
+It shouldn't be surprising that I recommend [Quarto](https://quarto.org) for communication. It's plain text (so it plays well with version control), supports Python and R natively with code cells that behave like actual scripts, and is designed as a means to whatever document type you need---PDFs, slides, websites, dashboards, etc. That said, if you really love or are required to work with Jupyter notebooks, Quarto can convert any `.ipynb` into a `.qmd` via the command line with `quarto convert notebook.ipynb` as well as render any `.ipynb` into whatever document type you need using `quarto render notebook.ipynb --to format`.
 
 ## Final thoughts
 
-Conclude...and follow-up with advanced ____ for the R user?
+There's honestly a lot to love about both Python and R. Don't be afraid to use the best of both interchangeably. I've found it's easiest to switch between the different mindsets by keeping some syntax differences. For example, in R I use double quotes and in Python I use single quotes.
 
-- Don't be afraid to use the best of R and Python interchangeably.
-- Maintaining different styles may help you keep separate mindsets.
-- Besides RStudio, VS Code is a great code editor.
-- There are great resources online for [R Users learning Python](https://emilyriederer.netlify.app/post/py-rgo/).
-- [Polars](https://docs.pola.rs) is still under development as is [seaborn.objects](https://seaborn.pydata.org/tutorial/objects_interface.html), but both are worth following.
-- [pandas](https://wesmckinney.com/book/) is still the most popular as a complement to NumPy.
-- Master the basics so you can effectively use Copilot, ChatGPT, etc.
+If I could change one thing about Python it would be for the community to embrace the fact that it was named after Monty Python, not a snake. Like R has Peanuts references for each release, here's hoping we eventually see a stable Python release code-named "It's Just a Flesh Wound."
 
-Less snake references, more Monty Python jokes---let's get releases named that way like R has Peanuts references.
