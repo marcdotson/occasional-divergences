@@ -17,15 +17,19 @@ highlight-style: arrow
 ```{r}
 #| echo: false
 library(reticulate)
+py_require("numpy")
 py_require("pandas")
 py_require("polars")
 py_require("pyarrow")
 py_require("seaborn")
+py_require("scikit-learn")
 
+numpy <- import("numpy")
 pandas <- import("pandas")
 polars <- import("polars")
 pyarrow <- import("pyarrow")
 seaborn <- import("seaborn")
+sklearn <- import("sklearn")
 ```
 
 In classes and workshops over many years, I've taught data analytics using R. But in my new position, I teach data analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
@@ -68,7 +72,7 @@ Functions in Python and R are equivalent, although functions in Python are typic
 
 Attributes are object-specific features and are, like methods, namespaced with an object name of the give type as in `object.attribute`, but without any parentheses. For example, the dimensions of a NumPy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
 
-## Getting started
+## Get started
 
 The first hurdle as we work to apply our new mindset is simply getting Python and our project environment installed. This is a big departure from what we're used to in R, where there is one way to install R and we usually ignore our project environment, let alone [make it reproducible](https://occasionaldivergences.com/posts/rep-env/). Remember, Python is a *big* tent with lots of uses and, unsurprisingly, lots of ways to do everything I'm covering. However, from the perspective of someone coming from R and with a focus on data analytics, I recommend the following.
 
@@ -81,7 +85,7 @@ Using the command line (i.e., terminal or shell) isn't as common for R users who
 - Instructions can be different based on the *type* of command line. If you're on a Mac that's running macOS Catalina 10.15.7 or later, the terminal is Zsh. If you're using Linux, the shell is Bash (and you probably already know that). And if you're using Windows you're working with PowerShell.
 :::
 
-### Installing Python
+### Install Python
 
 Unlike your experience with R, Python comes pre-installed on some operating systems. This version *should not be used* by anyone except the OS itself. For this and other reasons, you'll need the ability to maintain multiple versions of Python on the same computer. Once you have uv installed, it's easy to install and manage Python versions.
 
@@ -94,7 +98,7 @@ As you well know, an integrated development environment (IDE), outside of an ope
 If RStudio is too specific and VS Code is too general, you may find that [Positron is just right](https://occasionaldivergences.com/posts/positron-intro/) and becomes your only IDE for both Python and R. And unless you're comfortable navigating between directories using the command line, Positron's built-in terminal will be tied to the working directory you have opened in the IDE.
 :::
 
-### Initializing a project environment
+### Initialize a project environment
 
 A project environment is composed of the language(s) and libraries (including the dependencies) used for a given project. What makes a project environment reproducible is keeping track of which *version* of the language(s) and the libraries we're using for a given project so that it can be easily reproduced on another machine by you (including future you) or someone else.
 
@@ -456,7 +460,7 @@ data_db |> collect()
 
 :::
 
-## Visualizing data
+## Visualization
 
 There's no way around it---visualizing data is where {ggplot2} simply reigns supreme, so much so that Posit has been investing in [plotnine](https://plotnine.org), a {ggplot2} port for Python. Maybe Posit will eventually facilitate a polyglot grammar of graphics, however in the spirit of this post, let's consider a genuinely "Pythonic" tool.
 
@@ -851,51 +855,193 @@ customer_data |>
 
 ## Modeling
 
-If the adage is true that Python is "the second best language for everything," it's machine learning that is arguably where it shines. If it's still true that new statistical models first appear in R, then it can be said that the latest and greatest in machine learning (and deep learning) is incubated in Python and Python-adjacent libraries. At a high level, this should make sense. If R is tied closely to statistics, the big tent that is Python should naturally lend itself to the learning algorithms developed in computer science.
+If the adage is true that Python is "the second best language for everything," it's machine learning that is arguably where it shines. If new statistical models first appear in R, then it can be said that the latest and greatest in machine learning and deep learning is incubated in Python and Python-adjacent libraries. At a high level, this should make sense. If R is tied closely to statistics, the big tent that is Python should naturally lend itself to the learning algorithms developed in computer science.
 
-- Note on importing library functions and it being the inverse of R.
-- Simulate data.
-- Word on feature engineering? Workflows vs. Pipelines?
+The most popular modeling library in Python is scikit-learn (referred to as sklearn in code). This machine learning library is built on NumPy, matplotlib, and SciPy---a library for scientific computing. The name scikit-learn comes from its origin as a "scikit" or "SciPy Toolkit," a collection of extensions built for SciPy to provide specialized functions and methods.
 
-- scikit-learn is a machine learning library built on NumPy, SciPy, and matplotlib.
-- Why are we using statsmodels? For all of the assumption checking I guess?
-- `.fit()` to specify the data to train on.
-- `.predict()` to predict outcomes.
-- `.score()` to evaluate model fit.
+When it comes to modeling, R is equally diverse in its approaches. However, I am partial to the consistency of the {tidymodels} ecosystem of packages, which clearly draw inspiration from scikit-learn. Let's do a simple comparison of the two.
 
-> However, the full name scikit-learn comes from its origin as a “scikit”, which is short for “SciPy Toolkit.” Scikits are extensions built on top of SciPy to provide specialized functionality. Since scikit-learn is one of these toolkits, its official name follows this convention.
+### Prepare data
 
-What are the modeling packages we might use for simulation-based inference? Something like R's {infer} package?
-
-When it comes to modeling, R is equally diverse in its approaches. However, I am partial to the consistency of the tidymodels suite of packages.
+We'll start by specifying some parameter values and simulating data. Here we see the obsession with namespacing and efficiency on full display. In R, I load namespace-free access to *all* of the {tidyverse} functions with `library(tidyverse)`. In Python, sklearn is so large and has so many different modules that it is convention to load namespace-free access to *specific* functions and methods by importing them one at a time as in `from sklearn.linear_model import LinearRegression`.
 
 ::: {.panel-tabset}
 ### Python
 
 ```{python}
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import root_mean_squared_error
 
+# Set seed, variable, and parameter values.
+np.random.seed(42)
+nobs = 500
+beta0 = -5
+beta1 = 5
+beta2 = 2
+beta3 = 0
+
+# Simulate data.
+sim_data = pl.DataFrame({
+    'x1': np.round(np.random.uniform(0, 20, nobs)),
+    'x2': np.random.choice(['level01', 'level02', 'level03'], nobs, p = [0.7, 0.2, 0.1]),
+    'y': beta0 + beta1 * np.random.uniform(0, 20, nobs) + beta2 * (np.random.choice(['level01', 'level02', 'level03'], nobs, p=[0.7, 0.2, 0.1]) == 'level02') + beta3 * (np.random.choice(['level01', 'level02', 'level03'], nobs, p=[0.7, 0.2, 0.1]) == 'level03') + np.random.normal(0, 3, nobs)
+})
+
+sim_data
 ```
 
 ### R
 
 ```{r}
+#| warning: false
+library(tidymodels)
 
+# Set seed, variable, and parameter values.
+set.seed(42)
+nobs <- 500
+beta0 <- -5
+beta1 <- 5
+beta2 <- 2
+beta3 <- 0
+
+# Simulate data.
+sim_data <- tibble(
+  x1 = round(runif(nobs, min = 0, max = 20)),
+  x2 = rbinom(nobs, size = 2, prob = c(0.7, 0.3)) |> 
+    as.factor() |> fct_recode("level01" = "0", "level02" = "1", "level03" = "2"),
+  y = beta0 + beta1 * x1 + beta2 * ifelse(x2 == "level02", 1, 0) + beta3 * ifelse(x2 == "level03", 1, 0) + rnorm(nobs, mean = 0, sd = 3)
+)
+
+sim_data
 ```
 :::
 
-Answer to {brms}.
+Here we can see that scikit-learn requires pandas DataFrames. We also see an interesting reversal where splitting the data into training and testing data produces separate datasets in Python while R creates a single object that contains both.
+
+For feature engineering, recipe steps in {tidymodels} mirror specific transformers in scikit-learn.
 
 ::: {.panel-tabset}
 ### Python
 
 ```{python}
+# Training and testing split.
+X = sim_data.drop('y').to_pandas()
+y = sim_data['y'].to_pandas()
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 
+# Feature engineering.
+categorical_features = ['x2']
+categorical_transformer = Pipeline(steps=[
+  ('onehot', OneHotEncoder(handle_unknown='ignore'))
+])
+
+preprocessor = ColumnTransformer(
+  transformers=[
+      ('cat', categorical_transformer, categorical_features)
+  ]
+)
 ```
 
 ### R
 
 ```{r}
+# Training and testing split.
+sim_split <- initial_split(sim_data, prop = 0.90)
 
+# Feature engineering.
+sim_recipe <- training(sim_split) |>
+  recipe(y ~ .) |> 
+  step_dummy(all_nominal_predictors())
+```
+:::
+
+### Specify and fit a model
+
+Here we can see some equivalence between scikit-learn's Pipelines and {tidymodels}' workflows where both feature engineering and model fitting are composed and executed at once.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+# Model specification.
+model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', LinearRegression())
+])
+
+# Fit the model.
+model.fit(X_train, y_train)
+```
+
+```{python}
+#| echo: false
+#| include: false
+from sklearn import set_config
+
+# Model specification.
+model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', LinearRegression())
+])
+
+# Suppress interactive graph and display as text
+set_config(display='text')
+
+# Fit the model.
+model.fit(X_train, y_train)
+```
+
+### R
+
+```{r}
+# Model specification.
+sim_lm <- linear_reg() |> 
+  set_engine("lm")
+
+# Compose a workflow.
+sim_wf_lm <- workflow() |> 
+  add_recipe(sim_recipe) |> 
+  add_model(sim_lm)
+
+# Fit the model.
+sim_lm_fit <- fit(sim_wf_lm, data = training(sim_split))
+```
+:::
+
+### Evaluate model fit
+
+It's in evaluating model fit that differences are most apparent. While both scikit-learn and {tidymodels} can compute predictive fit values, scikit-learn doesn't have a built-in way to access or visualize parameter estimates, especially interval estimates. At some level this shouldn't be surprising given the different mindsets, but it is still a bit jarring that the most popular modeling package in Python can do prediction but not (statistical) inference. There are other libraries, of course. The [statsmodels](https://www.statsmodels.org/) library is {stats}-like, including formula notation. The [Bambi](https://bambinos.github.io/bambi/) library is Python's version of {brms} for Bayesian modeling.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+# Compute RMSE.
+y_pred = model.predict(X_test)
+root_mean_squared_error(y_test, y_pred)
+```
+
+### R
+
+```{r}
+# Visualize slope parameter estimates.
+tidy(sim_lm_fit, conf.int = TRUE) |> 
+  ggplot(aes(x = term)) + 
+  geom_point(aes(y = estimate)) + 
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .1) +
+  geom_hline(yintercept = 0, color = "red")
+
+# Compute RMSE.
+sim_lm_fit |> 
+  predict(new_data = testing(sim_split)) |>
+  bind_cols(testing(sim_split)) |>
+  rmse(truth = y, estimate = .pred)
 ```
 :::
 
