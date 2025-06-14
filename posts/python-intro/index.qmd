@@ -1,0 +1,1057 @@
+---
+title: "An introduction to Python for R users"
+author: "Marc Dotson"
+date: "2025-06-13"
+description: |
+  This introduction to Python assumes you know R, which is used as an analogy to explain Python for data analysis.
+categories:
+  - python
+  - r
+image: figures/python.png
+slug: python-intro
+highlight-style: arrow
+---
+
+```{r}
+#| echo: false
+library(reticulate)
+py_require("numpy")
+py_require("pandas")
+py_require("polars")
+py_require("pyarrow")
+py_require("seaborn")
+py_require("scikit-learn")
+
+numpy <- import("numpy")
+pandas <- import("pandas")
+polars <- import("polars")
+pyarrow <- import("pyarrow")
+seaborn <- import("seaborn")
+sklearn <- import("sklearn")
+```
+
+In classes and workshops over many years, I've taught data analytics using R. But in my new position, I teach data analytics using Python. This introduction to Python is for R users---primarily me, though I hope it proves useful to others as well.
+
+There are incredible resources in this space, and I've drawn liberally from a number of them. As an overall introduction to Python, [*Python for Data Analysis*](https://wesmckinney.com/book/) is a go-to resource and the spiritual equivalent of [*R for Data Science*](https://r4ds.hadley.nz). I also really appreciate the work in [*Python and R for the Modern Data Scientist*](https://www.amazon.com/Python-Modern-Data-Scientist-Worlds/dp/1492093408), especially for the authors' clear espousing that this isn't an either/or situation---you can (and arguably *should*) use Python and R as complements.
+
+![](figures/python-r.png){width=60% fig-align="center"}
+
+I am especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo-2025/) and subscribe to her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also grateful to extra help from [posit::conf](https://posit.co/conference/) workshop instructors and colleagues in my new position at [Utah State University](https://huntsman.usu.edu/dais/).
+
+## Different mindsets
+
+When you start working with Python, it's essential that you approach it with the right mindset. R is a specialized language developed by statisticians for data analysis. Python is a *big* tent, a general programming language developed by computer scientists for many things, with only a small portion of it dedicated to data analysis.
+
+To summarize some key differences:
+
+| Python | R | 
+| --- | --- | 
+| General language | Specialized language | 
+| Developed by computer scientists | Developed by statisticians | 
+| Object-oriented programming | Functional programming | 
+| Obsessed with efficiency | Lazy about efficiency | 
+| Obsessed with namespacing | Lazy about namespacing | 
+| Small, medium, and large data | Small and medium data | 
+| Machine learning and deep learning | Data wrangling and visualization | 
+| Spacing is part of the syntax | Spacing is for convenience | 
+| Indices start with 0 | Indices start with 1 | 
+| No single authority | Dominated by Posit | 
+| Jupyter Notebooks | R Markdown and Quarto | 
+| Inconsistent (i.e., no tidyverse) | Consistency in the tidyverse | 
+| "Pythonistas" and "Pythonic" code | "R Users" and "Tidy" code |
+
+While these are broad strokes and not 100% accurate in every case, they help provide some high-level context for how the two languages deviate in their approaches to common problems.
+
+## Functions, methods, and attributes
+
+With the right mindset, it's easier to understand some of the things that Python is obsessed with that R simply isn't. The most important difference is that Python is an object-oriented programming language while R is all about functional programming. While *everything* in R is a function (for a typical user), using Python requires frequently keeping track of the difference between functions, methods, and attributes.
+
+Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or alias like `library.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. While it's possible to import a specific function such that we can call it without referencing it's library name or alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R but we will always see a `.method()` with an object. One more set of definitions---just like packages in Python are typically referred to as libraries, function (and method) arguments are referred to as parameters.
+
+Attributes are object-specific features and are, like methods, namespaced with an object name of the given type as in `object.attribute`, but without any parentheses. For example, the dimensions of a NumPy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
+
+## Get started
+
+The first hurdle as we work to apply our new mindset is simply getting Python and our project environment installed. This is a big departure from what we're used to in R, where there is one way to install R and we usually ignore our project environment, let alone [make it reproducible](https://occasionaldivergences.com/posts/rep-env/). Remember, Python is a *big* tent with lots of uses and, unsurprisingly, lots of ways to do everything I'm covering. However, from the perspective of someone coming from R and with a focus on data analytics, I recommend the following.
+
+While I started using [pyenv](https://github.com/pyenv/pyenv) and [venv](https://docs.python.org/3/library/venv.html) for managing Python versions and libraries, respectively, there's a new(er) kid on the block that has been receiving lots of attention: [uv](https://docs.astral.sh/uv/), a single unified tool for managing Python project environments. (As a bellweather, [{reticulate}](https://posit.co/blog/reticulate-1-41/) and [Positron](https://positron.posit.co) now use uv.) Get started by [installing uv](https://docs.astral.sh/uv/getting-started/installation/) via the command line.
+
+::: {.callout-note title="The Command Line"}
+Using the command line (i.e., terminal or shell) isn't as common for R users who are comfortable with a dedicated console for running code. Be patient, take your time, and follow any instructions from a trusted source closely. A few things to help:
+
+- The command line is the programming interface into your OS itself. You don't have to know everything about it to follow instructions.
+- Instructions can be different based on the *type* of command line. If you're on a Mac that's running macOS Catalina 10.15.7 or later, the terminal is Zsh. If you're using Linux, the shell is Bash (and you probably already know that). And if you're using Windows you're working with PowerShell.
+:::
+
+### Install Python
+
+Unlike your experience with R, Python comes pre-installed on some operating systems. This version *should not be used* by anyone except the OS itself. For this and other reasons, you'll need the ability to maintain multiple versions of Python on the same computer. Once you have uv installed, it's easy to install and manage Python versions.
+
+- To install the latest stable release of Python, on the command line, run `uv python install`. To see which versions of Python you have installed, run `uv python find`; none of these will be the off-limits OS version.
+- You can also install specific versions of Python, such as `uv python install 3.13.4` to install Python 3.13.4. To view Python versions that are available to install, run `uv python list`.
+
+::: {.callout-tip title="Positron IDE"}
+As you well know, an integrated development environment (IDE), outside of an open source language, is arguably your most important tool as a data analyst. There are many options, but I recommend [Positron](https://positron.posit.co), a next-generation data science IDE. Built by Posit on VS Code's [open source core](https://github.com/microsoft/vscode), Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs.
+
+If RStudio is too specific and VS Code is too general, you may find that [Positron is just right](https://occasionaldivergences.com/posts/positron-intro/) and becomes your only IDE for both Python and R. And unless you're comfortable navigating between directories using the command line, Positron's built-in terminal will be tied to the working directory you have opened in the IDE.
+:::
+
+### Initialize a project environment
+
+A project environment is composed of the language(s) and libraries (including the dependencies) used for a given project. What makes a project environment reproducible is keeping track of which *version* of the language(s) and the libraries we're using for a given project so that it can be easily reproduced on another machine by you (including future you) or someone else.
+
+- After navigating to a project working directory, run `uv init` to initialize a project environment. This creates a `pyproject.toml` file with metadata about the project and a hidden `.python-version` file that specifies the default version of Python for the project. (It also creates `main.py` and `README.md` files that you can use or delete.)
+- With the project environment initialized, you can install libraries. For example, to install the Polars library, run `uv add polars`. This installs Polars, and any dependencies, and creates both a `uv.lock` file that keeps track of the versions of the libraries you've installed and a hidden `.venv` reproducible (or *virtual*, hence the "v" in venv) environment folder that serves as the project library.
+
+Just like with R, all Python libraries are installed in a single, global library on your computer known as the *system library*. The fact that we have a *project library* highlights an important feature of making project environments reproducible: Each project will have its own project library and thus be *isolated*. If two projects use different versions of the same package, they won't conflict with each other because they'll each have their own project library. (Well, not *exactly*. Python employs a global cache to avoid having to install the same version of a given library more than once. The project library will reference the global cache.) Whenever you install new libraries, the `uv.lock` file is automatically updated. And if you're starting with an existing project, run `uv run` for the libraries included in `uv.lock` to be automatically installed.
+
+It might seem like a lot just to get started, but it's something [we should be doing in R](https://occasionaldivergences.com/posts/rep-env/) as well. Along with a project's code, all someone would need is the `pyproject.toml`, `.python-version`, and `uv.lock` files to reproduce your code, including the project environment. Well, assuming they're also using uv to manage their project environments. If they're using another tool to install libraries instead (yes, there are *many* ways to install libraries in Python), they will likely need a `requirements.txt` file or a `pylock.toml` file to reproduce the project environment, which you can create with `uv export --format requirements.txt` or `uv export -o pylock.toml`, respectively.
+
+## Data wrangling
+
+Whatever the language, the most common task we have for any data analysis is data wrangling (i.e., cleaning, munging, etc.). The [NumPy](https://numpy.org) library is more or less equivalent to what we see in base R, introducing arrays and efficient computation across arrays---but, perhaps surprisingly, not data frames. Data frames (or DataFrames as they are referred to in Python) came later with [pandas](https://pandas.pydata.org) (short for "panel data"). Still the most popular library for data wrangling in Python, pandas is built to supplement NumPy, with all of the syntax baggage. However, growing in popularity is [Polars](https://pola.rs) (an anagram of the query language it uses, OLAP, and the language it's built in, Rust or rs). Polars is something of an answer to pandas problems. Actually, free from any Python code at all (yes, you can [use it in R](https://github.com/pola-rs/r-polars)), it offers a glimpse at what the polyglot future might look like.
+
+My take is that Polars provides a more self-consistent data wrangling experience than pandas, reversing the trend that many experience when they come to Polars for the speed and stay for the syntax. To illustrate the tidyverse spiritual connections, if not the deeper roots in SQL syntax, there are a number of great side-by-side comparisons of [Polars and {dplyr}](https://blog.tidy-intelligence.com/posts/dplyr-vs-polars/). I'll illustrate a few common tasks in both Polars and {dplyr} and point out the differences to be mindful of.
+
+### Import data
+
+Libraries and modules (a kind of sub-library) are imported with commonly accepted aliases in order to shorten the namespace reference. For example, the Polars alias convention is `pl`. We're also importing the os library, which needs no alias, to write out a relative file path that will work for any user or operating system that has the same relative directory structure; a "Pythonic" version of {here}.
+
+Note the difference between the `pl.read_csv()` function and the `.shape` and `.columns` attributes.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+import polars as pl
+import os
+
+customer_data = pl.read_csv(os.path.join('data', 'customer_data.csv'))
+customer_data.shape
+customer_data.columns
+```
+
+### R
+
+```{r}
+#| warning: false
+library(tidyverse)
+
+customer_data <- read_csv(here::here("posts", "python-intro", "data", "customer_data.csv"))
+glimpse(customer_data)
+```
+:::
+
+### Filter observations
+
+Polars DataFrames have methods that are similar to {dplyr} (e.g., `.filter()` and `filter()`). DataFrames are composed of columns called Series (equivalent to R's vectors). Note that unlike pandas DataFrames, Polars DataFrames don't have a row index.
+
+In pandas, we would need to reference column names with `data['column_name']` (like base R's `data$column_name` or `data["column_name"]`), but Polars allows for `pl.col('column_name')`. Yes, we use quotation marks for every column name. The `pl.col()` expression offers a helper-function-like consistency.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+customer_data.filter(pl.col('gender') == 'Female', pl.col('income') > 70000)
+```
+
+### R
+
+```{r}
+filter(customer_data, gender == "Female", income > 70000)
+```
+:::
+
+### Slice observations
+
+Note that Python is zero-indexed. This is probably the most problematic (and very computer science-based) difference and why it's nice to avoid indexing if you can!
+
+Remember that function (and method) arguments are called parameters. Some parameters are positional that have to be, as the name suggests, specified in an *exact* position. Others are keyword or named parameters, which is commonplace in R. The positional parameters for Polars' `.slice()` method are the start index and the slice length.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+customer_data.slice(0, 5)
+```
+
+### R
+
+```{r}
+slice(customer_data, 1:5)
+```
+:::
+
+### Sort observations
+
+It can be strange at first, but namespacing is critical. Remember that a function is preceded by the library name or alias (e.g., `pl.col()`), unless you've imported the specific function (e.g., `from polars import col`), while a method is preceded by an object name of a certain type (e.g., `customer_data.sort()`). Since object types are tied to libraries, the chain back to its corresponding library is always present, explicitly for functions and implicitly for methods.
+
+Note that its `True` and `False`, not `TRUE` and `FALSE` or `true` and `false`.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+customer_data.sort(pl.col('birth_year'), descending = True)
+```
+
+### R
+
+```{r}
+arrange(customer_data, desc(birth_year))
+```
+:::
+
+### Select variables
+
+Using single square brackets `[ ]` creates a list. This is similar to creating a vector in R with `c()`. A list is a fundamental Python object type and can be turned into a Series.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+customer_data.select(pl.col(['region', 'review_text']))
+```
+
+### R
+
+```{r}
+select(customer_data, region, review_text)
+```
+:::
+
+### Create new variables
+
+Polars is actually a query language, like SQL. So it's not surprising to see methods with names that more closely mirror queries, like the `.with_columns()` method.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+customer_data.with_columns(income = pl.col('income') / 1000)
+```
+
+### R
+
+```{r}
+mutate(customer_data, income = income / 1000)
+```
+:::
+
+### Join data frames
+
+Note that missing values are identified as `NaN` or `null`. Series types include `str`, `bytes` (binary), `i64` (num), `bool`, and `int`.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+store_transactions = pl.read_csv(os.path.join('data', 'store_transactions.csv'))
+
+customer_data.join(store_transactions, on='customer_id', how='left')
+```
+
+### R
+
+```{r}
+#| warning: false
+store_transactions <- read_csv(here::here("posts", "python-intro", "data", "store_transactions.csv"))
+
+left_join(customer_data, store_transactions, join_by(customer_id))
+```
+:::
+
+### Consecutive lines of code
+
+While possible with Python code generally, Polars embraces writing consecutive lines of code using *method chaining*, which is clearly akin to piping in R. Note that each line *starts* with `.` (rather than ending with `|>`) and the entire chain needs to be surrounded with `( )`.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+(customer_data
+  .join(store_transactions, on='customer_id', how='left')
+  .filter(pl.col('region') == 'West', pl.col('feb_2005') == pl.col('feb_2005').max())
+  .with_columns(age = 2024 - pl.col('birth_year'))
+  .select(pl.col(['age', 'feb_2005']))
+  .sort(pl.col('age'), descending=True)
+  .slice(0, 1)
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  left_join(store_transactions, join_by(customer_id)) |> 
+  filter(region == "West", feb_2005 == max(feb_2005)) |> 
+  mutate(age = 2024 - birth_year) |> 
+  select(age, feb_2005) |> 
+  arrange(desc(age)) |> 
+  slice(1)
+```
+:::
+
+### Summarize discrete data
+
+The `.agg()` method stands for *aggregate*, which is exactly what `summarize()` does in R.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+(customer_data
+  .group_by(pl.col(['region', 'college_degree']))
+  .agg(n = pl.len())
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  count(region, college_degree)
+```
+:::
+
+### Summarize continuous data
+
+This is a good example of where object-oriented programming requires a different mindset. You might think that there is a general `mean()` function like in R, but there isn't and you'd have to load a specific library and reference its namespace to use such a function. Instead, `.mean()` here is a method for Polars Series and DataFrames.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+(customer_data
+  .select(pl.col(['income', 'credit']))
+  .mean()
+)
+```
+
+### R
+
+```{r}
+customer_data |>
+  summarize(
+    avg_income = mean(income),
+    avg_credit = mean(credit)
+  )
+```
+:::
+
+### Summarize discrete and continuous data
+
+Combining `.agg()` with `.group_by()` is similarly powerful as in {dplyr}.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+(customer_data
+  .group_by(pl.col(['gender', 'region']))
+  .agg(
+    n = pl.len(), 
+    avg_income = pl.col('income').mean(), 
+    avg_credit = pl.col('credit').mean()
+  )
+  .sort(pl.col('avg_income'), descending=True)
+)
+```
+
+### R
+
+```{r}
+customer_data |>
+  group_by(gender, region) |>
+  summarize(
+    n = n(),
+    avg_income = mean(income),
+    avg_credit = mean(credit)
+  ) |> 
+  arrange(desc(avg_income))
+```
+:::
+
+### Lazy evaluation
+
+Remember how Polars is incredibly fast? By tagging a data frame with `.lazy()`, we are asking Polars to not evaluate the code until triggered and to optimize the code for us in the underlying query engine. Before the code is triggered with something like `.collect()`, you can even see the underlying optimized query using `.explain()`.
+
+This is exactly what happens when you use {dplyr} to connect to and communicate with a database using SQL code (except for the underlying query optimization).
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+df = (customer_data
+  .group_by(pl.col(['gender', 'region']))
+  .agg(
+    n = pl.len(), 
+    avg_income = pl.col('income').mean(), 
+    avg_credit = pl.col('credit').mean()
+  )
+  .sort(pl.col('avg_income'), descending=True)
+).lazy()
+
+df.explain()
+
+df.collect()
+```
+
+### R
+
+```{r}
+#| eval: false
+data_db <- customer_data |>
+  group_by(gender, region) |>
+  summarize(
+    n = n(),
+    avg_income = mean(income),
+    avg_credit = mean(credit)
+  ) |> 
+  arrange(desc(avg_income))
+
+data_db |> show_query()
+```
+
+```
+<SQL>
+SELECT
+    gender,
+    region,
+    COUNT(*) AS n,
+    AVG(income) AS avg_income,
+    AVG(credit) AS avg_credit
+FROM
+    customer_data
+GROUP BY
+    gender,
+    region
+ORDER BY
+    avg_income DESC;
+```
+
+```{r}
+#| eval: false
+data_db |> collect()
+```
+
+```
+`summarise()` has grouped output by 'gender'. You can override using the
+`.groups` argument.
+# A tibble: 12 × 5
+# Groups:   gender [3]
+   gender region        n avg_income avg_credit
+   <chr>  <chr>     <int>      <dbl>      <dbl>
+ 1 Other  Midwest     124    154637.       663.
+ 2 Male   Midwest     420    152467.       666.
+ 3 Other  Northeast   337    150564.       665.
+ 4 Male   Northeast  1285    150498.       665.
+ 5 Male   West       2079    149453.       667.
+ 6 Other  West        519    144420.       667.
+ 7 Female Midwest     557    134083.       671.
+ 8 Female West       2497    133819.       668.
+ 9 Female Northeast  1602    133333.       669.
+10 Other  South       118    119068.       660.
+11 Male   South       430    117988.       669.
+12 Female South       563    105888.       664.
+```
+
+:::
+
+## Visualization
+
+There's no way around it---visualizing data is where {ggplot2} simply reigns supreme, so much so that Posit has been investing in [plotnine](https://plotnine.org), a {ggplot2} port for Python. Maybe Posit will eventually facilitate a polyglot grammar of graphics, however in the spirit of this post, let's consider a genuinely "Pythonic" tool.
+
+If NumPy is base R, [matplotlib](https://matplotlib.org) is plotting in base R. If that analogy holds, matplotlib is an acquired taste, so much so that [seaborn](https://seaborn.pydata.org) was developed to supplement matplotlib, much like pandas was developed to supplement NumPy. While we don't have a Polars-like replacement (come on Hadley, a polygplot {ggvis} is written in the stars!) we do have [seaborn.objects](https://seaborn.pydata.org/tutorial/objects_interface.html), a still-in-development module deliberately built with the consistency of the grammar of graphics in mind that also attempts to eliminate the need to invoke matplotlib for fine-tuning.
+
+As a reminder, the grammar of graphics is a philosophical approach to visualizing data created by [Leland Wilkinson](https://link.springer.com/book/10.1007/0-387-28695-0) that inspired the creation of {ggplot2} and seaborn.objects. It's about composing a visualization a layer at a time, specifically:
+
+1. Data to visualize
+2. Mapping graphical elements to data
+3. A specific graphic representing the data and mappings
+4. Additional fine-tuning via facets, labels, scales, etc.
+
+Having this principled approach to guide the development and consistency of a plotting approach is what distinguishes {ggplot2} and seaborn.objects. (I have often made the argument that SQL does something similar in providing a kind of grammar of data manipulation.) Let's illustrate some common visualizations using seaborn.objects and {ggplot2} and gain some intuition for how they are related and divergent.
+
+### Column plots
+
+Once again, we see the use of an alias to shorten the namespace reference. Here, the alias convention for the seaborn.objects module is `so`. We also see one of the limitations of method chaining (and thus object-oriented programming): Methods are specific to objects defined by libraries. Thus we can't directly method chain data wrangled using Polars objects to be visualized by seaborn.objects like we can pipe data from {dplyr} to {ggplot2} in R.
+
+However, the plot itself starts with a familiar-looking `so.Plot()` function (seaborn-objects' version of `ggplot()`) which instantiates a Plot object and specifies (1) our data and (2) the mapping between that data and graphical elements. Then with a consistency that isn't present with {ggplot2} (I'm looking at you `|>` vs. `+`), there are a set of methods applicable to the Plot object, starting with `.add()`, that can be method chained. Finally the (3) specific graphic is created with another familiar-looking `so.Bar()`, which is a specific example of an object called a Mark (seaborn-objects' version of `geom_*()`).
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+import seaborn.objects as so
+
+region_count = (customer_data
+  .group_by(pl.col('region'))
+  .agg(n = pl.len())
+)
+
+(so.Plot(region_count, x = 'region', y = 'n')
+  .add(so.Bar())
+)
+```
+
+```{python}
+#| echo: false
+import seaborn.objects as so
+
+region_count = (customer_data
+  .group_by(pl.col('region'))
+  .agg(n = pl.len())
+)
+
+(so.Plot(region_count, x = 'region', y = 'n')
+  .add(so.Bar())
+  .show()
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  count(region) |> 
+  ggplot(aes(x = region, y = n)) +
+  geom_col()
+```
+:::
+
+In certain instances we can have the necessary data wrangling done as part of the visualization. For example, in {ggplot2} we can call `geom_bar()` instead of `geom_col()` to produce the same plot while in seaborn.objects we still use the same Mark `so.Bar()` but add another object called a Stat---in this instance `so.Hist()` to produce the sum for us.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+(so.Plot(customer_data, x = 'region')
+  .add(so.Bar(), so.Hist())
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'region')
+  .add(so.Bar(), so.Hist())
+  .show()
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = region)) +
+  geom_bar()
+```
+:::
+
+Another Stat object is `so.Agg()`. We can join this with an object type called a Move to further customize our visualization---for example, using the Move object `so.Dodge()` to create a dodged column plot.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+region_count = (customer_data
+  .group_by(pl.col(['region', 'college_degree']))
+  .agg(n = pl.len())
+)
+
+(so.Plot(region_count, x = 'region', y = 'n', color = 'college_degree')
+  .add(so.Bar(), so.Agg(), so.Dodge())
+)
+```
+
+```{python}
+#| echo: false
+region_count = (customer_data
+  .group_by(pl.col(['region', 'college_degree']))
+  .agg(n = pl.len())
+)
+
+(so.Plot(region_count, x = 'region', y = 'n', color = 'college_degree')
+  .add(so.Bar(), so.Agg(), so.Dodge())
+  .show()
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  count(region, college_degree) |> 
+  ggplot(aes(x = region, y = n, fill = college_degree)) +
+  geom_col(position = "dodge")
+```
+:::
+
+### Histograms
+
+Accepting `so.Hist()` as a Stat and not a Mark, like it is in {ggplot2}, may seem awkward for the R user. However, what results in many specific geometries in {ggplot2} is reduced by the composibility of Mark, Stat, and Move objects in seaborn.objects. For example, a histogram also uses the `so.Hist()` Stat to bin data but uses the `so.Bars()` instead of `so.Bar()` to produce an actual histogram.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+(so.Plot(customer_data, x = 'income', color = 'region')
+  .add(so.Bars(), so.Hist())
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'income')
+  .add(so.Bars(), so.Hist())
+  .show()
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = income)) +
+  geom_histogram()
+```
+:::
+
+### Scatterplots
+
+Again we see the one-to-one correspondence of Mark objects and geometries, `so.Dot()` and `geom_point()`.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+(so.Plot(customer_data, x = 'income', y = 'credit')
+  .add(so.Dot())
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'income', y = 'credit')
+  .add(so.Dot())
+  .show()
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = income, y = credit)) +
+  geom_point()
+```
+:::
+
+We see again that a specialized geometry in {ggplot2} is composed of some combination of Mark, Stat, and Move objects (`so.Jitter()` is another Move object like `so.Dodge()`) in seaborn.objects, where there are parameters that can be further modified within each function call.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+(so.Plot(customer_data, x = 'star_rating', y = 'income')
+  .add(so.Dot(pointsize = 10, alpha = 0.5), so.Jitter(0.75))
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'star_rating', y = 'income')
+  .add(so.Dot(pointsize = 10, alpha = 0.5), so.Jitter(0.75))
+  .show()
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = star_rating, y = income)) +
+  geom_jitter(size = 3, alpha = 0.5)
+```
+:::
+
+### Line plots
+
+It's comforting to know that working with dates is just as problematic in Python as it is in R.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+(so.Plot(customer_data, x = 'review_time', y = 'star_rating')
+  .add(so.Line())
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'review_time', y = 'star_rating')
+  .add(so.Line())
+  .show()
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = review_time, y = star_rating)) +
+  geom_line()
+```
+:::
+
+Even if we can't method chain between different object classes (including those from different libraries), we still need to rely on the back-and-forth between data wrangling and visualizing data.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+rating_data = (customer_data
+  .drop_nulls(pl.col('star_rating'))
+  .select(pl.col(['review_time', 'star_rating']))
+  .with_columns(
+    pl.col('review_time').str.to_date(format='%m %d, %Y').alias('review_time')
+  )
+  .with_columns(
+    pl.col('review_time').dt.year().alias('review_year')
+  )
+  .group_by('review_year')
+  .agg(pl.mean('star_rating').alias('avg_star_rating'))
+)
+
+(so.Plot(rating_data, x = 'review_year', y = 'avg_star_rating')
+  .add(so.Line())
+)
+```
+
+```{python}
+#| echo: false
+rating_data = (customer_data
+  .drop_nulls(pl.col('star_rating'))
+  .select(pl.col(['review_time', 'star_rating']))
+  .with_columns(
+    pl.col('review_time').str.to_date(format='%m %d, %Y').alias('review_time')
+  )
+  .with_columns(
+    pl.col('review_time').dt.year().alias('review_year')
+  )
+  .group_by('review_year')
+  .agg(pl.mean('star_rating').alias('avg_star_rating'))
+)
+
+(so.Plot(rating_data, x = 'review_year', y = 'avg_star_rating')
+  .add(so.Line())
+  .show()
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  drop_na(star_rating) |> 
+  select(review_time, star_rating) |> 
+  mutate(
+    review_time = mdy(review_time),
+    review_year = year(review_time)
+  ) |> 
+  group_by(review_year) |> 
+  summarize(avg_star_rating = mean(star_rating)) |>
+  ggplot(aes(x = review_year, y = avg_star_rating)) +
+  geom_line()
+```
+:::
+
+### Density plots
+
+Instead of a specific `geom_density()`, we compose it by combining `so.Area()` and `so.Hist()`.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+(so.Plot(customer_data, x = 'income', color = 'gender')
+  .add(so.Area(), so.Hist())
+)
+```
+
+```{python}
+#| echo: false
+(so.Plot(customer_data, x = 'income', color = 'gender')
+  .add(so.Area(), so.Hist())
+  .show()
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  ggplot(aes(x = income, fill = gender)) +
+  geom_density(alpha = 0.5)
+```
+:::
+
+### Facets
+
+Finally, facets, like `.add()`, are a method for the Plot object.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+region_count = (customer_data
+  .group_by(pl.col(['region', 'college_degree', 'gender']))
+  .agg(n = pl.len())
+)
+
+(so.Plot(region_count, x = 'region', y = 'n', color = 'college_degree')
+  .facet('gender')
+  .add(so.Bar(), so.Agg(), so.Dodge())
+)
+```
+
+```{python}
+#| echo: false
+region_count = (customer_data
+  .group_by(pl.col(['region', 'college_degree', 'gender']))
+  .agg(n = pl.len())
+)
+
+(so.Plot(region_count, x = 'region', y = 'n', color = 'college_degree')
+  .facet('gender')
+  .add(so.Bar(), so.Agg(), so.Dodge())
+  .show()
+)
+```
+
+### R
+
+```{r}
+customer_data |> 
+  count(region, college_degree, gender) |> 
+  ggplot(aes(x = region, y = n, fill = college_degree)) +
+  geom_col(position = "dodge") +
+  facet_wrap(~ gender)
+```
+:::
+
+## Modeling
+
+If the adage is true that Python is "the second best language for everything," it's machine learning that is arguably where it should be first. If new statistical models first appear in R, then it can be said that the latest and greatest in machine learning and deep learning is incubated in Python and Python-adjacent libraries. At a high level, this should make sense. If R is tied closely to statistics, the big tent that is Python should naturally lend itself to the learning algorithms developed in computer science.
+
+The most popular modeling library in Python is [scikit-learn](https://scikit-learn.org/stable/) (referred to as sklearn in code). This machine learning library is built on NumPy, matplotlib, and [SciPy](https://scipy.org)---a library for scientific computing. The name scikit-learn comes from its origin as a "scikit" or "SciPy Toolkit," a collection of extensions built for SciPy to provide specialized functions and methods.
+
+When it comes to modeling, R is equally diverse in its approaches. However, I am partial to the consistency of the {tidymodels} ecosystem of packages, which clearly draw inspiration from scikit-learn. Let's do a simple comparison of the two.
+
+### Prepare data
+
+We'll start by specifying some parameter values and simulating data. Here we see the obsession with namespacing and efficiency on full display. In R, I load namespace-free access to *all* of {tidymodels} functions with `library(tidymodels)`. In Python, sklearn is so large and has so many different modules that it is convention to load namespace-free access to *specific* functions and methods by importing them one at a time as in `from sklearn.linear_model import LinearRegression`.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import root_mean_squared_error
+
+# Set seed, variable, and parameter values.
+np.random.seed(42)
+nobs = 500
+beta0 = -5
+beta1 = 5
+beta2 = 2
+beta3 = 0
+
+# Simulate data.
+sim_data = pl.DataFrame({
+    'x1': np.round(np.random.uniform(0, 20, nobs)),
+    'x2': np.random.choice(['level01', 'level02', 'level03'], nobs, p = [0.7, 0.2, 0.1]),
+    'y': beta0 + beta1 * np.random.uniform(0, 20, nobs) + beta2 * (np.random.choice(['level01', 'level02', 'level03'], nobs, p=[0.7, 0.2, 0.1]) == 'level02') + beta3 * (np.random.choice(['level01', 'level02', 'level03'], nobs, p=[0.7, 0.2, 0.1]) == 'level03') + np.random.normal(0, 3, nobs)
+})
+
+sim_data
+```
+
+### R
+
+```{r}
+#| warning: false
+library(tidymodels)
+
+# Set seed, variable, and parameter values.
+set.seed(42)
+nobs <- 500
+beta0 <- -5
+beta1 <- 5
+beta2 <- 2
+beta3 <- 0
+
+# Simulate data.
+sim_data <- tibble(
+  x1 = round(runif(nobs, min = 0, max = 20)),
+  x2 = rbinom(nobs, size = 2, prob = c(0.7, 0.3)) |> 
+    as.factor() |> fct_recode("level01" = "0", "level02" = "1", "level03" = "2"),
+  y = beta0 + beta1 * x1 + beta2 * ifelse(x2 == "level02", 1, 0) + beta3 * ifelse(x2 == "level03", 1, 0) + rnorm(nobs, mean = 0, sd = 3)
+)
+
+sim_data
+```
+:::
+
+Here we can see that scikit-learn requires pandas DataFrames. We also see an interesting reversal where splitting the data into training and testing data produces separate datasets in Python while R creates a single object that contains both.
+
+For feature engineering, recipe steps in {tidymodels} mirror specific transformers in scikit-learn.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+# Training and testing split.
+X = sim_data.drop('y').to_pandas()
+y = sim_data['y'].to_pandas()
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
+
+# Feature engineering.
+categorical_features = ['x2']
+categorical_transformer = Pipeline(steps=[
+  ('onehot', OneHotEncoder(handle_unknown='ignore'))
+])
+
+preprocessor = ColumnTransformer(
+  transformers=[
+      ('cat', categorical_transformer, categorical_features)
+  ]
+)
+```
+
+### R
+
+```{r}
+# Training and testing split.
+sim_split <- initial_split(sim_data, prop = 0.90)
+
+# Feature engineering.
+sim_recipe <- training(sim_split) |>
+  recipe(y ~ .) |> 
+  step_dummy(all_nominal_predictors())
+```
+:::
+
+### Specify and fit a model
+
+Here we can see some equivalence between scikit-learn's Pipelines and {tidymodels}' workflows where both feature engineering and model fitting are composed and executed at once.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+#| eval: false
+# Model specification.
+model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', LinearRegression())
+])
+
+# Fit the model.
+model.fit(X_train, y_train)
+```
+
+```{python}
+#| echo: false
+#| include: false
+from sklearn import set_config
+
+# Model specification.
+model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', LinearRegression())
+])
+
+# Suppress interactive graph and display as text
+set_config(display='text')
+
+# Fit the model.
+model.fit(X_train, y_train)
+```
+
+### R
+
+```{r}
+# Model specification.
+sim_lm <- linear_reg() |> 
+  set_engine("lm")
+
+# Compose a workflow.
+sim_wf_lm <- workflow() |> 
+  add_recipe(sim_recipe) |> 
+  add_model(sim_lm)
+
+# Fit the model.
+sim_lm_fit <- fit(sim_wf_lm, data = training(sim_split))
+```
+:::
+
+### Evaluate model fit
+
+It's in evaluating model fit that differences are most apparent. While both scikit-learn and {tidymodels} can compute predictive fit values, scikit-learn doesn't have a built-in way to access or visualize parameter estimates, especially interval estimates. At some level this shouldn't be surprising given the different mindsets, but it is still a bit jarring that the most popular modeling package in Python can do prediction but not (statistical) inference. There are other libraries, of course. The [statsmodels](https://www.statsmodels.org/) library is {stats}-like, including formula notation. The [Bambi](https://bambinos.github.io/bambi/) library is Python's version of {brms} for Bayesian modeling.
+
+::: {.panel-tabset}
+### Python
+
+```{python}
+# Compute RMSE.
+y_pred = model.predict(X_test)
+root_mean_squared_error(y_test, y_pred)
+```
+
+### R
+
+```{r}
+# Visualize slope parameter estimates.
+tidy(sim_lm_fit, conf.int = TRUE) |> 
+  ggplot(aes(x = term)) + 
+  geom_point(aes(y = estimate)) + 
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .1) +
+  geom_hline(yintercept = 0, color = "red")
+
+# Compute RMSE.
+sim_lm_fit |> 
+  predict(new_data = testing(sim_split)) |>
+  bind_cols(testing(sim_split)) |>
+  rmse(truth = y, estimate = .pred)
+```
+:::
+
+## Communication
+
+When it comes to communication, the elephant in the room is Jupyter notebooks. Even though Jupyter was designed to be polyglot (Julia, Python, and R), it really is the domain of Python. As an R user, Jupyter is *weird*. It appears that Jupyter is what happens when you don't have a great IDE to work with---IDE functionality gets absorbed into the document type itself (e.g., an embedded kernel selector). But just because you *can* use Jupyter notebooks doesn't mean you *must*.
+
+It shouldn't be surprising that I recommend [Quarto](https://quarto.org) for communication. It's plain text (so it plays well with version control), supports Python and R natively with code cells that behave like actual scripts, and is designed as a means to whatever document type you need---PDFs, slides, websites, dashboards, etc. That said, if you really love or are required to work with Jupyter notebooks, Quarto can convert any `.ipynb` into a `.qmd` via the command line with `quarto convert notebook.ipynb` as well as render any `.ipynb` into whatever document type you need using `quarto render notebook.ipynb --to format`.
+
+## Final thoughts
+
+There's honestly a lot to love about both Python and R. Don't be afraid to use the best of both interchangeably. I've found it's easiest to switch between the different mindsets by keeping some syntax differences. For example, in R I use "double quotes" and in Python I use 'single quotes.'
+
+If I could change one thing about Python it would be for the community to embrace the fact that it was named after Monty Python, not a snake. Like R has Peanuts references for each release, here's hoping we eventually see a stable Python release code-named "It's Just a Flesh Wound."
+
