@@ -7,8 +7,6 @@ description: |
 categories:
   - python
   - r
-  - quarto
-  - pymc
 image: figures/python.png
 slug: python-intro
 highlight-style: arrow
@@ -38,7 +36,7 @@ There are incredible resources in this space, and I've drawn liberally from a nu
 
 ![](figures/python-r.png){width=60% fig-align="center"}
 
-I am especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo-2025/) and subscribe to her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also grateful to extra help from [posit::conf](https://posit.co/conference/) workshop instructors and colleagues in my new position at [Utah State University](https://huntsman.usu.edu/dais/). Additional resources will be provided where relevant in each section.
+I am especially indebted to Emily Riederer's blog series beginning with [Python Rgonomics](https://emilyriederer.netlify.app/post/py-rgo-2025/) and subscribe to her philosophy of using tools in Python that are genuinely "Pythonic" while being consistent with the workflow and ergonomics of the best R has to offer. I am also grateful to extra help from [posit::conf](https://posit.co/conference/) workshop instructors and colleagues in my new position at [Utah State University](https://huntsman.usu.edu/dais/).
 
 ## Different mindsets
 
@@ -70,7 +68,7 @@ With the right mindset, it's easier to understand some of the things that Python
 
 Functions in Python and R are equivalent, although functions in Python are typically namespaced with the library name or alias like `library.function()`. Note that we can, but often don't, similarly namespace R functions with `package::function()`. Methods are object-specific functions. In other words, methods are functions nested within object types and are namespaced with an object name of the given type as in `object.method()`. While it's possible to import a specific function such that we can call it without referencing it's library name or alias, we can never call a method without reference to an object name of the necessary type. In other words, we may see a `function()` like in R but we will always see a `.method()` with an object. One more set of definitions---just like packages in Python are typically referred to as libraries, function (and method) arguments are referred to as parameters.
 
-Attributes are object-specific features and are, like methods, namespaced with an object name of the give type as in `object.attribute`, but without any parentheses. For example, the dimensions of a NumPy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
+Attributes are object-specific features and are, like methods, namespaced with an object name of the given type as in `object.attribute`, but without any parentheses. For example, the dimensions of a NumPy array could be referenced with `array.size` while the equivalent in base R would be a function like `dim(array)`.
 
 ## Get started
 
@@ -107,7 +105,7 @@ A project environment is composed of the language(s) and libraries (including th
 
 Just like with R, all Python libraries are installed in a single, global library on your computer known as the *system library*. The fact that we have a *project library* highlights an important feature of making project environments reproducible: Each project will have its own project library and thus be *isolated*. If two projects use different versions of the same package, they won't conflict with each other because they'll each have their own project library. (Well, not *exactly*. Python employs a global cache to avoid having to install the same version of a given library more than once. The project library will reference the global cache.) Whenever you install new libraries, the `uv.lock` file is automatically updated. And if you're starting with an existing project, run `uv run` for the libraries included in `uv.lock` to be automatically installed.
 
-It might seem like a lot just to get started, but it's something [we should be doing in R](https://occasionaldivergences.com/posts/rep-env/) as well. Along with a project's code, all someone would need is the `pyproject.toml`, `.python-version`, and `uv.lock` files to reproduce your code, including the project environment. Well, assuming they're also using uv to manage their project environments. If they're using another tool to install libraries instead (yes, there are *many* ways to install libraries in Python), they will likely need a `requirements.txt` file or a `pylock.toml` file to reproduce the project environment, which you can create with `uv export --format requirements-txt` or `uv export -o pylock.toml`, respectively.
+It might seem like a lot just to get started, but it's something [we should be doing in R](https://occasionaldivergences.com/posts/rep-env/) as well. Along with a project's code, all someone would need is the `pyproject.toml`, `.python-version`, and `uv.lock` files to reproduce your code, including the project environment. Well, assuming they're also using uv to manage their project environments. If they're using another tool to install libraries instead (yes, there are *many* ways to install libraries in Python), they will likely need a `requirements.txt` file or a `pylock.toml` file to reproduce the project environment, which you can create with `uv export --format requirements.txt` or `uv export -o pylock.toml`, respectively.
 
 ## Data wrangling
 
@@ -654,7 +652,7 @@ customer_data |>
 ```
 :::
 
-We see again that a specialized geometry in {ggplot2} is composed of some combination of Mark, Stat, and Move (`so.Jitter()` is another Move object like `so.Dodge()`) objects in seaborn.objects, where there are parameters that can be further modified within each function call.
+We see again that a specialized geometry in {ggplot2} is composed of some combination of Mark, Stat, and Move objects (`so.Jitter()` is another Move object like `so.Dodge()`) in seaborn.objects, where there are parameters that can be further modified within each function call.
 
 ::: {.panel-tabset}
 ### Python
@@ -810,7 +808,7 @@ customer_data |>
 
 ### Facets
 
-Finall, facets, like `.add()`, are a method for the Plot object.
+Finally, facets, like `.add()`, are a method for the Plot object.
 
 ::: {.panel-tabset}
 ### Python
@@ -855,15 +853,15 @@ customer_data |>
 
 ## Modeling
 
-If the adage is true that Python is "the second best language for everything," it's machine learning that is arguably where it shines. If new statistical models first appear in R, then it can be said that the latest and greatest in machine learning and deep learning is incubated in Python and Python-adjacent libraries. At a high level, this should make sense. If R is tied closely to statistics, the big tent that is Python should naturally lend itself to the learning algorithms developed in computer science.
+If the adage is true that Python is "the second best language for everything," it's machine learning that is arguably where it should be first. If new statistical models first appear in R, then it can be said that the latest and greatest in machine learning and deep learning is incubated in Python and Python-adjacent libraries. At a high level, this should make sense. If R is tied closely to statistics, the big tent that is Python should naturally lend itself to the learning algorithms developed in computer science.
 
-The most popular modeling library in Python is scikit-learn (referred to as sklearn in code). This machine learning library is built on NumPy, matplotlib, and SciPy---a library for scientific computing. The name scikit-learn comes from its origin as a "scikit" or "SciPy Toolkit," a collection of extensions built for SciPy to provide specialized functions and methods.
+The most popular modeling library in Python is [scikit-learn](https://scikit-learn.org/stable/) (referred to as sklearn in code). This machine learning library is built on NumPy, matplotlib, and [SciPy](https://scipy.org)---a library for scientific computing. The name scikit-learn comes from its origin as a "scikit" or "SciPy Toolkit," a collection of extensions built for SciPy to provide specialized functions and methods.
 
 When it comes to modeling, R is equally diverse in its approaches. However, I am partial to the consistency of the {tidymodels} ecosystem of packages, which clearly draw inspiration from scikit-learn. Let's do a simple comparison of the two.
 
 ### Prepare data
 
-We'll start by specifying some parameter values and simulating data. Here we see the obsession with namespacing and efficiency on full display. In R, I load namespace-free access to *all* of the {tidyverse} functions with `library(tidyverse)`. In Python, sklearn is so large and has so many different modules that it is convention to load namespace-free access to *specific* functions and methods by importing them one at a time as in `from sklearn.linear_model import LinearRegression`.
+We'll start by specifying some parameter values and simulating data. Here we see the obsession with namespacing and efficiency on full display. In R, I load namespace-free access to *all* of {tidymodels} functions with `library(tidymodels)`. In Python, sklearn is so large and has so many different modules that it is convention to load namespace-free access to *specific* functions and methods by importing them one at a time as in `from sklearn.linear_model import LinearRegression`.
 
 ::: {.panel-tabset}
 ### Python
@@ -1047,13 +1045,13 @@ sim_lm_fit |>
 
 ## Communication
 
-When it comes to communication, the elephant in the room is Jupyter notebooks. Even though Jupyter was designed to be polyglot (Julia, Python, and R), it really is the domain of Python. As an R user, Jupyter is *weird*. It appears that Jupyter is what happens when you don't have a great IDE to work with---IDE functionality gets absorbed into the document type itself (e.g., an embedded kernel selector). But just because you *can* use Jupyter notebooks doesn't mean you *should*.
+When it comes to communication, the elephant in the room is Jupyter notebooks. Even though Jupyter was designed to be polyglot (Julia, Python, and R), it really is the domain of Python. As an R user, Jupyter is *weird*. It appears that Jupyter is what happens when you don't have a great IDE to work with---IDE functionality gets absorbed into the document type itself (e.g., an embedded kernel selector). But just because you *can* use Jupyter notebooks doesn't mean you *must*.
 
 It shouldn't be surprising that I recommend [Quarto](https://quarto.org) for communication. It's plain text (so it plays well with version control), supports Python and R natively with code cells that behave like actual scripts, and is designed as a means to whatever document type you need---PDFs, slides, websites, dashboards, etc. That said, if you really love or are required to work with Jupyter notebooks, Quarto can convert any `.ipynb` into a `.qmd` via the command line with `quarto convert notebook.ipynb` as well as render any `.ipynb` into whatever document type you need using `quarto render notebook.ipynb --to format`.
 
 ## Final thoughts
 
-There's honestly a lot to love about both Python and R. Don't be afraid to use the best of both interchangeably. I've found it's easiest to switch between the different mindsets by keeping some syntax differences. For example, in R I use double quotes and in Python I use single quotes.
+There's honestly a lot to love about both Python and R. Don't be afraid to use the best of both interchangeably. I've found it's easiest to switch between the different mindsets by keeping some syntax differences. For example, in R I use "double quotes" and in Python I use 'single quotes.'
 
 If I could change one thing about Python it would be for the community to embrace the fact that it was named after Monty Python, not a snake. Like R has Peanuts references for each release, here's hoping we eventually see a stable Python release code-named "It's Just a Flesh Wound."
 
