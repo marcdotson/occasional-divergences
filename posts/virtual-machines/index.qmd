@@ -1,25 +1,24 @@
 ---
 title: "Spinning up and using virtual machines for R and Python"
 author: "Marc Dotson"
-date: "2024-11-31"
+date: "2025-06-16"
 description: |
   Breaking through computational bottlenecks can be challenging, but spinning up and using a virtual machine comes with its own set of problems. This post walks through the process of spinning up and using virtual machines for R and Python.
 categories:
+  - positron
   - r
   - python
-  - compute
-  - positron
 image: figures/owl.png
 slug: virtual-machines
 ---
 
 It's not uncommon to run into computational bottlenecks when running models, Bayesian or otherwise. I've often had access to a dedicated computer or server for such tasks or, in classic academic fashion, I've been comfortable with letting models run for weeks. But these options aren't always available and they might not actually solve the problem. Cloud computing is clearly the solution. However, breaking into cloud computing has made me feel the need to (with apologies) adapt the adage often applied to using regular expressions: "If you have a problem that requires cloud computing, congratulations, you now have two problems."
 
-There are a number of cloud service providers, AWS arguably chief among them. However, since AWS can do *everything*, it can be a struggle when what I really need is the ability to quickly spin up and temporarily use a virtual machine that can easily run R, Python, and often Stan. One of the primary reason VS Code has been so hyped is the use of its SSH extension for easily tunneling into and using such a virtual machine. However, the virtual machine needs to be spun up in the first place. In short, using cloud computing definitely feels like a *draw the rest of the owl* situation.
+There are a number of cloud service providers, AWS arguably chief among them. However, since AWS can do *everything*, it can be a struggle when what I really need is the ability to quickly spin up and temporarily use a virtual machine that can easily run R, Python, and often Stan. One of the primary reasons I've seen VS Code be so hyped is the use of its SSH extension for easily tunneling into and using such a virtual machine. However, the virtual machine needs to be spun up in the first place. In short, using cloud computing definitely feels like a *how to draw an owl* situation.
 
 ![](figures/owl.png){width=50% fig-align="center"}
 
-In this post, I try to fill in the gaps and provide a gentle introduction to spinning up and using virtual machines that can run R and Python. I'll be using [Positron](https://positron.posit.co), a next-generation data science IDE that is a fork of VS Code's open source core, now that support for remote SSH is available (but still experimental). For a brief introduction to Positron, check out [this post](https://occasionaldivergences.com/posts/positron-intro/). Special thanks to Sharad Jones, Lizzy Nguyen, and Andrew Heiss for helping me navigate all of this.
+In this post, I try to fill in the gaps and provide a gentle introduction to spinning up and using virtual machines that can run R and Python. I'll be using [Positron](https://positron.posit.co), a next-generation data science IDE that is a fork of VS Code's open source core. For a brief introduction to Positron, check out [this post](https://occasionaldivergences.com/posts/positron-intro/). Special thanks to Sharad Jones, Lizzy Nguyen, and Andrew Heiss for helping me navigate all of this.
 
 ## Spinning up virtual machines
 
@@ -37,54 +36,45 @@ There are a number of applications for creating images and "containerizing" them
 
 Sharad's AWS/EC2 setup walkthrough:
 
-- EC2 instance with a selected AMI (Amazon Machine Image)
-- Ubuntu OS (not a WSL Linux image for Positron) plus image specifics
-- Note free tier options, which architecture to select (x86 only)
-- Instance type appropriate for my work?
-- Create a new key pair for SSH connection using RSA and .pem for OpenSSH.
+- EC2 (Easy Compute Cloud) launch instance
+- Name it, selected AMI (Amazon Machine Image): Ubuntu (not a WSL Linux image for Positron) plus image specifics (needs Ubuntu 22+ for Positron). "Older Linux distributions and arm64 hosts aren’t currently supported."
+- Note free tier options, which architecture to select (x86 only).
+- Instance type appropriate for my work? Note free tiers.
+- The first time, create a new key pair for SSH connection using RSA and .pem for OpenSSH. (Best to have it live in `~/.ssh/` on your computer, if you have a Mac.)
 - Create or use an existing security group and allow SSH traffic. Maybe from My IP.
-- Configure storage is for the EBS volume. Doesn't need to be tied to the EC2 instance.
+- Configure storage is for the EBS volume. Doesn't need to be tied to the EC2 instance, can be kept for later use? They run separately.
 - Port 22 is specific for inbound traffic using SSH.
+
+SSH into the instance using the key pair:
+
+- In Positron, use the Remote Explorer.
+- Use the Host alias for the server details specified in the Config file:
 
 ```
 Host test-server
-    HostName IP
+    HostName <IP address>
     User ubuntu
     PubKeyAuthentication yes
     IdentityFile ~/.ssh/keypair.pem
 ```
 
-- Use the Host alias for the server details specified in the Config file.
-- Python Server installed automataically. Install pyenv with `curl https://pyenv.run | bash` and then setup with:
+- Connect. Bottom left indicates SSH connection.
+- Positron installed automatically.
+- Install uv with `curl -LsSf https://astral.sh/uv/install.sh | sh` (since its Linux) and restart the terminal with `exec bash`.
+- Move project details over and then `uv run` to get everything setup?! USE GITHUB??????
 
-```
-echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+- Instance is disconnecting/timing out after cloning repo and trying to run `uv run`. Is this just a problem with using a t2.micro? With using Positron?
+- Try using a different instance type, like t2.medium, which has more memory and CPU power.
 
-exec $SHELL
-```
-
-- Confirm pyenv is installed with `pyenv --version`.
-- Install the latest version of Python with `pyenv install 3`.
-- Set version of Python to use...
-
-OR NOT?
-
-- Create a virtual environment.
-- Install pip? And venv?
-
-```
-sudo apt update
-sudo apt install python3-venv python3-pip
-```
+Doesn't recognize uv-installed Python version...
 
 Additional notes:
 
+- Am I missing usu-asc login?!
 - EBS volume on Amazon for external connection
-- AMI as a launch script instead of a Docker image
+- AMI as a launch script instead of a Docker image?
 - S3 to transfer quickly to EBS volumes on EC2
-- Script for spinning up a machine from local IDE?
+- Script for spinning up a machine from local IDE? Just use GitHub?
 
 ### 1. Create/modify an image using Docker Compose?
 
@@ -137,8 +127,6 @@ When we connect using Open Remote SSH, Positron Server is automatically installe
 - Or is this where an image would actually be useful and not needleslly complicated?
 
 Now with the "Remote Explorer" icon on the left along with the bottom-left corner connection. (Not just an Open SSH thing.)
-
-
 
 - SSH Tunneling with VS Code: https://www.youtube.com/watch?v=cOopQQIL8JU
 
