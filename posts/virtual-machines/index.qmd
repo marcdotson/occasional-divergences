@@ -38,6 +38,11 @@ Sharad's AWS/EC2 setup walkthrough:
 
 - EC2 (Easy Compute Cloud) launch instance
 - Name it, selected AMI (Amazon Machine Image): Ubuntu (not a WSL Linux image for Positron) plus image specifics (needs Ubuntu 22+ for Positron). "Older Linux distributions and arm64 hosts aren’t currently supported."
+
+> Yes, I believe Python 3.12 is included with that AMI: https://discourse.ubuntu.com/t/ubuntu-24-04-lts-noble-numbat-release-notes/39890#p-99950-toolchain-upgrades
+
+What AMI doesn't include Python? And will it automatically switch to the right environment and version?
+
 - Note free tier options, which architecture to select (x86 only).
 - Instance type appropriate for my work? Note free tiers.
 - The first time, create a new key pair for SSH connection using RSA and .pem for OpenSSH. (Best to have it live in `~/.ssh/` on your computer, if you have a Mac.)
@@ -58,15 +63,13 @@ Host test-server
     IdentityFile ~/.ssh/keypair.pem
 ```
 
+> I also want to call out that installing uv after opening Positron may result in some strange behavior; Positron checks whether uv is installed right when it opens, and caches the result. So that's why a restart sometimes helps.
+
 - Connect. Bottom left indicates SSH connection.
 - Positron installed automatically.
 - Install uv with `curl -LsSf https://astral.sh/uv/install.sh | sh` (since its Linux) and restart the terminal with `exec bash`.
-- Move project details over and then `uv run` to get everything setup?! USE GITHUB??????
-
-- Instance is disconnecting/timing out after cloning repo and trying to run `uv run`. Is this just a problem with using a t2.micro? With using Positron?
-- Try using a different instance type, like t2.medium, which has more memory and CPU power.
-
-Doesn't recognize uv-installed Python version...
+- Move project details using GitHub over and then `uv run` to get everything setup?! USE GITHUB??????
+- Need at least t2.medium, which has more memory and CPU power.
 
 Additional notes:
 
