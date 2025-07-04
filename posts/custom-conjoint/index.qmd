@@ -1,0 +1,23 @@
+---
+title: "Custom conjoint"
+author: "Jeff Dotson"
+date: "2025-07-30"
+description: |
+  Description.
+categories:
+  - conjoint
+image: figures/splash.png
+slug: custom-conjoint
+highlight-style: arrow
+---
+
+Intro.
+
+## Section
+
+Details.
+
+## Final thoughts
+
+Fin.
+
