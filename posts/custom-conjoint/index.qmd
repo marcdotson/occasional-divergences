@@ -13,6 +13,26 @@ highlight-style: arrow
 
 Intro.
 
+- Just need a regular Qualtrics account.
+- Piped-data indicators where design is set up through a web service via SQL.
+- "Web service" in survey flow in Qualtrics is what enables the piping from a SQL database.
+- The SQL database or (set up using a JSON format).
+- Experimental design with lots of version (100+ versions).
+- Nothing is randomized within Qualtrics -- that's all done before.
+
+- Start by creating an attribute level grid.
+- Generate a full factorial design, sample from it to create a fractional factorial design.
+- Including checks for level balance (see public policy survey).
+- Design Matrix: Version, alternative, choice task, level for each attribute.
+- Pipe in to get the values for each of the attribute levels (including images).
+- Design Import: Design matrix formatted in a way to put in the database.
+- Import the Design Import file as a table in a SQL database.
+- On the web server, create a JSON version of the table using PHP (use Jeff's).
+- Then create the "Web service" in survey flow in Qualtrics to map the JSON to the survey flags.
+- Can write custom HTML and JavaScript to make the conjoint look better/different.
+- Need an SLI key because Qualtrics requires HTTPS.
+- Can use AWS but you'll need something to support JSON, PHP, and HTTPS.
+
 ## Section
 
 Details.
