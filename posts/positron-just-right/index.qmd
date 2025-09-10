@@ -12,6 +12,18 @@ image: figures/positron-logo.png
 slug: positron-intro
 ---
 
+
+## Just Right Update
+
+- Reference original post on Positron
+- Opportunity to start turning data-stack into blog posts
+- Reference Positron helping students move from Jupyter
+- Challenges still setting up project environments -- does Quarto come with uv installed for the envrionment wizard?
+- See issue on uv being combined with Positron like it is with reticulate
+- Get actual quotes from students about using Positron
+
+# Original Post
+
 Last week [Positron](https://github.com/posit-dev/positron) was ([kind of quietly](https://www.infoworld.com/article/3715702/maker-of-rstudio-launches-new-r-and-python-ide.html)) revealed, [Posit](https://posit.co)'s "next-generation data science IDE." But what is it and should you start coding with it?
 
 ![](figures/positron-logo.png){width=50% fig-align="center"}
