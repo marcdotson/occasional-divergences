@@ -1,5 +1,9 @@
 project:
   type: website
+  render:
+    - "*.qmd"
+    - "posts/*.qmd"
+    - "!study/**"
 
 website:
   title: "Occasional Divergences"

@@ -195,7 +195,7 @@ tibble(probs) %>%
   geom_histogram()
 ```
 
-![](Figures/probs_plot.png)
+![](figures/probs_plot.png)
 
 The prior predictive distribution doesn't have a spike at probability of 1, so our prior of `beta ~ normal(0, 1)` combined with the multinomial logit likelihood does not produce dominating alternatives. This part of the workflow typically requires some iteration in terms of model building, since the ways in which the prior and likelihood can combine aren't obvious. When there are issues, we can modify the prior and/or the likelihood until we see a joint distribution in terms of the prior predictive distribution that fits our domain expertise.
 
@@ -280,7 +280,7 @@ as.matrix(fit) %>%
 )
 ```
 
-![](Figures/mcmc_scatter.png)
+![](figures/mcmc_scatter.png)
 
 If there were divergences for the two parameters in this bivariate plot, they would be highlighted in green. Without divergences, we have evidence that our estimation routine is converging and that the posterior geometry is smooth. Note that *occassional divergences* aren't a problem -- it's a pattern or structure to the divergences that indicates issues with the model or computational tool.
 
@@ -321,7 +321,7 @@ fit %>%
   )
 ```
 
-![](Figures/mcmc_trace.png)
+![](figures/mcmc_trace.png)
 
 These chains are clearly converging. However, trace plots can't help us diagnose problems with the the geometry of the posterior or suggest where and how to reparameterize. Thus, they're a fine addition but not a replacement for evaluating model estimation with divergences, assuming we're using HMC.
 
@@ -352,7 +352,7 @@ as.array(fit) %>%
   vline_at(beta[3], color = "red")
 ```
 
-![](Figures/mcmc_hist.png)
+![](figures/mcmc_hist.png)
 
 Note that the true value of the parameter (in red) is within the default 90% confidence band of the marginal posterior. This is an example of the parameter value being recovered.
 
@@ -473,7 +473,7 @@ yrep <- extract(fit)$yrep
 ppc_hist(Y, yrep[1:10,])
 ```
 
-![](Figures/ppc_hist.png)
+![](figures/ppc_hist.png)
 
 The typical posterior predictive check on $y$ and $yrep$ themselves aren't particluarly enlightening. As we saw with the prior predictive check, we need to consider something more primitive, such as the implied choice probabilities that produce `yrep`.
 
@@ -496,7 +496,7 @@ tibble(probs) %>%
   geom_histogram()
 ```
 
-![](Figures/ppc_probs_plot.png)
+![](figures/ppc_probs_plot.png)
 
 While there are other, more informative posterior predictive checks we might consider, this gives us a sense that the model is working as expected.
 
@@ -510,11 +510,10 @@ Beyond fit statistics, we need to investigate the resulting posterior distributi
 
 ## Links
 
-* [Towards a Principled Bayesian Workflow](https://betanalpha.github.io/assets/case_studies/principled_bayesian_workflow.html)
-* [tidybayes: Bayesian analysis + tidy data + geoms](http://mjskay.github.io/tidybayes/)
-
------
+- [Towards a Principled Bayesian Workflow](https://betanalpha.github.io/assets/case_studies/principled_bayesian_workflow.html)
+- [tidybayes: Bayesian analysis + tidy data + geoms](http://mjskay.github.io/tidybayes/)
 
 ### Marc Dotson
 
 Marc is an assistant professor of marketing at the BYU Marriott School of Business. He graduated with an MSc from The London School of Economics and Political Science in 2009 and a PhD from The Ohio State University in 2016. His research interests include Bayesian inference, predictive modeling, consumer preference heterogeneity, and unstructured data. Marc teaches marketing analytics. You can find him on [Twitter](https://twitter.com/marcdotson) and [GitHub](https://github.com/marcdotson).
+
