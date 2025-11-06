@@ -12,13 +12,12 @@ image: figures/positron-logo.png
 slug: positron-intro
 ---
 
-
 ## Just Right Update
 
 - Reference original post on Positron
-- Opportunity to start turning data-stack into blog posts
+- Opportunity to start turning `data-stack` into blog posts
 - Reference Positron helping students move from Jupyter
-- Challenges still setting up project environments -- does Quarto come with uv installed for the envrionment wizard?
+- Challenges still setting up project environments -- does Quarto come with uv installed for the envrionment wizard? Yes.
 - See issue on uv being combined with Positron like it is with reticulate
 - Get actual quotes from students about using Positron
 
