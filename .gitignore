@@ -13,7 +13,7 @@
 *.rds
 
 # Folders.
-_study/*
+study/*
 
 # Posts-specific.
 posts/*/Code/Compiled/
