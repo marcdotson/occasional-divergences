@@ -20,3 +20,5 @@ posts/*/Code/Compiled/
 # posts/*/Data/
 posts/*/Output/
 
+
+**/*.quarto_ipynb
