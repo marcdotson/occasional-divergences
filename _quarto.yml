@@ -1,9 +1,5 @@
 project:
   type: website
-  render:
-    - "*.qmd"
-    - "posts/*.qmd"
-    - "!study/**"
 
 website:
   title: "Occasional Divergences"
@@ -35,13 +31,14 @@ website:
     right:
       - text: "&copy; License"
         file: license.qmd
+
 format:
   html:
     theme: 
       - flatly
       - styles-light.scss
     highlight-style: breeze
-    
+
 execute:
   freeze: auto
 
