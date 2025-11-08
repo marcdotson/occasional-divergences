@@ -1,13 +1,30 @@
 ---
-title: "Modeling workflow with tidy Bayes"
-date: "2024-07-02"
+title: "Bayesian workflow with PyMC and Stan"
+date: "2025-11-26"
 description: |
-  Positron is a "next-generation data science IDE." If RStudio is too specific and VS Code is too general, is Positron just right?
+  Bayesian workflow details the process of statistical modeling using a tidy approach to Bayesian inference along with modern tools and diagnostics.
 categories:
   - bayesian inference
-image: figures/mcmc_hist.png
+  - python
+  - pymc
+  - stan
+image: figures/logo_pymc.png
 slug: bayesian-workflow
 ---
+
+## PML Notes
+
+- Is it Stan -> PyMC -> Pyro -> NumPyro/JAX? Nutpie?
+- Probabilistic programming languages (PPLs) are used to write probability distribution-native code, powered on the backend by an autodiff library, to compute Bayesian inference and deep learning.
+  - Pyro is a universal PPL written in Python and using PyTorch on the backend.
+  - NumPyro provides a NumPy backend for Pyro via JAX.
+- Automatic differentiation (autodiff) is essential for gradient descent methods, including HMC, variational inference, normalizing flows, and neural networks. https://github.com/bob-carpenter/ad-handbook/tree/master
+  - PyTorch is the most popular autodiff Python library.
+  - “Stan’s autodiff is 4x faster than JAX on CPU but 5x slower on GPU (in one eval)” https://statmodeling.stat.columbia.edu/2024/09/25/stan-faster-than-jax-on-cpu/
+- Normalizing flows construct complex distributions by transforming a probability density through a series of invertible mappings. https://paperswithcode.com/method/normalizing-flows
+- Publicize or produce an infer-like Python package for teaching PML?
+
+## Old Blog
 
 This **tidy Bayesian workflow** details the process of statistical modeling using a tidy approach to Bayesian inference along with modern tools and diagnostics. In particular, we will employ the tidyverse for data wrangling and visualization and Stan for modeling.
 
