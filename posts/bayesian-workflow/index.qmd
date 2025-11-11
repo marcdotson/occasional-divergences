@@ -24,6 +24,53 @@ slug: bayesian-workflow
 - Normalizing flows construct complex distributions by transforming a probability density through a series of invertible mappings. https://paperswithcode.com/method/normalizing-flows
 - Publicize or produce an infer-like Python package for teaching PML?
 
+## From Exercise 19
+
+Let's also compare overall accuracy, interval estimates, and computational complexity with a Bayesian logistic regression using the relevant regularizing priors, in this case Laplace priors.
+
+```{python}
+import bambi as bmb
+import arviz as az
+
+# Combine y_train and X_train
+leads_train = (pl.concat([y_train, X_train], how = 'horizontal')
+    .to_pandas()
+)
+
+# Specify a Bayesian logistic regression with Laplace priors
+ba_model = bmb.Model(
+    'qualified ~ ' + ' + '.join(predictors), 
+    data = leads_train,
+    family = 'bernoulli'
+)
+priors_dict = {
+    'Intercept': bmb.Prior('Laplace', mu = 0, b = 1),
+    **{term: bmb.Prior('Laplace', mu = 0, b = 1) for term in predictors}
+}
+
+# Combine priors and likelihood, sample from posterior
+ba_model.set_priors(priors = priors_dict)
+ba_fit = ba_model.fit(progressbar = False)
+
+# Extract posterior probability and predictions on the test data
+bayes_probs_test = ba_model.predict(ba_fit, data = X_test, kind = 'response', inplace = False)
+bayes_probs_test_mean = bayes_probs_test.posterior_predictive.mean(dim = ('chain', 'draw'))
+bayes_preds_test = (bayes_probs_test_mean >= 0.35).astype(int)
+
+# Compute the test accuracy and AUC
+bayes_test_accuracy = accuracy_score(y_test, bayes_preds_test)
+bayes_test_auc = roc_auc_score(y_test, bayes_preds_test)
+
+print(
+    f'Test Accuracy: {bayes_test_accuracy:.4f}', 
+    f'Test AUC: {bayes_test_auc:.4f}', 
+    sep = '\n'
+)
+
+# Visualize the parameter estimates
+az.plot_trace(ba_fit, var_names = predictors, compact = True)
+```
+
 ## Old Blog
 
 This **tidy Bayesian workflow** details the process of statistical modeling using a tidy approach to Bayesian inference along with modern tools and diagnostics. In particular, we will employ the tidyverse for data wrangling and visualization and Stan for modeling.
