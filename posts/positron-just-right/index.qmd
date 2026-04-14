@@ -13,6 +13,32 @@ image: figures/just-right.png
 slug: positron-just-right
 ---
 
+## Positron and the Three Bears: Teaching Python with Positron
+
+For polyglot data science, RStudio is too specific, VS Code is too general, but Positron is just right. However, it’s not without friction. With two years of experience teaching Python with Positron, I’ll discuss how Positron fits in the data stack and how it helps address the “three bears” of teaching Python. 
+
+Positron has recently been made available on [JupyterHub](https://positron.posit.co/blog/posts/2026-04-03-positron-server-jupyterhub/), which is a great place to start, but I think students need to be able to wean themselves off of web-based tools and learn how to manage local installations so that they can take it with them after graduation and be prepared for similar setups in practice.
+
+1. Installing Python and managing virtual environments (with uv, referencing "How I Stopped Worrying and Learned to Love the CLI")
+
+- How I Stopped Worrying and Learned to Love the CLI:
+- Every OS has a command-line interface in the from of a shell.
+- Depending on the OS, you might use Bash, Zsh, or PowerShell.
+- People use terminal, console, and shell interchangeably.
+- Every shell is a terminal, but not every terminal is a shell.
+- In Positron, the console is a specialized terminal for data science.
+- Sudo? Homebrew? Dashes?
+
+2. Creating GitHub-friendly notebook workflows (with Quarto)
+
+- Quarto 2 using an [automerge](https://automerge.org/) collaborative editor
+
+3. Accessing scalable compute resources (with SSH)
+
+Fall is Positron's “teaching launch” with more opinionated bootstrapping. Reference Begin with Bayes, decision theory and probability? I hope my experience with Positron can help other attendees in their professional and personal efforts as instructors and mentors.
+
+## Introduction
+
 Nearly two years ago, [Positron](https://posit.co/products/ide/positron/), Posit's "next-generation data science IDE," was revealed. As a long-time [RStudio](https://posit.co/products/open-source/rstudio/) user and teacher who was preparing to teach in Python for the first time, I was intrigued. A [week after the reveal](https://occasionaldivergences.com/posts/positron-intro/), I wrote:
 
 > If RStudio is too specific and VS Code is too general, is Positron just right? Again, your mileage may vary, and it is still in beta, but having some of the core features of RStudio made available for a polyglot, VS Code-based data science IDE is *compelling*. With Positron it really looks like we might be able to get the best of both worlds.
