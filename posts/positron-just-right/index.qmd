@@ -35,6 +35,8 @@ Positron has recently been made available on [JupyterHub](https://positron.posit
 
 3. Accessing scalable compute resources (with SSH)
 
+- See [Outgrowing Your Laptop With Positron](https://github.com/austin3dickey/ssh-demo) slides and demo
+
 Fall is Positron's “teaching launch” with more opinionated bootstrapping. Reference Begin with Bayes, decision theory and probability? I hope my experience with Positron can help other attendees in their professional and personal efforts as instructors and mentors.
 
 ## Introduction
