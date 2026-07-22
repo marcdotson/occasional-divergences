@@ -1,7 +1,7 @@
 ---
 title: "Teaching in Python with Positron"
 author: "Marc Dotson"
-date: "2026-01-20"
+date: "2026-10-01"
 description: |
   As a "next-generation data science IDE," Positron is just right for teaching data science in Python if students are ready to code locally.
 categories:
@@ -15,14 +15,20 @@ slug: positron-just-right
 
 ## Positron and the Three Bears: Teaching Python with Positron
 
+- What’s the one takeaway? Positron is ready for teaching.
+- "The True Story of Goldilocks and the Three Bears"
+
 For polyglot data science, RStudio is too specific, VS Code is too general, but Positron is just right. However, it’s not without friction. With two years of experience teaching Python with Positron, I’ll discuss how Positron fits in the data stack and how it helps address the “three bears” of teaching Python. 
 
 Positron has recently been made available on [JupyterHub](https://positron.posit.co/blog/posts/2026-04-03-positron-server-jupyterhub/), which is a great place to start, but I think students need to be able to wean themselves off of web-based tools and learn how to manage local installations so that they can take it with them after graduation and be prepared for similar setups in practice.
 
 1. Installing Python and managing virtual environments (with uv, referencing "How I Stopped Worrying and Learned to Love the CLI")
 
-- How I Stopped Worrying and Learned to Love the CLI:
-- Every OS has a command-line interface in the from of a shell.
+- No longer needed! [uv bootstrap options in Python](https://opensource.posit.co/blog/2026-07-08_positron-uv/)
+- See updated `data-stack`
+
+- How I Stopped Worrying and Learned to Love the CLI.
+- Every OS has a command-line interface in the form of a shell.
 - Depending on the OS, you might use Bash, Zsh, or PowerShell.
 - People use terminal, console, and shell interchangeably.
 - Every shell is a terminal, but not every terminal is a shell.
@@ -31,10 +37,12 @@ Positron has recently been made available on [JupyterHub](https://positron.posit
 
 2. Creating GitHub-friendly notebook workflows (with Quarto)
 
+- Positron's notebook editor for Jupyter Notebooks and Quarto with in-line support
 - Quarto 2 using an [automerge](https://automerge.org/) collaborative editor
 
 3. Accessing scalable compute resources (with SSH)
 
+- Now available on [JupyterHub](https://positron.posit.co/blog/posts/2026-04-03-positron-server-jupyterhub/)
 - See [Outgrowing Your Laptop With Positron](https://github.com/austin3dickey/ssh-demo) slides and demo
 
 Fall is Positron's “teaching launch” with more opinionated bootstrapping. Reference Begin with Bayes, decision theory and probability? I hope my experience with Positron can help other attendees in their professional and personal efforts as instructors and mentors.
