@@ -15,8 +15,17 @@ slug: positron-just-right
 
 ## Positron and the Three Bears: Teaching Python with Positron
 
-- What’s the one takeaway? Positron is ready for teaching.
+Bring a talk outline to Session 2: Hook, problem, details
+
 - "The True Story of Goldilocks and the Three Bears"
+- Positron is Goldilocks then what are the bears/beasts?
+- Taming or defeating the Three Bears using Positron?
+- How many of you are teaching Python using Positron?
+- What’s the one takeaway? Positron is ready for teaching!
+- How do you demonstrate teaching Python with Positron?
+- Validate that RStudio and Positron for teaching R
+- Provide a link to the `data-stack` training repo
+- 20 minutes (including Q&A)
 
 For polyglot data science, RStudio is too specific, VS Code is too general, but Positron is just right. However, it’s not without friction. With two years of experience teaching Python with Positron, I’ll discuss how Positron fits in the data stack and how it helps address the “three bears” of teaching Python. 
 
