@@ -17,13 +17,15 @@ slug: positron-just-right
 
 Bring a talk outline to Session 2: Hook, problem, details
 
-- "The True Story of Goldilocks and the Three Bears"
-- Positron is Goldilocks then what are the bears/beasts?
-- Taming or defeating the Three Bears using Positron?
+- Tell the story of moving from using R to using Python
+- Quote my original blog post about Positron being "just right"
+- When it came to teaching Python, it was different story
 - How many of you are teaching Python using Positron?
-- What’s the one takeaway? Positron is ready for teaching!
-- How do you demonstrate teaching Python with Positron?
 - Validate that RStudio and Positron for teaching R
+- Weapons and shields above the three human-sized beds, shadows
+- Positron and the Three Bears: Teaching Python with Positron
+
+- How do you demonstrate teaching Python with Positron?
 - Provide a link to the `data-stack` training repo
 - 20 minutes (including Q&A)
 
