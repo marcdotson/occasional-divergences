@@ -15,19 +15,29 @@ slug: positron-just-right
 
 ## Positron and the Three Bears: Teaching Python with Positron
 
-For Session 3: Draft of the slides, especially visuals for the hook and transitions.
+### Feedback
+
+- Locally later on, not as a qualifier
+- Slow down when I talk about Positron and the Three Bears —- let that sink in
+- Detail my transition to Python in more detail -- from marketing to data analytics, from R to Python
+- Maybe cross out “Goldilocks and the Three Bears” and replace it
+- Positron helping to defeat some bad habits and teach
+- More room to breathe about the story with the hook
+- Share more about the three bears of teaching to signal where we’re going as part of the story of moving to teaching Python
+
+### Outline
 
 - "Teaching Python with Positron"
-  + Tell the story of moving from using R to using Python (anyone else?)
-  + Validate using either RStudio or Positron for teaching R
-  + Focus here on "Teaching Python (Locally) with Positron"
-- Quote my original blog post about Positron being "just right"
+  + Or, more specifically, "Teaching Python *Locally* with Positron"
+  + Two years ago, I moved to a new university where I would be teaching Python instead of R
+  + As a longtime RStudio user, I was a bit terrified of the transition
+  + Fortunately, that summer Positon entered open beta
+  + At the time, I wrote in a blog post that for data science Positron was "just right"
   + After actually teaching Python, I discovered I was in a different story
-  + Colab, Conda, Jupyter notebooks, human skeletons, looming shadows
-  + "Positron and the Three Bears"
-- Bear 1: Installing Python with uv
-- Bear 2: Creating GitHub-friendly notebooks with Quarto
-- Bear 3: Accessing scalable compute resources with SSH
+- "Positron and the Three Bears"
+  + Bear 1: Installing Python with uv
+  + Bear 2: Creating GitHub-friendly notebooks with Quarto
+  + Bear 3: Accessing scalable compute resources with SSH
 
 - How do you demonstrate teaching Python with Positron?
 - Provide a link to the `data-stack` training repo
@@ -55,8 +65,10 @@ Positron has recently been made available on [JupyterHub](https://positron.posit
 
 2. Creating GitHub-friendly notebook workflows (with Quarto)
 
+- Using GitHub for collaboration, creating portfolios
 - Make the pain of Jupyter notebooks with GitHub clear
-- Positron's notebook editor for Jupyter Notebooks and Quarto with in-line support
+- Positron's notebook editor for Jupyter Notebooks and Quarto with in-line support (`quarto.inlineOutput.enabled`)
+- Quarto not only GitHub-friendly, but also a means to an end (even if the end is a Jupyter Notebook)
 - Screenshot/GIF showing the notebook editor
 - Quarto 2 using an [automerge](https://automerge.org/) collaborative editor
 
