@@ -72,7 +72,7 @@ Positron has recently been made available on [JupyterHub](https://positron.posit
 - Screenshot/GIF showing the notebook editor
 - Quarto 2 using an [automerge](https://automerge.org/) collaborative editor
 
-3. Accessing scalable compute resources (with SSH)
+3. Accessing scalable compute resources (with SSH, Colab)
 
 - Make the pain of scalable compute clear (personal, clear; vulnerable with the OWL meme)
 - Now available on [JupyterHub](https://positron.posit.co/blog/posts/2026-04-03-positron-server-jupyterhub/)
